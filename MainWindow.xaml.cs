@@ -17,7 +17,7 @@ namespace ITEQ2
         private void btnNormal_Click(object sender, RoutedEventArgs e)
         {
             NormalWindow normalWindow = new NormalWindow();
-            normalWindow.Show();
+            normalWindow.Show(); 
         }
 
         private void btnModal_Click(object sender, RoutedEventArgs e)

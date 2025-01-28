@@ -10,13 +10,16 @@
     </Window.Resources>
     <Grid>
 
-        
+
         
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
+        
+        <TextBlock Text="Hello World!" FontSize="30" Foreground="White"
+           HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
 
         <StackPanel>
