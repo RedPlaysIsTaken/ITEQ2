@@ -32,14 +32,6 @@
         <!-- Title Bar -->
         <UserControls:TitleBar Grid.Row="0" Loaded="TitleBar_Loaded"/>
 
-        <StackPanel>
-            <Button Name="btnNormal" Content="Normal" Click="btnNormal_Click"
-                    Width="100" Height="40" Margin="5"/>
-            <Button Name="btnModal" Content="Modal" Click="btnModal_Click"
-                    Width="100" Height="40" Margin="5"/>
-            <TextBox x:Name="txtInput" Width="200" Height="40" FontSize="20"/>
-        </StackPanel>
-
         <!-- Search Bar -->
 
         <!-- Main Application -->
