@@ -1,5 +1,7 @@
 ﻿using System.Windows;
+using System.Windows.Data;
 using ITEQ2.View;
+using Microsoft.Win32;
 
 
 namespace ITEQ2
@@ -29,7 +31,30 @@ namespace ITEQ2
 
             if (modalWindow.Success)
             {
-                txtInput.Text = modalWindow.Input;
+                //txtInput.Text = modalWindow.Input;
+            }
+        }
+
+        private void TitleBar_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void MenuBar_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnImportCSV_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFile = new OpenFileDialog();
+
+            openFile.Filter = "Csv Files| *.csv";
+            if (openFile.ShowDialog() == true)
+            {
+                var csvData = CSVData.GetCsvData(openFile.FileName);
+
+                CsvDataGrid.ItemsSource = csvData;
             }
         }
     }

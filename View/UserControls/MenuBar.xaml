@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="ITEQ2.View.UserControls.MenuBar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ITEQ2.View.UserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="30" d:DesignWidth="1080">
+    
+    <!-- Menu Bar -->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        <Menu>
+            <MenuItem Header="File" FontSize="12">
+                <MenuItem Header="Save" FontSize="12"/>
+                <MenuItem Header="Save as" FontSize="12"/>
+            </MenuItem>
+            <MenuItem Header="Edit" FontSize="12"/>
+        </Menu>
+    </Grid>
+</UserControl>

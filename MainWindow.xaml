@@ -4,23 +4,33 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ITEQ2"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="800" Width="800" Background="#333333">
-    <Window.Resources>
-    </Window.Resources>
+        xmlns:UserControls="clr-namespace:ITEQ2.View.UserControls"
+        mc:Ignorable="d" WindowStyle="None"
+        Title="MainWindow" Height="1080" Width="1920">
+    <WindowChrome.WindowChrome>
+        <WindowChrome GlassFrameThickness="0" CornerRadius="0" CaptionHeight="0"/>
+    </WindowChrome.WindowChrome>
     <Grid>
-
-
-        
         <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
+            <!-- Title Bar -->
+            <RowDefinition Height="40"/>
+            
+            <!-- Menu Bar -->
+            <RowDefinition Height="30"/>
+            
+            <!-- Search Bar -->
+            <RowDefinition Height="40"/>
+            
+            <!-- Main Application -->
+            <RowDefinition />
+            
+            <!-- Footer -->
+            <RowDefinition Height="20"/>
+            
         </Grid.RowDefinitions>
-        
-        <TextBlock Text="Hello World!" FontSize="30" Foreground="White"
-           HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
+        <!-- Title Bar -->
+        <UserControls:TitleBar Grid.Row="0" Loaded="TitleBar_Loaded"/>
 
         <StackPanel>
             <Button Name="btnNormal" Content="Normal" Click="btnNormal_Click"
@@ -30,34 +40,14 @@
             <TextBox x:Name="txtInput" Width="200" Height="40" FontSize="20"/>
         </StackPanel>
 
-        <Grid Grid.Row="1">
-            <StackPanel VerticalAlignment="Center">
-                <!--<StackPanel.Resources>
-                    <Style TargetType="TextBox">
-                        <Setter Property="Width" Value="200"/>
-                        <Setter Property="Height" Value="40"/>
-                        <Setter Property="FontWeight" Value="Light"/>
-                        <Setter Property="FontSize" Value="20"/>
-                        <Setter Property="Margin" Value="5"/>
-                    </Style>
-                </StackPanel.Resources>-->
-                <TextBox/>
-                <TextBox/>
-                <TextBox/>
-                <Button Content="Normal" Margin="0,5,0,0"/>
-                <Button Content="Normal" Margin="0,5,0,0"/>
-            </StackPanel>
+        <!-- Search Bar -->
+
+        <!-- Main Application -->
+        <Grid Grid.Row="3">
+            <Button Name="btnImportCSV" Content="Import CSV" VerticalAlignment="Top" HorizontalAlignment="Right" 
+                Height="20" Width="70" Margin="5" Click="btnImportCSV_Click"/>
+            <DataGrid Name="CsvDataGrid" Margin="20,70,20,20" Background="LightGray" CanUserResizeColumns="True"/>
         </Grid>
-
-        <Grid Grid.Row="2">
-            <!--<Button VerticalAlignment="Top" Style="{StaticResource ConfirmationButton}"/>-->
-        </Grid>
-
-        <ScrollViewer Grid.Row="2">
-            <Button Content="im a button" Width="100" Height="40"/>
-        </ScrollViewer>
-
-
 
     </Grid>
 </Window>
