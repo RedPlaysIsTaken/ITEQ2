@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ITEQ2.CsvHandling
 {
-    public class FucPath
+    public class Path
     {
         public string FilePath { get; set; }
     }

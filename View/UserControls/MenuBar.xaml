@@ -14,10 +14,8 @@
         </Grid.RowDefinitions>
         <Menu>
             <MenuItem Header="File" FontSize="12">
-                <MenuItem Name="menuitemOpenFuc" Header="Open Fuc" FontSize="12"
-                          Click="menuitemOpenFuc_Click"/>
-                <MenuItem Name="menuitemOpenITEQ" Header="Open ITEQ" FontSize="12"
-                          Click="menuitemOpenITEQ_Click"/>
+                <MenuItem Name="menuitemOpen" Header="Open File" FontSize="12"
+                          Click="menuitemOpen_Click"/>
             </MenuItem>
             <MenuItem Header="Edit" FontSize="12"/>
         </Menu>

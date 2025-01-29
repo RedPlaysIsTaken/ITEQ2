@@ -7,7 +7,7 @@ using CsvHelper.Configuration.Attributes;
 
 namespace ITEQ2.CsvHandling
 {
-    class FucModel
+    public class FucModel
     {
         [Name("PC")]
         public string PC { get; set; }
