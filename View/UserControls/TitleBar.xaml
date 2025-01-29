@@ -6,17 +6,17 @@
              xmlns:local="clr-namespace:ITEQ2.View.UserControls"
              mc:Ignorable="d" 
              d:DesignHeight="40" d:DesignWidth="1080">
-    <Grid Name="titleBar" Height="40" Background="DarkGray" 
+    <Grid Name="titleBar" Height="41" Background="DarkGray" 
           MouseDown="titleBar_MouseDown"
           MouseMove="titleBar_MouseMove"
           MouseUp="titleBar_MouseUp">
-        <TextBlock Text="ITEQ 2" FontWeight="Bold" VerticalAlignment="Center" Foreground="Black" FontSize="16" Margin="15,0" />
+        <TextBlock Text="ITEQ2" FontWeight="Bold" VerticalAlignment="Center" Foreground="Black" FontSize="16" Margin="15,0" />
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Name="btnMinimize" Content="🗕" Width="40" Height="40" BorderBrush="Transparent" Background="Transparent"
+            <Button Name="btnMinimize" Content="🗕" Width="34" Height="34" BorderBrush="Transparent" Background="Transparent" Margin="3"
             Click="btnMinimize_Click"/>
-            <Button Name="btnMaximize" Content="🗖" Width="40" Height="40" BorderBrush="Transparent" Background="Transparent"
+            <Button Name="btnMaximize" Content="🗖" Width="34" Height="34" BorderBrush="Transparent" Background="Transparent" Margin="3"
             Click="btnMaximize_Click"/>
-            <Button Name="btnClose" Content="❌" Width="40" Height="40" BorderBrush="Transparent" Background="Transparent"
+            <Button Name="btnClose" Content="❌" Width="34" Height="34" BorderBrush="Transparent" Background="Transparent" Margin="3"
             Click="btnClose_Click"/>
         </StackPanel>
 
