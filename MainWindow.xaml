@@ -32,12 +32,13 @@
         <!-- Title Bar -->
         <UserControls:TitleBar Grid.Row="0" Loaded="TitleBar_Loaded"/>
 
+        <!-- Menu Bar -->
+        <UserControls:MenuBar Grid.Row="1" Loaded="MenuBar_Loaded"/>
+        
         <!-- Search Bar -->
 
         <!-- Main Application -->
         <Grid Grid.Row="3">
-            <Button Name="btnImportCSV" Content="Import CSV" VerticalAlignment="Top" HorizontalAlignment="Right" 
-                Height="20" Width="70" Margin="5" Click="btnImportCSV_Click"/>
             <DataGrid Name="CsvDataGrid" Margin="20,70,20,20" Background="LightGray" CanUserResizeColumns="True"/>
         </Grid>
 
