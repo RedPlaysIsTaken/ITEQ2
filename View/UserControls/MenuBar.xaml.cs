@@ -2,6 +2,7 @@
 using Microsoft.Win32;
 using System.Windows;
 using System.Windows.Controls;
+using System.Xml.Linq;
 
 namespace ITEQ2.View.UserControls
 {
@@ -17,7 +18,7 @@ namespace ITEQ2.View.UserControls
 
         private void menuitemOpen_Click(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog openFile = new OpenFileDialog
+            OpenFileDialog openFile = new OpenFileDialog // Open file dialog for CSV files omly
             {
                 Multiselect = true,
                 Filter = "Csv Files|*.csv"
@@ -25,50 +26,47 @@ namespace ITEQ2.View.UserControls
 
             if (openFile.ShowDialog() == true)
             {
-                if (openFile.FileNames.Length != 2)  // Ensure exactly 2 files are selected
+                if (openFile.FileNames.Length != 2)  // Make sure 2 CSV files are selected
                 {
-                    MessageBox.Show("You must select exactly 2 files.", "File Selection Limit", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageBox.Show("You must select 2 CSV files.", "File Selection Limit", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
 
-                // Lists to store parsed data
+
+                // Create lists to store parsed data
                 List<FucModel> fucData = new();
                 List<ITEQModel> iteqData = new();
 
-                foreach (string filePath in openFile.FileNames)
+
+                foreach (string filePath in openFile.FileNames) // Loop through selected files
                 {
                     Path path = new Path { FilePath = filePath };
                     CSVHandler csvHandler = new CSVHandler(path);
 
-                    // Determine which model to use based on filename pattern
-                    if (filePath.Contains("Fuc"))
+                    if (filePath.Contains("Fuc")) // Dette er ganske drit og er midlertidig (Ser om filnavnet har "fuc" i seg)
+                    {
                         fucData = csvHandler.ReadFile<FucModel>(path);
+                    }
                     else
+                    {
                         iteqData = csvHandler.ReadFile<ITEQModel>(path);
+                    }
                 }
 
-                // Ensure both files were correctly loaded
-                if (fucData.Count == 0 || iteqData.Count == 0)
+                if (fucData.Count == 0 || iteqData.Count == 0) // Check if the files loaded correctly
                 {
-                    MessageBox.Show("One or both files failed to load correctly.", "File Load Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("One or both files failed to load correctly. Check if the files have the correct format.", "File Load Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
 
-                // Step 1: Match & Merge the Data
-                var mergedData = DataMatcher.MatchAndMerge(fucData, iteqData);
+                var mergedData = DataMatcher.MatchAndMerge(fucData, iteqData); // Match and merge the data using the DataMatcher class
+                MainWindow mainWindow = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
 
-                // Step 2: Display in DataGrid
-                // CsvDataGrid.ItemsSource = mergedData;
-
-                // Step 3: Save the merged data
-                string savePath = DataMatcher.ShowSaveFileDialog();
-                if (!string.IsNullOrEmpty(savePath))
+                if (mainWindow != null)
                 {
-                    DataMatcher.SaveToCsv(mergedData, savePath);
-                    MessageBox.Show($"CSV file saved to: {savePath}", "Save Successful", MessageBoxButton.OK, MessageBoxImage.Information);
+                    DataMatcher.LoadData(mergedData, mainWindow);
                 }
             }
         }
-
     }
 }

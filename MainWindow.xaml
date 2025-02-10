@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ITEQ2"
         xmlns:UserControls="clr-namespace:ITEQ2.View.UserControls"
         mc:Ignorable="d" WindowStyle="None"
-        Title="MainWindow" Height="1080" Width="1920">
+        Title="MainWindow" Height="720" Width="1280">
     <WindowChrome.WindowChrome>
         <WindowChrome GlassFrameThickness="0" CornerRadius="0" CaptionHeight="0"/>
     </WindowChrome.WindowChrome>
@@ -39,7 +39,10 @@
 
         <!-- Main Application -->
         <Grid Grid.Row="3">
-            <DataGrid Name="CsvDataGrid" Margin="20,70,20,20" Background="LightGray" CanUserResizeColumns="True" AutoGenerateColumns="True"/>
+            <ListView x:Name="UnifiedListView"/>
+            <!--
+            <DataGrid Name="CsvDataGrid" Margin="20,70,20,20" Background="LightGray" CanUserResizeColumns="True" AutoGenerateColumns="True" SelectionChanged="CsvDataGrid_SelectionChanged"/>
+             -->
         </Grid>
 
     </Grid>

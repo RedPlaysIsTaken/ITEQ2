@@ -20,7 +20,6 @@ namespace ITEQ2.CsvHandling
         public DateTime? PurchaseDate { get; set; }
         public DateTime? Received { get; set; }
         public string ShortComment { get; set; }
-
         public string PC { get; set; }
         public string Username { get; set; }
         public DateTime? Date { get; set; }
