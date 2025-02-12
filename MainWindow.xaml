@@ -36,6 +36,7 @@
         <UserControls:MenuBar Grid.Row="1" Loaded="MenuBar_Loaded"/>
         
         <!-- Search Bar -->
+        <UserControls:SearchBar x:Name="SearchBarControl" Grid.Row="2" Loaded="SearchBar_Loaded"/>
 
         <!-- Main Application -->
         <Grid Grid.Row="3">
