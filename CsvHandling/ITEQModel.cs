@@ -46,26 +46,26 @@ namespace ITEQ2.CsvHandling
         public string Status { get; set; }
 
         [Name("Purchase date")]
-        [TypeConverter(typeof(CustomDateConverter))] // Use custom date converter
+        [TypeConverter(typeof(CustomDateConverter))]
         public DateTime? PurchaseDate { get; set; }
 
         [Name("Recieved")]
-        [TypeConverter(typeof(CustomDateConverter))] // Use custom date converter
+        [TypeConverter(typeof(CustomDateConverter))]
         public DateTime? Received { get; set; }
 
         [Name("Short comment")]
         public string ShortComment { get; set; }
     }
 
-    // Custom converter to handle different date formats
-    public class CustomDateConverter : DateTimeConverter
+   
+    public class CustomDateConverter : DateTimeConverter // Converts date to correct format
     {
         private static readonly string[] DateFormats = { "yyyy-MM-dd", "MM/dd/yyyy", "dd/MM/yyyy", "yyyy/MM/dd" };
 
         public override object ConvertFromString(string text, IReaderRow row, MemberMapData memberMapData)
         {
             if (string.IsNullOrWhiteSpace(text))
-                return null; // Handle empty date fields
+                return null;
 
             if (DateTime.TryParseExact(text, DateFormats, System.Globalization.CultureInfo.InvariantCulture,
                                        System.Globalization.DateTimeStyles.None, out DateTime date))
@@ -73,7 +73,7 @@ namespace ITEQ2.CsvHandling
                 return date;
             }
 
-            return base.ConvertFromString(text, row, memberMapData); // Fallback
+            return base.ConvertFromString(text, row, memberMapData);
         }
     }
 }

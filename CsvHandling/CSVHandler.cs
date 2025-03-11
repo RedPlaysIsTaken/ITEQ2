@@ -17,12 +17,12 @@ namespace ITEQ2.CsvHandling
     {
         private readonly string filePath;
 
-        public CSVHandler(Path fucPath)
+        public CSVHandler(Path path)
         {
-            this.filePath = fucPath.FilePath;
+            this.filePath = path.FilePath;
         }
 
-        public List<T> ReadFile<T>(Path fucPath) where T : class
+        public List<T> ReadFile<T>(Path path) where T : class
         {
             var config = new CsvConfiguration(CultureInfo.InvariantCulture)
             {
@@ -34,7 +34,7 @@ namespace ITEQ2.CsvHandling
 
             try
             {
-                using var reader = new StreamReader(fucPath.FilePath);
+                using var reader = new StreamReader(path.FilePath);
                 using var csv = new CsvReader(reader, config);
 
                 // Read the header to detect the file type

@@ -38,30 +38,46 @@ namespace ITEQ2.View.UserControls
                 List<ITEQModel> iteqData = new();
 
 
-                foreach (string filePath in openFile.FileNames) // Loop through selected files
+                foreach (string filePath in openFile.FileNames) // Loop for each file chosen
                 {
-                    Path path = new Path { FilePath = filePath };
-                    CSVHandler csvHandler = new CSVHandler(path);
+                    Path path = new Path { FilePath = filePath }; // determine path
+                    CSVHandler csvHandler = new CSVHandler(path); // put path in the CSVHandler class
 
-                    if (filePath.Contains("Fuc")) // Dette er ganske drit og er midlertidig (Ser om filnavnet har "fuc" i seg)
+                    
+                    var tempFucData = csvHandler.ReadFile<FucModel>(path); // try using the FucModel template first
+
+                    if (tempFucData.Count > 0) // if FucModel succeeds
                     {
-                        fucData = csvHandler.ReadFile<FucModel>(path);
+                        fucData = tempFucData; // assign the tempFucData to the List<FucModel> fucData
+                        System.Diagnostics.Debug.WriteLine($"File {filePath} identified as FucModel.");
                     }
-                    else
+                    else // If the FucModel fails, try the ITEQModel
                     {
-                        iteqData = csvHandler.ReadFile<ITEQModel>(path);
+
+                        var tempIteqData = csvHandler.ReadFile<ITEQModel>(path); // try using the ITEQModel template
+
+                        if (tempIteqData.Count > 0) // if ITEQModel succeeds
+                        {
+                            iteqData = tempIteqData; // assign the tempITEQData to the List<IEQModel> ITEQData
+                            System.Diagnostics.Debug.WriteLine($"File {filePath} identified as ITEQModel.");
+                        }
+                        else // if BOTH fail, headers are the problem
+                        {
+                            MessageBox.Show($"Failed to determine format for {filePath}. Ensure it has valid headers.", "File Format Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                            return;
+                        }
                     }
                 }
 
-                if (fucData.Count == 0 || iteqData.Count == 0) // Check if the files loaded correctly
+                if (fucData.Count == 0 || iteqData.Count == 0)
                 {
                     MessageBox.Show("One or both files failed to load correctly. Check if the files have the correct format.", "File Load Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
 
-                var mergedData = DataMatcher.MatchAndMerge(fucData, iteqData); // Match and merge the data using the DataMatcher class
-                MainWindow mainWindow = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+                var mergedData = DataMatcher.MatchAndMerge(fucData, iteqData);
 
+                MainWindow mainWindow = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
                 if (mainWindow != null)
                 {
                     DataMatcher.LoadData(mergedData, mainWindow);
