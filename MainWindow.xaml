@@ -33,7 +33,7 @@
         <UserControls:TitleBar Grid.Row="0" Loaded="TitleBar_Loaded"/>
 
         <!-- Menu Bar -->
-        <UserControls:MenuBar Grid.Row="1" Loaded="MenuBar_Loaded"/>
+        <UserControls:MenuBar x:Name="MenuBarControl" Grid.Row="1" Loaded="MenuBar_Loaded"/>
         
         <!-- Search Bar -->
         <UserControls:SearchBar x:Name="SearchBarControl" Grid.Row="2" Loaded="SearchBar_Loaded"/>

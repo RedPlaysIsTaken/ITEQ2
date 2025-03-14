@@ -11,6 +11,7 @@ using System.Reflection;
 using System.Windows.Controls;
 using System.Xml.Linq;
 using System.ComponentModel;
+using System.IO;
 
 
 namespace ITEQ2
@@ -20,18 +21,19 @@ namespace ITEQ2
     /// </summary>
     public partial class MainWindow : Window
     {
-
         private List<UnifiedModel> UnifiedRecords; // Original dataset
         private List<UnifiedModel> FilteredRecords; // Filtered dataset
 
-
         private GridViewColumnHeader _lastHeaderClicked = null;
         private ListSortDirection _lastDirection = ListSortDirection.Ascending;
+
+        private Dictionary<UnifiedModel, Dictionary<string, object>> _modifiedRecords = new();
 
         public MainWindow()
         {
             InitializeComponent();
             SearchBarControl.SearchPerformed += OnSearchPerformed; // Subscribe to search event
+            MenuBarControl.SaveRequested += OnSaveRequested; // Subscribe to the event
         }
 
         private void btnNormal_Click(object sender, RoutedEventArgs e)
@@ -74,6 +76,12 @@ namespace ITEQ2
             }
 
             UnifiedRecords = unifiedData;
+
+            foreach (var record in UnifiedRecords)
+            {
+                record.PropertyChanged += OnPropertyChanged;
+            }
+
             GenerateDynamicColumns();
             UnifiedListView.ItemsSource = UnifiedRecords;
         }
@@ -93,18 +101,15 @@ namespace ITEQ2
 
             foreach (PropertyInfo property in properties)
             {
-                GridViewColumnHeader header = new GridViewColumnHeader()
-                {
-                    Content = property.Name,
-                    Tag = property.Name // Store property name for sorting
-                };
-
-                header.Click += GridViewColumnHeader_Click;
+                DataTemplate template = new DataTemplate();
+                FrameworkElementFactory textBoxFactory = new FrameworkElementFactory(typeof(TextBox));
+                textBoxFactory.SetBinding(TextBox.TextProperty, new Binding(property.Name) { Mode = BindingMode.TwoWay });
+                template.VisualTree = textBoxFactory;
 
                 GridViewColumn column = new()
                 {
-                    Header = header,
-                    DisplayMemberBinding = new Binding(property.Name),
+                    Header = property.Name,
+                    CellTemplate = template,
                     Width = 150
                 };
                 gridView.Columns.Add(column);
@@ -162,6 +167,64 @@ namespace ITEQ2
                     .ToList();
 
                 UnifiedListView.ItemsSource = FilteredRecords;
+            }
+        }
+        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (sender is UnifiedModel model)
+            {
+                if (!_modifiedRecords.ContainsKey(model))
+                    _modifiedRecords[model] = new Dictionary<string, object>();
+
+                PropertyInfo property = model.GetType().GetProperty(e.PropertyName);
+                if (property != null)
+                {
+                    object newValue = property.GetValue(model);
+                    _modifiedRecords[model][e.PropertyName] = newValue;
+                }
+            }
+        }
+        private string _currentFilePath = "C:\\Users\\123st\\source\\repos\\BAC3030\\Temp\\Combined.csv";
+        private void OnSaveRequested()
+        {
+            if (string.IsNullOrEmpty(_currentFilePath))
+            {
+                MessageBox.Show("No file loaded. Cannot save.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            SaveChangesToCsv(_currentFilePath); // Call the existing save method
+        }
+        public void SaveChangesToCsv(string filePath)
+        {
+            if (UnifiedRecords == null || !UnifiedRecords.Any())
+            {
+                MessageBox.Show("No records to save.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            var lines = new List<string>
+    {
+        "GgLabel,User,Type,Make,Model,SerialNo,SecurityId,Site,Status,PurchaseDate,Received,ShortComment,PC,Username,Date,ReportDate,PCLocation,EmplMailAdresse"
+    };
+
+            foreach (var record in UnifiedRecords)
+            {
+                string line = $"{record.GgLabel},{record.User},{record.Type},{record.Make},{record.Model},{record.SerialNo},{record.SecurityId},{record.Site},{record.Status}," +
+                              $"{record.PurchaseDate?.ToString("yyyy-MM-dd")},{record.Received?.ToString("yyyy-MM-dd")},{record.ShortComment},{record.PC},{record.Username}," +
+                              $"{record.Date?.ToString("yyyy-MM-dd")},{record.ReportDate?.ToString("yyyy-MM-dd")},{record.PCLocation},{record.EmplMailAdresse}";
+
+                lines.Add(line);
+            }
+
+            try
+            {
+                File.WriteAllLines(filePath, lines);
+                MessageBox.Show("Changes saved successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error saving file: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }

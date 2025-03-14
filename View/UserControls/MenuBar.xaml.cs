@@ -11,6 +11,8 @@ namespace ITEQ2.View.UserControls
     /// </summary>
     public partial class MenuBar : UserControl
     {
+        public event Action SaveRequested;
+
         public MenuBar()
         {
             InitializeComponent();
@@ -83,6 +85,11 @@ namespace ITEQ2.View.UserControls
                     DataMatcher.LoadData(mergedData, mainWindow);
                 }
             }
+        }
+
+        private void menuitemSave_Click(object sender, RoutedEventArgs e)
+        {
+            SaveRequested?.Invoke();
         }
     }
 }
