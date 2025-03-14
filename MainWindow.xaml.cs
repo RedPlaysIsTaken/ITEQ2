@@ -16,103 +16,126 @@ using System.IO;
 
 namespace ITEQ2
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
-        private List<UnifiedModel> UnifiedRecords; // Original dataset
-        private List<UnifiedModel> FilteredRecords; // Filtered dataset
+        private List<UnifiedModel> UnifiedRecords;  // Original dataset
+        private List<UnifiedModel> SearchRecords;   // Filtered dataset (after a search)
 
-        private GridViewColumnHeader _lastHeaderClicked = null;
-        private ListSortDirection _lastDirection = ListSortDirection.Ascending;
+        private GridViewColumnHeader _lastHeaderClicked = null; // Keeps track of the last header clicked
+        private ListSortDirection _lastDirection = ListSortDirection.Ascending; // Switches between ascending and descending when filtering
 
-        private Dictionary<UnifiedModel, Dictionary<string, object>> _modifiedRecords = new();
+        private Dictionary<UnifiedModel, Dictionary<string, object>> _modifiedRecords = new(); // Keeps track of what fields have been changed and what they have been changed to
 
-        public MainWindow()
+        public MainWindow() // Main program window
         {
-            InitializeComponent();
-            SearchBarControl.SearchPerformed += OnSearchPerformed; // Subscribe to search event
-            MenuBarControl.SaveRequested += OnSaveRequested; // Subscribe to the event
+            InitializeComponent(); // Start/open the main window.
+
+            SearchBarControl.SearchPerformed += OnSearchPerformed; // Check if the save event has been called from the SearchBar
+            MenuBarControl.SaveRequested += OnSaveRequested; // Check if the save event has been called from the MenuBar
         }
 
-        private void btnNormal_Click(object sender, RoutedEventArgs e)
+        // Old open window code below
+
+        //private void btnNormal_Click(object sender, RoutedEventArgs e)
+        //{
+        //    NormalWindow normalWindow = new NormalWindow();
+        //    normalWindow.Show(); 
+        //}
+
+        // Old open window code below
+
+        //private void btnModal_Click(object sender, RoutedEventArgs e)
+        //{
+        //    ModalWindow modalWindow = new ModalWindow(this);
+        //    Opacity = 0.4;
+        //    modalWindow.ShowDialog();
+        //    Opacity = 1;
+
+        //    if (modalWindow.Success)
+        //    {
+        //        //txtInput.Text = modalWindow.Input;
+        //    }
+        //}
+
+        private void TitleBar_Loaded(object sender, RoutedEventArgs e) // Executes when the titlebar loads (must be here for it to work apparantly)
         {
-            NormalWindow normalWindow = new NormalWindow();
-            normalWindow.Show(); 
+
         }
 
-        private void btnModal_Click(object sender, RoutedEventArgs e)
-        {
-            ModalWindow modalWindow = new ModalWindow(this);
-            Opacity = 0.4;
-            modalWindow.ShowDialog();
-            Opacity = 1;
-
-            if (modalWindow.Success)
-            {
-                //txtInput.Text = modalWindow.Input;
-            }
-        }
-
-        private void TitleBar_Loaded(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void MenuBar_Loaded(object sender, RoutedEventArgs e)
+        private void MenuBar_Loaded(object sender, RoutedEventArgs e) // Executes when the menubar loads (must be here for it to work apparantly)
         {
 
         }
 
 
 
-        public void LoadData(List<UnifiedModel> unifiedData)
+        public void LoadData(List<UnifiedModel> unifiedData) // Loads the data from the UnifiedModel and generate columns based on the data.
         {
-            if (unifiedData == null || !unifiedData.Any())
+            if (unifiedData == null || !unifiedData.Any()) // If the unifiedData is null, give error message
             {
                 MessageBox.Show("No data available.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-
-            UnifiedRecords = unifiedData;
-
-            foreach (var record in UnifiedRecords)
+            else // if unifiedData has data -->
             {
-                record.PropertyChanged += OnPropertyChanged;
-            }
+                UnifiedRecords = unifiedData; // Create UnifiedRecords variable to work with, so we dont change the original unifiedData
 
-            GenerateDynamicColumns();
-            UnifiedListView.ItemsSource = UnifiedRecords;
+                foreach (var record in UnifiedRecords) // loop through and link each record in the UnifiedRecords with a propertyChanged event. THis way we can "notice" when a field is changed.
+                {
+                    record.PropertyChanged += OnPropertyChanged;
+                }
+
+                GenerateDynamicColumns(); // Call the GenerateDynamicColumns() method
+                UnifiedListView.ItemsSource = UnifiedRecords; // updates the UI
+            }
+            
         }
 
-        private void GenerateDynamicColumns()
+        private void GenerateDynamicColumns() // generates Columns based on the loaded data from LoadData()
         {
-            if (UnifiedRecords == null || !UnifiedRecords.Any())
-                return;
-
-            if (UnifiedListView.View == null)
-                UnifiedListView.View = new GridView();
-
-            GridView gridView = (GridView)UnifiedListView.View;
-            gridView.Columns.Clear(); // Clear existing columns
-
-            PropertyInfo[] properties = typeof(UnifiedModel).GetProperties();
-
-            foreach (PropertyInfo property in properties)
+            if (UnifiedRecords == null || !UnifiedRecords.Any()) //if there is no data, quit
+            {  
+                return; 
+            }
+            else // if there is data -->
             {
-                DataTemplate template = new DataTemplate();
-                FrameworkElementFactory textBoxFactory = new FrameworkElementFactory(typeof(TextBox));
-                textBoxFactory.SetBinding(TextBox.TextProperty, new Binding(property.Name) { Mode = BindingMode.TwoWay });
-                template.VisualTree = textBoxFactory;
-
-                GridViewColumn column = new()
+                if (UnifiedListView.View == null) // if the listview is empty, create a new one
                 {
-                    Header = property.Name,
-                    CellTemplate = template,
-                    Width = 150
-                };
-                gridView.Columns.Add(column);
+                    UnifiedListView.View = new GridView();
+                }
+
+                GridView gridView = (GridView)UnifiedListView.View; // make GridView accessable inside the Unifiedlistview
+                gridView.Columns.Clear(); // clear the grid columns before doing changes to prevent duplications
+
+                PropertyInfo[] properties = typeof(UnifiedModel).GetProperties(); // gets the properties from the unifiedmodel
+
+                foreach (PropertyInfo property in properties) // for each of the properties create a new editable data template
+                {
+                    
+                    GridViewColumnHeader header = new GridViewColumnHeader // create header with sorting
+                    {
+                        Content = property.Name,
+                        Tag = property.Name     // give property name for sorting
+                    };
+
+                    header.Click += GridViewColumnHeader_Click; // click handler for the header
+
+                   
+                    DataTemplate template = new DataTemplate(); // template to dictate how a cell will look        
+                    FrameworkElementFactory textBoxFactory = new FrameworkElementFactory(typeof(TextBox)); // creates dynamically created textboxes
+                    textBoxFactory.SetBinding(TextBox.TextProperty, new Binding(property.Name) { Mode = BindingMode.TwoWay }); // bind each textbox to their respective property from the unified model. Additionaly TwoWay makes it update the unified model 
+                    template.VisualTree = textBoxFactory; // sets the columns cell content into the textbox
+
+                    
+                    GridViewColumn column = new() // create new column
+                    {
+                        Header = header,  //column header is set to the header with property name tag
+                        CellTemplate = template,  //uses the template above
+                        Width = 150
+                    };
+
+                    gridView.Columns.Add(column);// adds the column into the gridView
+                }
             }
         }
         private void GridViewColumnHeader_Click(object sender, RoutedEventArgs e)
@@ -123,26 +146,25 @@ namespace ITEQ2
                     ? ListSortDirection.Descending
                     : ListSortDirection.Ascending;
 
-                Sort(propertyName, direction);
-
                 _lastHeaderClicked = header;
                 _lastDirection = direction;
+
+                Sort(propertyName, direction);
             }
         }
         private void Sort(string propertyName, ListSortDirection direction)
         {
-            if (UnifiedRecords == null) return;
+            if (UnifiedRecords == null || !UnifiedRecords.Any()) return;
 
             var propertyInfo = typeof(UnifiedModel).GetProperty(propertyName);
             if (propertyInfo == null) return;
 
-            if (direction == ListSortDirection.Ascending)
-                UnifiedRecords = UnifiedRecords.OrderBy(x => propertyInfo.GetValue(x, null)).ToList();
-            else
-                UnifiedRecords = UnifiedRecords.OrderByDescending(x => propertyInfo.GetValue(x, null)).ToList();
+            UnifiedRecords = direction == ListSortDirection.Ascending
+                ? UnifiedRecords.OrderBy(x => propertyInfo.GetValue(x, null)).ToList()
+                : UnifiedRecords.OrderByDescending(x => propertyInfo.GetValue(x, null)).ToList();
 
-            //UnifiedListView.ItemsSource = null; // Reset source
-            UnifiedListView.ItemsSource = UnifiedRecords; // Update sorted data
+            UnifiedListView.ItemsSource = null;
+            UnifiedListView.ItemsSource = UnifiedRecords;
         }
 
         private void SearchBar_Loaded(object sender, RoutedEventArgs e)
@@ -160,13 +182,13 @@ namespace ITEQ2
             }
             else
             {
-                FilteredRecords = UnifiedRecords
+                SearchRecords = UnifiedRecords
                     .Where(item => item.GetType().GetProperties()
                         .Any(prop => prop.GetValue(item)?.ToString()
                             .IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0))
                     .ToList();
 
-                UnifiedListView.ItemsSource = FilteredRecords;
+                UnifiedListView.ItemsSource = SearchRecords;
             }
         }
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)

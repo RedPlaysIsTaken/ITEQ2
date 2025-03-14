@@ -13,7 +13,7 @@ using CsvHelper.Configuration;
 
 namespace ITEQ2.CsvHandling
 {
-    public class CSVHandler
+    public class CSVHandler // Class for CSV files to be made into lists
     {
         private readonly string filePath;
 
@@ -22,19 +22,19 @@ namespace ITEQ2.CsvHandling
             this.filePath = path.FilePath;
         }
 
-        public List<T> ReadFile<T>(Path path) where T : class
+        public List<T> ReadFile<T>(Path path) where T : class 
         {
             var config = new CsvConfiguration(CultureInfo.InvariantCulture)
             {
-                HeaderValidated = null,  // Ignore header validation errors
-                MissingFieldFound = null, // Ignore missing fields errors
-                Delimiter = ",", // Ensure correct CSV delimiter
-                BadDataFound = null // Ignore bad data instead of throwing exceptions
+                HeaderValidated = null,     // Ignore header validation errors
+                MissingFieldFound = null,   // Ignore missing fields errors
+                Delimiter = ",",            // Ensure correct CSV delimiter
+                BadDataFound = null         // Ignore bad data instead of throwing exceptions
             };
 
             try
             {
-                using var reader = new StreamReader(path.FilePath);
+                using var reader = new StreamReader(path.FilePath); // Read 
                 using var csv = new CsvReader(reader, config);
 
                 // Read the header to detect the file type
@@ -64,7 +64,7 @@ namespace ITEQ2.CsvHandling
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"Error reading CSV file: {ex.Message}");
-                return new List<T>(); // Return an empty list on failure
+                return new List<T>(); // Make empty list
             }
         }
     }

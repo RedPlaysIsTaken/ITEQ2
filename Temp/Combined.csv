@@ -1,5 +1,5 @@
 GgLabel,User,Type,Make,Model,SerialNo,SecurityId,Site,Status,PurchaseDate,Received,ShortComment,PC,Username,Date,ReportDate,PCLocation,EmplMailAdresse
-1001,sthrei,PCL,Lenovo,T480s,U8A6TG4OCU,KNFVPC2YIE,Bergen,INSTOCK,2013-11-13,2014-11-11,damaged,PCL1001,John Woo,2024-09-02,2024-09-05,Stavanger,john.woo@contoso.com
+1001,shteinar,PCL,Lenovo,T480s,U8A6TG4OCU,KNFVPC2YIE,Bergen,INSTOCK,2013-11-13,2014-11-11,damaged,PCL1001,John Woo,2024-09-02,2024-09-05,Stavanger,john.woo@contoso.com
 1002,Zoe Martinez,PCL,Dell,Latitude 7340,TEZV97WYAL,FP2TXMP4CG,Bergen,INSTOCK,2024-06-03,2025-03-22,,PCL1002,John Svenson,2024-09-03,2024-09-06,Oslo,john.svenson@contoso.com
 1003,Jack Harris,PC*,Dell,Precision 5690,NT9MBHE6QY,A9YS7O3KDA,Stavanger,INSTOCK,2014-04-26,2014-10-23,,PC1003,John Finch,2024-09-04,2024-09-07,Bergen,john.finch@contoso.com
 1004,Amanda Wilson,PCL,Dell,Precision 5690,Z04AN8M9UA,DMO2O8DJMR,Sandefjord,NETWORKED,2022-08-30,2023-06-15,,PCL1004,John Page,2024-09-05,2024-09-08,Trondheim,john.page@contoso.com
