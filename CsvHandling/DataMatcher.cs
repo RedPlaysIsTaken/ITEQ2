@@ -29,20 +29,21 @@ public class DataMatcher
             {
                 var unified = new UnifiedModel // Merge the two Csv files
                 {
+                    Column = iteqRow.Column,
                     GgLabel = iteqRow.GgLabel,
-                    User = iteqRow.User,
                     Type = iteqRow.Type,
                     Make = iteqRow.Make,
                     Model = iteqRow.Model,
                     SerialNo = iteqRow.SerialNo,
                     SecurityId = iteqRow.SecurityId,
+                    User = iteqRow.User,
                     Site = iteqRow.Site,
                     Status = iteqRow.Status,
                     PurchaseDate = iteqRow.PurchaseDate,
                     Received = iteqRow.Received,
                     ShortComment = iteqRow.ShortComment,
-
                     PC = fucMatch.PC,
+                    FucUser = fucMatch.USER,
                     Username = fucMatch.Username,
                     Date = fucMatch.DATE,
                     ReportDate = fucMatch.ReportDATE,

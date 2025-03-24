@@ -91,5 +91,20 @@ namespace ITEQ2.View.UserControls
         {
             SaveRequested?.Invoke();
         }
+
+        private void menuitemOpenCombined_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFile = new OpenFileDialog // Open file dialog for CSV files omly
+            {
+                Multiselect = false,
+                Filter = "Csv Files|*.csv"
+            };
+
+            // Create list to store parsed data
+            List<UnifiedModel> unifiedData = new();
+
+            Path path = new Path(); // determine path
+            CSVHandler csvHandler = new CSVHandler(path); // put path in the CSVHandler class
+        }
     }
 }

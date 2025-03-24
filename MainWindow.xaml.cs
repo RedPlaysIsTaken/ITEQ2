@@ -227,15 +227,15 @@ namespace ITEQ2
             }
 
             var lines = new List<string>
-    {
-        "GgLabel,User,Type,Make,Model,SerialNo,SecurityId,Site,Status,PurchaseDate,Received,ShortComment,PC,Username,Date,ReportDate,PCLocation,EmplMailAdresse"
-    };
+            {
+                "Column,GG-LABEL,TYPE,MAKE,MODEL,SERIAL NO,SECURITY ID,User,Site,Status,Purchase date,Recieved,Short comment"
+            };
 
             foreach (var record in UnifiedRecords)
             {
-                string line = $"{record.GgLabel},{record.User},{record.Type},{record.Make},{record.Model},{record.SerialNo},{record.SecurityId},{record.Site},{record.Status}," +
-                              $"{record.PurchaseDate?.ToString("yyyy-MM-dd")},{record.Received?.ToString("yyyy-MM-dd")},{record.ShortComment},{record.PC},{record.Username}," +
-                              $"{record.Date?.ToString("yyyy-MM-dd")},{record.ReportDate?.ToString("yyyy-MM-dd")},{record.PCLocation},{record.EmplMailAdresse}";
+                string line = $"{record.Column},{record.GgLabel},{record.Type},{record.Make},{record.Model},{record.SerialNo},{record.SecurityId},{record.User},{record.Site},{record.Status}," +
+                              $"{record.PurchaseDate?.ToString("yyyy-MM-dd")},{record.Received?.ToString("yyyy-MM-dd")},{record.ShortComment}";//,{record.PC},{record.Username}," +
+                              //$"{record.Date?.ToString("yyyy-MM-dd")},{record.ReportDate?.ToString("yyyy-MM-dd")},{record.PCLocation},{record.EmplMailAdresse}";
 
                 lines.Add(line);
             }

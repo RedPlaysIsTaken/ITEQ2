@@ -14,7 +14,19 @@ namespace ITEQ2.CsvHandling
         private void OnPropertyChanged(string propertyName)
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-
+        private string _column;
+        public string Column
+        {
+            get => _column;
+            set
+            {
+                if (_column != value)
+                {
+                    _column = value;
+                    OnPropertyChanged(nameof(_column));
+                }
+            }
+        }
         private string _ggLabel;
         public string GgLabel
         {
@@ -25,20 +37,6 @@ namespace ITEQ2.CsvHandling
                 {
                     _ggLabel = value;
                     OnPropertyChanged(nameof(GgLabel));
-                }
-            }
-        }
-
-        private string _user;
-        public string User
-        {
-            get => _user;
-            set
-            {
-                if (_user != value)
-                {
-                    _user = value;
-                    OnPropertyChanged(nameof(User));
                 }
             }
         }
@@ -109,6 +107,20 @@ namespace ITEQ2.CsvHandling
                 {
                     _securityId = value;
                     OnPropertyChanged(nameof(SecurityId));
+                }
+            }
+        }
+
+        private string _user;
+        public string User
+        {
+            get => _user;
+            set
+            {
+                if (_user != value)
+                {
+                    _user = value;
+                    OnPropertyChanged(nameof(User));
                 }
             }
         }
@@ -193,6 +205,20 @@ namespace ITEQ2.CsvHandling
                 {
                     _pc = value;
                     OnPropertyChanged(nameof(PC));
+                }
+            }
+        }
+
+        private string _fucuser;
+        public string FucUser
+        {
+            get => _fucuser;
+            set
+            {
+                if (_fucuser != value)
+                {
+                    _fucuser = value;
+                    OnPropertyChanged(nameof(FucUser));
                 }
             }
         }
