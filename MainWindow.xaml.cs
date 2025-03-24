@@ -206,7 +206,7 @@ namespace ITEQ2
                 }
             }
         }
-        private string _currentFilePath = "C:\\Users\\123st\\source\\repos\\BAC3030\\Temp\\Combined.csv";
+        private string _currentFilePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Combined.csv"); // save combined csv file in project locally
         private void OnSaveRequested()
         {
             if (string.IsNullOrEmpty(_currentFilePath))
@@ -215,7 +215,8 @@ namespace ITEQ2
                 return;
             }
 
-            SaveChangesToCsv(_currentFilePath); // Call the existing save method
+            SaveChangesToCsv(_currentFilePath);
+            System.Diagnostics.Debug.WriteLine($"Saving to: {_currentFilePath}");
         }
         public void SaveChangesToCsv(string filePath)
         {
