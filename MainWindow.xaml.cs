@@ -26,45 +26,47 @@ namespace ITEQ2
 
         private Dictionary<UnifiedModel, Dictionary<string, object>> _modifiedRecords = new(); // Keeps track of what fields have been changed and what they have been changed to
 
+        private string _workingDocPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "workingDoc.csv"); // local variable for the path of the working document
+        private string _fucDocPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "fucReportExampleData.csv"); // local variable for the path of the fucreport
+
         public MainWindow() // Main program window
         {
             InitializeComponent(); // Start/open the main window.
 
+
             SearchBarControl.SearchPerformed += OnSearchPerformed; // Check if the save event has been called from the SearchBar
             MenuBarControl.SaveRequested += OnSaveRequested; // Check if the save event has been called from the MenuBar
+
+            
         }
-
-        // Old open window code below
-
-        //private void btnNormal_Click(object sender, RoutedEventArgs e)
-        //{
-        //    NormalWindow normalWindow = new NormalWindow();
-        //    normalWindow.Show(); 
-        //}
-
-        // Old open window code below
-
-        //private void btnModal_Click(object sender, RoutedEventArgs e)
-        //{
-        //    ModalWindow modalWindow = new ModalWindow(this);
-        //    Opacity = 0.4;
-        //    modalWindow.ShowDialog();
-        //    Opacity = 1;
-
-        //    if (modalWindow.Success)
-        //    {
-        //        //txtInput.Text = modalWindow.Input;
-        //    }
-        //}
 
         private void TitleBar_Loaded(object sender, RoutedEventArgs e) // Executes when the titlebar loads (must be here for it to work apparantly)
         {
 
         }
+        private void SearchBar_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
+
 
         private void MenuBar_Loaded(object sender, RoutedEventArgs e) // Executes when the menubar loads (must be here for it to work apparantly)
         {
+            String[] filePaths = {_workingDocPath, _fucDocPath};
 
+            MenuBar menuBarInstance = this.FindName("MenuBarControl") as MenuBar;
+
+            if (menuBarInstance != null)
+            {
+                menuBarInstance.openAndIdentifyFiles(filePaths); // Call the method on the instance
+                LoadData(UnifiedRecords);
+            }
+            else
+            {
+                MessageBox.Show("MenuBar instance not found!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+            LoadData(UnifiedRecords);
         }
 
 
@@ -74,6 +76,7 @@ namespace ITEQ2
             if (unifiedData == null || !unifiedData.Any()) // If the unifiedData is null, give error message
             {
                 MessageBox.Show("No data available.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+
                 return;
             }
             else // if unifiedData has data -->
@@ -167,11 +170,6 @@ namespace ITEQ2
             UnifiedListView.ItemsSource = UnifiedRecords;
         }
 
-        private void SearchBar_Loaded(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void OnSearchPerformed(string query)
         {
             if (UnifiedRecords == null) return;
@@ -206,17 +204,16 @@ namespace ITEQ2
                 }
             }
         }
-        private string _currentFilePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Combined.csv"); // save combined csv file in project locally
         private void OnSaveRequested()
         {
-            if (string.IsNullOrEmpty(_currentFilePath))
+            if (string.IsNullOrEmpty(_workingDocPath))
             {
                 MessageBox.Show("No file loaded. Cannot save.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
-            SaveChangesToCsv(_currentFilePath);
-            System.Diagnostics.Debug.WriteLine($"Saving to: {_currentFilePath}");
+            SaveChangesToCsv(_workingDocPath);
+            System.Diagnostics.Debug.WriteLine($"Saving to: {_workingDocPath}");
         }
         public void SaveChangesToCsv(string filePath)
         {
