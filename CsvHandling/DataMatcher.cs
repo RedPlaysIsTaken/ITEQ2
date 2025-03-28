@@ -19,52 +19,80 @@ public class DataMatcher
     {
         List<UnifiedModel> mergedRecords = new(); // Create new list to store the merged data
 
+        // first match everything that matches between the iteq and the fuc
         foreach (var iteqRow in iteqData) // Loop through each row in ITEQ data csv file
         {
             string matchNumber = iteqRow.GgLabel; // Use the GG-LABEL number to match the rows in the two CSV files
 
             var fucMatch = fucData.FirstOrDefault(f => ExtractNumber(f.PC) == matchNumber); // Use the ExtractNumber method to extract the number from the PC column, and match the number with the GG-LABEL number
 
-            if (fucMatch != null)
+            var unified = new UnifiedModel // Merge the two Csv files where possible
             {
-                var unified = new UnifiedModel // Merge the two Csv files
-                {
-                    Column = iteqRow.Column,
-                    GgLabel = iteqRow.GgLabel,
-                    Type = iteqRow.Type,
-                    Make = iteqRow.Make,
-                    Model = iteqRow.Model,
-                    SerialNo = iteqRow.SerialNo,
-                    SecurityId = iteqRow.SecurityId,
-                    User = iteqRow.User,
-                    Site = iteqRow.Site,
-                    Status = iteqRow.Status,
-                    PurchaseDate = iteqRow.PurchaseDate,
-                    Received = iteqRow.Received,
-                    ShortComment = iteqRow.ShortComment,
-                    PC = fucMatch.PC,
-                    FucUser = fucMatch.USER,
-                    Username = fucMatch.Username,
-                    Date = fucMatch.DATE,
-                    ReportDate = fucMatch.ReportDATE,
-                    PCLocation = fucMatch.PCLocation,
-                    EmplMailAdresse = fucMatch.Empl_Mailadresse
-                };
+                Column = iteqRow.Column,
+                GgLabel = iteqRow.GgLabel,
+                Type = iteqRow.Type,
+                Make = iteqRow.Make,
+                Model = iteqRow.Model,
+                SerialNo = iteqRow.SerialNo,
+                SecurityId = iteqRow.SecurityId,
+                User = iteqRow.User,
+                Site = iteqRow.Site,
+                Status = iteqRow.Status,
+                PurchaseDate = iteqRow.PurchaseDate,
+                Received = iteqRow.Received,
+                ShortComment = iteqRow.ShortComment,
 
+                // if fuc match not found fill with blank values instead
+                PC = fucMatch?.PC ?? "",
+                FucUser = fucMatch?.USER ?? "",
+                Username = fucMatch?.Username ?? "",
+                Date = fucMatch?.DATE,
+                ReportDate = fucMatch?.ReportDATE,
+                PCLocation = fucMatch?.PCLocation ?? "",
+                EmplMailAdresse = fucMatch?.Empl_Mailadresse ?? ""
+            };
+            mergedRecords.Add(unified);
+        }
+
+        // second, try to add al fucmodel records that were not mathced with iteqdata
+        foreach (var fucRow in fucData)
+        {
+            string matchNumber = ExtractNumber(fucRow.PC);
+            bool alreadyMatched = mergedRecords.Any(m => m.GgLabel == matchNumber);
+
+            if (!alreadyMatched)
+            {
+                var unified = new UnifiedModel
+                {
+                    Column = "",
+                    GgLabel = matchNumber,
+                    Type = "",
+                    Make = "",
+                    Model = "",
+                    SerialNo = "",
+                    SecurityId = "",
+                    User = "",
+                    Site = "",
+                    Status = "",
+                    PurchaseDate = null,
+                    Received = null,
+                    ShortComment = "",
+
+                    // Use values from fucRow
+                    PC = fucRow.PC,
+                    FucUser = fucRow.USER,
+                    Username = fucRow.Username,
+                    Date = fucRow.DATE,
+                    ReportDate = fucRow.ReportDATE,
+                    PCLocation = fucRow.PCLocation,
+                    EmplMailAdresse = fucRow.Empl_Mailadresse
+                };
                 mergedRecords.Add(unified);
             }
         }
-
-        //string savePath = ShowSaveFileDialog(); // Ask user where to save the file
-        //if (!string.IsNullOrEmpty(savePath))
-        //{
-        //    SaveToCsv(mergedRecords, savePath);
-        //    System.Diagnostics.Debug.WriteLine($"CSV file saved to: {savePath}");
-        //    MessageBox.Show($"CSV file saved to: {savePath}", "Save Successful", MessageBoxButton.OK, MessageBoxImage.Information);
-        //}
-
         return mergedRecords;
     }
+    
 
     private static string ExtractNumber(string pcValue) // Extracts the number from the PC column
     {

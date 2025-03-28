@@ -18,7 +18,7 @@ namespace ITEQ2
 {
     public partial class MainWindow : Window
     {
-        private List<UnifiedModel> UnifiedRecords;  // Original dataset
+        private List<UnifiedModel> UnifiedModel;  // Original dataset
         private List<UnifiedModel> SearchRecords;   // Filtered dataset (after a search)
 
         private GridViewColumnHeader _lastHeaderClicked = null; // Keeps track of the last header clicked
@@ -33,11 +33,8 @@ namespace ITEQ2
         {
             InitializeComponent(); // Start/open the main window.
 
-
             SearchBarControl.SearchPerformed += OnSearchPerformed; // Check if the save event has been called from the SearchBar
             MenuBarControl.SaveRequested += OnSaveRequested; // Check if the save event has been called from the MenuBar
-
-            
         }
 
         private void TitleBar_Loaded(object sender, RoutedEventArgs e) // Executes when the titlebar loads (must be here for it to work apparantly)
@@ -58,15 +55,15 @@ namespace ITEQ2
 
             if (menuBarInstance != null)
             {
-                menuBarInstance.openAndIdentifyFiles(filePaths); // Call the method on the instance
-                LoadData(UnifiedRecords);
+                menuBarInstance.openAndIdentifyFiles(filePaths);
+                LoadData(UnifiedModel);
             }
             else
             {
                 MessageBox.Show("MenuBar instance not found!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
-            LoadData(UnifiedRecords);
+            LoadData(UnifiedModel);
         }
 
 
@@ -81,22 +78,22 @@ namespace ITEQ2
             }
             else // if unifiedData has data -->
             {
-                UnifiedRecords = unifiedData; // Create UnifiedRecords variable to work with, so we dont change the original unifiedData
+                UnifiedModel = unifiedData; // Create UnifiedModel variable to work with, so we dont change the original unifiedData
 
-                foreach (var record in UnifiedRecords) // loop through and link each record in the UnifiedRecords with a propertyChanged event. THis way we can "notice" when a field is changed.
+                foreach (var record in UnifiedModel) // loop through and link each record in the UnifiedModel with a propertyChanged event. THis way we can "notice" when a field is changed.
                 {
                     record.PropertyChanged += OnPropertyChanged;
                 }
 
                 GenerateDynamicColumns(); // Call the GenerateDynamicColumns() method
-                UnifiedListView.ItemsSource = UnifiedRecords; // updates the UI
+                UnifiedListView.ItemsSource = UnifiedModel; // updates the UI
             }
             
         }
 
         private void GenerateDynamicColumns() // generates Columns based on the loaded data from LoadData()
         {
-            if (UnifiedRecords == null || !UnifiedRecords.Any()) //if there is no data, quit
+            if (UnifiedModel == null || !UnifiedModel.Any()) //if there is no data, quit
             {  
                 return; 
             }
@@ -157,30 +154,30 @@ namespace ITEQ2
         }
         private void Sort(string propertyName, ListSortDirection direction)
         {
-            if (UnifiedRecords == null || !UnifiedRecords.Any()) return;
+            if (UnifiedModel == null || !UnifiedModel.Any()) return;
 
             var propertyInfo = typeof(UnifiedModel).GetProperty(propertyName);
             if (propertyInfo == null) return;
 
-            UnifiedRecords = direction == ListSortDirection.Ascending
-                ? UnifiedRecords.OrderBy(x => propertyInfo.GetValue(x, null)).ToList()
-                : UnifiedRecords.OrderByDescending(x => propertyInfo.GetValue(x, null)).ToList();
+            UnifiedModel = direction == ListSortDirection.Ascending
+                ? UnifiedModel.OrderBy(x => propertyInfo.GetValue(x, null)).ToList()
+                : UnifiedModel.OrderByDescending(x => propertyInfo.GetValue(x, null)).ToList();
 
             UnifiedListView.ItemsSource = null;
-            UnifiedListView.ItemsSource = UnifiedRecords;
+            UnifiedListView.ItemsSource = UnifiedModel;
         }
 
         private void OnSearchPerformed(string query)
         {
-            if (UnifiedRecords == null) return;
+            if (UnifiedModel == null) return;
 
             if (string.IsNullOrWhiteSpace(query))
             {
-                UnifiedListView.ItemsSource = UnifiedRecords; // Restore original data
+                UnifiedListView.ItemsSource = UnifiedModel; // Restore original data
             }
             else
             {
-                SearchRecords = UnifiedRecords
+                SearchRecords = UnifiedModel
                     .Where(item => item.GetType().GetProperties()
                         .Any(prop => prop.GetValue(item)?.ToString()
                             .IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0))
@@ -197,11 +194,15 @@ namespace ITEQ2
                     _modifiedRecords[model] = new Dictionary<string, object>();
 
                 PropertyInfo property = model.GetType().GetProperty(e.PropertyName);
+
                 if (property != null)
                 {
                     object newValue = property.GetValue(model);
                     _modifiedRecords[model][e.PropertyName] = newValue;
+
+                    property.SetValue(model, newValue); // updates the unifiedRecords with the new value
                 }
+                System.Diagnostics.Debug.WriteLine($"Property {e.PropertyName} changed. New Value: {property?.GetValue(model)}");
             }
         }
         private void OnSaveRequested()
@@ -217,7 +218,7 @@ namespace ITEQ2
         }
         public void SaveChangesToCsv(string filePath)
         {
-            if (UnifiedRecords == null || !UnifiedRecords.Any())
+            if (UnifiedModel == null || !UnifiedModel.Any())
             {
                 MessageBox.Show("No records to save.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
@@ -228,17 +229,19 @@ namespace ITEQ2
                 "Column,GG-LABEL,TYPE,MAKE,MODEL,SERIAL NO,SECURITY ID,User,Site,Status,Purchase date,Recieved,Short comment"
             };
 
-            foreach (var record in UnifiedRecords)
+            foreach (var record in UnifiedModel)
             {
                 string line = $"{record.Column},{record.GgLabel},{record.Type},{record.Make},{record.Model},{record.SerialNo},{record.SecurityId},{record.User},{record.Site},{record.Status}," +
                               $"{record.PurchaseDate?.ToString("yyyy-MM-dd")},{record.Received?.ToString("yyyy-MM-dd")},{record.ShortComment}";//,{record.PC},{record.Username}," +
                               //$"{record.Date?.ToString("yyyy-MM-dd")},{record.ReportDate?.ToString("yyyy-MM-dd")},{record.PCLocation},{record.EmplMailAdresse}";
 
                 lines.Add(line);
+                System.Diagnostics.Debug.WriteLine($"ggLabel before save: {record.GgLabel}");
             }
 
             try
             {
+                System.Diagnostics.Debug.WriteLine($"Before saving: UnifiedModel contains {UnifiedModel.Count} rows.");
                 File.WriteAllLines(filePath, lines);
                 MessageBox.Show("Changes saved successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
