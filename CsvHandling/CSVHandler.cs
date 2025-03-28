@@ -43,8 +43,8 @@ namespace ITEQ2.CsvHandling
                 var headers = csv.HeaderRecord;
 
                 // Determine model based on headers
-                bool isFucModel = headers.Contains("PC") && headers.Contains("Username");
-                bool isIteqModel = headers.Contains("GG-LABEL") && headers.Contains("User");
+                bool isFucModel = headers.Intersect(new[] { "PC", "Username" }).Count() == 2;
+                bool isIteqModel = headers.Intersect(new[] { "GG-LABEL", "User" }).Count() == 2;
 
                 if (isFucModel && typeof(T) == typeof(FucModel))
                 {

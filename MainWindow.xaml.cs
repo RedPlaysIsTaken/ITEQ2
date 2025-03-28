@@ -18,13 +18,16 @@ namespace ITEQ2
 {
     public partial class MainWindow : Window
     {
-        private List<UnifiedModel> UnifiedRecords;  // Original dataset
+        private List<UnifiedModel> UnifiedModel;  // Original dataset
         private List<UnifiedModel> SearchRecords;   // Filtered dataset (after a search)
 
         private GridViewColumnHeader _lastHeaderClicked = null; // Keeps track of the last header clicked
         private ListSortDirection _lastDirection = ListSortDirection.Ascending; // Switches between ascending and descending when filtering
 
         private Dictionary<UnifiedModel, Dictionary<string, object>> _modifiedRecords = new(); // Keeps track of what fields have been changed and what they have been changed to
+
+        private string _workingDocPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "workingDoc.csv"); // local variable for the path of the working document
+        private string _fucDocPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "fucReportExampleData.csv"); // local variable for the path of the fucreport
 
         public MainWindow() // Main program window
         {
@@ -34,37 +37,33 @@ namespace ITEQ2
             MenuBarControl.SaveRequested += OnSaveRequested; // Check if the save event has been called from the MenuBar
         }
 
-        // Old open window code below
-
-        //private void btnNormal_Click(object sender, RoutedEventArgs e)
-        //{
-        //    NormalWindow normalWindow = new NormalWindow();
-        //    normalWindow.Show(); 
-        //}
-
-        // Old open window code below
-
-        //private void btnModal_Click(object sender, RoutedEventArgs e)
-        //{
-        //    ModalWindow modalWindow = new ModalWindow(this);
-        //    Opacity = 0.4;
-        //    modalWindow.ShowDialog();
-        //    Opacity = 1;
-
-        //    if (modalWindow.Success)
-        //    {
-        //        //txtInput.Text = modalWindow.Input;
-        //    }
-        //}
-
         private void TitleBar_Loaded(object sender, RoutedEventArgs e) // Executes when the titlebar loads (must be here for it to work apparantly)
         {
 
         }
+        private void SearchBar_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
+
 
         private void MenuBar_Loaded(object sender, RoutedEventArgs e) // Executes when the menubar loads (must be here for it to work apparantly)
         {
+            String[] filePaths = {_workingDocPath, _fucDocPath};
 
+            MenuBar menuBarInstance = this.FindName("MenuBarControl") as MenuBar;
+
+            if (menuBarInstance != null)
+            {
+                menuBarInstance.openAndIdentifyFiles(filePaths);
+                LoadData(UnifiedModel);
+            }
+            else
+            {
+                MessageBox.Show("MenuBar instance not found!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+            LoadData(UnifiedModel);
         }
 
 
@@ -74,26 +73,27 @@ namespace ITEQ2
             if (unifiedData == null || !unifiedData.Any()) // If the unifiedData is null, give error message
             {
                 MessageBox.Show("No data available.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+
                 return;
             }
             else // if unifiedData has data -->
             {
-                UnifiedRecords = unifiedData; // Create UnifiedRecords variable to work with, so we dont change the original unifiedData
+                UnifiedModel = unifiedData; // Create UnifiedModel variable to work with, so we dont change the original unifiedData
 
-                foreach (var record in UnifiedRecords) // loop through and link each record in the UnifiedRecords with a propertyChanged event. THis way we can "notice" when a field is changed.
+                foreach (var record in UnifiedModel) // loop through and link each record in the UnifiedModel with a propertyChanged event. THis way we can "notice" when a field is changed.
                 {
                     record.PropertyChanged += OnPropertyChanged;
                 }
 
                 GenerateDynamicColumns(); // Call the GenerateDynamicColumns() method
-                UnifiedListView.ItemsSource = UnifiedRecords; // updates the UI
+                UnifiedListView.ItemsSource = UnifiedModel; // updates the UI
             }
             
         }
 
         private void GenerateDynamicColumns() // generates Columns based on the loaded data from LoadData()
         {
-            if (UnifiedRecords == null || !UnifiedRecords.Any()) //if there is no data, quit
+            if (UnifiedModel == null || !UnifiedModel.Any()) //if there is no data, quit
             {  
                 return; 
             }
@@ -161,35 +161,30 @@ namespace ITEQ2
         }
         private void Sort(string propertyName, ListSortDirection direction)
         {
-            if (UnifiedRecords == null || !UnifiedRecords.Any()) return;
+            if (UnifiedModel == null || !UnifiedModel.Any()) return;
 
             var propertyInfo = typeof(UnifiedModel).GetProperty(propertyName);
             if (propertyInfo == null) return;
 
-            UnifiedRecords = direction == ListSortDirection.Ascending
-                ? UnifiedRecords.OrderBy(x => propertyInfo.GetValue(x, null)).ToList()
-                : UnifiedRecords.OrderByDescending(x => propertyInfo.GetValue(x, null)).ToList();
+            UnifiedModel = direction == ListSortDirection.Ascending
+                ? UnifiedModel.OrderBy(x => propertyInfo.GetValue(x, null)).ToList()
+                : UnifiedModel.OrderByDescending(x => propertyInfo.GetValue(x, null)).ToList();
 
             UnifiedListView.ItemsSource = null;
-            UnifiedListView.ItemsSource = UnifiedRecords;
-        }
-
-        private void SearchBar_Loaded(object sender, RoutedEventArgs e)
-        {
-
+            UnifiedListView.ItemsSource = UnifiedModel;
         }
 
         private void OnSearchPerformed(string query)
         {
-            if (UnifiedRecords == null) return;
+            if (UnifiedModel == null) return;
 
             if (string.IsNullOrWhiteSpace(query))
             {
-                UnifiedListView.ItemsSource = UnifiedRecords; // Restore original data
+                UnifiedListView.ItemsSource = UnifiedModel; // Restore original data
             }
             else
             {
-                SearchRecords = UnifiedRecords
+                SearchRecords = UnifiedModel
                     .Where(item => item.GetType().GetProperties()
                         .Any(prop => prop.GetValue(item)?.ToString()
                             .IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0))
@@ -206,28 +201,31 @@ namespace ITEQ2
                     _modifiedRecords[model] = new Dictionary<string, object>();
 
                 PropertyInfo property = model.GetType().GetProperty(e.PropertyName);
+
                 if (property != null)
                 {
                     object newValue = property.GetValue(model);
                     _modifiedRecords[model][e.PropertyName] = newValue;
+
+                    property.SetValue(model, newValue); // updates the unifiedRecords with the new value
                 }
+                System.Diagnostics.Debug.WriteLine($"Property {e.PropertyName} changed. New Value: {property?.GetValue(model)}");
             }
         }
-        private string _currentFilePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Combined.csv"); // save combined csv file in project locally
         private void OnSaveRequested()
         {
-            if (string.IsNullOrEmpty(_currentFilePath))
+            if (string.IsNullOrEmpty(_workingDocPath))
             {
                 MessageBox.Show("No file loaded. Cannot save.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
-            SaveChangesToCsv(_currentFilePath);
-            System.Diagnostics.Debug.WriteLine($"Saving to: {_currentFilePath}");
+            SaveChangesToCsv(_workingDocPath);
+            System.Diagnostics.Debug.WriteLine($"Saving to: {_workingDocPath}");
         }
         public void SaveChangesToCsv(string filePath)
         {
-            if (UnifiedRecords == null || !UnifiedRecords.Any())
+            if (UnifiedModel == null || !UnifiedModel.Any())
             {
                 MessageBox.Show("No records to save.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
@@ -238,17 +236,19 @@ namespace ITEQ2
                 "Column,GG-LABEL,TYPE,MAKE,MODEL,SERIAL NO,SECURITY ID,User,Site,Status,Purchase date,Recieved,Short comment"
             };
 
-            foreach (var record in UnifiedRecords)
+            foreach (var record in UnifiedModel)
             {
                 string line = $"{record.Column},{record.GgLabel},{record.Type},{record.Make},{record.Model},{record.SerialNo},{record.SecurityId},{record.User},{record.Site},{record.Status}," +
                               $"{record.PurchaseDate?.ToString("yyyy-MM-dd")},{record.Received?.ToString("yyyy-MM-dd")},{record.ShortComment}";//,{record.PC},{record.Username}," +
                               //$"{record.Date?.ToString("yyyy-MM-dd")},{record.ReportDate?.ToString("yyyy-MM-dd")},{record.PCLocation},{record.EmplMailAdresse}";
 
                 lines.Add(line);
+                System.Diagnostics.Debug.WriteLine($"ggLabel before save: {record.GgLabel}");
             }
 
             try
             {
+                System.Diagnostics.Debug.WriteLine($"Before saving: UnifiedModel contains {UnifiedModel.Count} rows.");
                 File.WriteAllLines(filePath, lines);
                 MessageBox.Show("Changes saved successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
