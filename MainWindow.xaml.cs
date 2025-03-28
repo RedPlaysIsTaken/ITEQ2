@@ -45,8 +45,6 @@ namespace ITEQ2
         {
 
         }
-
-
         private void MenuBar_Loaded(object sender, RoutedEventArgs e) // Executes when the menubar loads (must be here for it to work apparantly)
         {
             String[] filePaths = {_workingDocPath, _fucDocPath};
@@ -65,9 +63,6 @@ namespace ITEQ2
 
             LoadData(UnifiedModel);
         }
-
-
-
         public void LoadData(List<UnifiedModel> unifiedData) // Loads the data from the UnifiedModel and generate columns based on the data.
         {
             if (unifiedData == null || !unifiedData.Any()) // If the unifiedData is null, give error message
@@ -90,7 +85,6 @@ namespace ITEQ2
             }
             
         }
-
         private void GenerateDynamicColumns() // generates Columns based on the loaded data from LoadData()
         {
             if (UnifiedModel == null || !UnifiedModel.Any()) //if there is no data, quit
@@ -166,7 +160,6 @@ namespace ITEQ2
             UnifiedListView.ItemsSource = null;
             UnifiedListView.ItemsSource = UnifiedModel;
         }
-
         private void OnSearchPerformed(string query)
         {
             if (UnifiedModel == null) return;
