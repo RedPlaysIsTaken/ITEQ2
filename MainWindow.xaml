@@ -40,7 +40,7 @@
 
         <!-- Main Application -->
         <Grid Grid.Row="3">
-            <ListView x:Name="UnifiedListView"/>
+            <ListView x:Name="UnifiedListView" HorizontalAlignment="Stretch"/>
             <!--
             <DataGrid Name="CsvDataGrid" Margin="20,70,20,20" Background="LightGray" CanUserResizeColumns="True" AutoGenerateColumns="True" SelectionChanged="CsvDataGrid_SelectionChanged"/>
              -->

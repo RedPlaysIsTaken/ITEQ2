@@ -124,14 +124,21 @@ namespace ITEQ2
                     DataTemplate template = new DataTemplate(); // template to dictate how a cell will look        
                     FrameworkElementFactory textBoxFactory = new FrameworkElementFactory(typeof(TextBox)); // creates dynamically created textboxes
                     textBoxFactory.SetBinding(TextBox.TextProperty, new Binding(property.Name) { Mode = BindingMode.TwoWay }); // bind each textbox to their respective property from the unified model. Additionaly TwoWay makes it update the unified model 
+                    textBoxFactory.SetValue(TextBox.WidthProperty, 200.0); // Set the width to Auto
+                    textBoxFactory.SetBinding(TextBox.WidthProperty, new Binding("ActualWidth")
+                    {
+                        RelativeSource = new RelativeSource(RelativeSourceMode.FindAncestor, typeof(GridViewColumn), 1)
+                    });
+
                     template.VisualTree = textBoxFactory; // sets the columns cell content into the textbox
 
+                    
                     
                     GridViewColumn column = new() // create new column
                     {
                         Header = header,  //column header is set to the header with property name tag
                         CellTemplate = template,  //uses the template above
-                        Width = 150
+                        Width = Double.NaN, // sets the width of the column
                     };
 
                     gridView.Columns.Add(column);// adds the column into the gridView
