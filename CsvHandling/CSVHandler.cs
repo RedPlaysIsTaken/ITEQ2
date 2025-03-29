@@ -13,7 +13,7 @@ using CsvHelper.Configuration;
 
 namespace ITEQ2.CsvHandling
 {
-    public class CSVHandler // Class for CSV files to be made into lists
+    public class CSVHandler
     {
         private readonly string filePath;
 
@@ -22,17 +22,14 @@ namespace ITEQ2.CsvHandling
             this.filePath = path.FilePath;
         }
 
-        public List<T> ReadFile<T>(Path path) where T : class 
+        public List<T> ReadFile<T>(Path path) where T : class
         {
             var config = new CsvConfiguration(CultureInfo.InvariantCulture)
             {
-                Delimiter = ",",
-                Quote = '"',               // Ensure proper handling of quoted fields
-                TrimOptions = TrimOptions.None,
-                IgnoreBlankLines = true,
-                BadDataFound = null,       // Ignore bad data
-                HeaderValidated = null,    // Ignore header validation errors
-                MissingFieldFound = null   // Ignore missing fields errors
+                HeaderValidated = null,  // Ignore header validation errors
+                MissingFieldFound = null, // Ignore missing fields errors
+                Delimiter = ",", // Ensure correct CSV delimiter
+                BadDataFound = null // Ignore bad data instead of throwing exceptions
             };
 
             try
@@ -40,14 +37,14 @@ namespace ITEQ2.CsvHandling
                 using var reader = new StreamReader(path.FilePath);
                 using var csv = new CsvReader(reader, config);
 
-                // detect the headers to detect the file type
+                // Read the header to detect the file type
                 csv.Read();
                 csv.ReadHeader();
                 var headers = csv.HeaderRecord;
 
-                // choose model based on headers
-                bool isFucModel = headers.Intersect(new[] { "PC", "Username" }).Count() == 2;
-                bool isIteqModel = headers.Intersect(new[] { "GG-LABEL", "User" }).Count() == 2;
+                // Determine model based on headers
+                bool isFucModel = headers.Contains("PC") && headers.Contains("Username");
+                bool isIteqModel = headers.Contains("GG-LABEL") && headers.Contains("User");
 
                 if (isFucModel && typeof(T) == typeof(FucModel))
                 {
@@ -67,7 +64,7 @@ namespace ITEQ2.CsvHandling
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"Error reading CSV file: {ex.Message}");
-                return new List<T>(); // Make empty list
+                return new List<T>(); // Return an empty list on failure
             }
         }
     }
