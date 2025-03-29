@@ -26,23 +26,26 @@ namespace ITEQ2.CsvHandling
         {
             var config = new CsvConfiguration(CultureInfo.InvariantCulture)
             {
-                HeaderValidated = null,     // Ignore header validation errors
-                MissingFieldFound = null,   // Ignore missing fields errors
-                Delimiter = ",",            // Ensure correct CSV delimiter
-                BadDataFound = null         // Ignore bad data instead of throwing exceptions
+                Delimiter = ",",
+                Quote = '"',               // Ensure proper handling of quoted fields
+                TrimOptions = TrimOptions.None,
+                IgnoreBlankLines = true,
+                BadDataFound = null,       // Ignore bad data
+                HeaderValidated = null,    // Ignore header validation errors
+                MissingFieldFound = null   // Ignore missing fields errors
             };
 
             try
             {
-                using var reader = new StreamReader(path.FilePath); // Read 
+                using var reader = new StreamReader(path.FilePath);
                 using var csv = new CsvReader(reader, config);
 
-                // Read the header to detect the file type
+                // detect the headers to detect the file type
                 csv.Read();
                 csv.ReadHeader();
                 var headers = csv.HeaderRecord;
 
-                // Determine model based on headers
+                // choose model based on headers
                 bool isFucModel = headers.Intersect(new[] { "PC", "Username" }).Count() == 2;
                 bool isIteqModel = headers.Intersect(new[] { "GG-LABEL", "User" }).Count() == 2;
 

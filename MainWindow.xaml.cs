@@ -12,6 +12,9 @@ using System.Windows.Controls;
 using System.Xml.Linq;
 using System.ComponentModel;
 using System.IO;
+using CsvHelper.Configuration;
+using System.Globalization;
+using CsvHelper;
 
 
 namespace ITEQ2
@@ -119,10 +122,6 @@ namespace ITEQ2
                     FrameworkElementFactory textBoxFactory = new FrameworkElementFactory(typeof(TextBox)); // creates dynamically created textboxes
                     textBoxFactory.SetBinding(TextBox.TextProperty, new Binding(property.Name) { Mode = BindingMode.TwoWay }); // bind each textbox to their respective property from the unified model. Additionaly TwoWay makes it update the unified model 
                     textBoxFactory.SetValue(TextBox.WidthProperty, 200.0); // Set the width to Auto
-                    textBoxFactory.SetBinding(TextBox.WidthProperty, new Binding("ActualWidth")
-                    {
-                        RelativeSource = new RelativeSource(RelativeSourceMode.FindAncestor, typeof(GridViewColumn), 1)
-                    });
 
                     template.VisualTree = textBoxFactory; // sets the columns cell content into the textbox
 
@@ -224,30 +223,47 @@ namespace ITEQ2
                 return;
             }
 
-            var lines = new List<string>
+            var config = new CsvConfiguration(CultureInfo.InvariantCulture)
             {
-                "Column,GG-LABEL,TYPE,MAKE,MODEL,SERIAL NO,SECURITY ID,User,Site,Status,Purchase date,Recieved,Short comment"
+                Delimiter = ",",
+                Quote = '"',
+                Escape = '"',
+                ShouldQuote = args => args.Field.Contains(",") || args.Field.Contains("\"")
             };
-
-            foreach (var record in UnifiedModel)
-            {
-                string line = $"{record.Column},{record.GgLabel},{record.Type},{record.Make},{record.Model},{record.SerialNo},{record.SecurityId},{record.User},{record.Site},{record.Status}," +
-                              $"{record.PurchaseDate?.ToString("yyyy-MM-dd")},{record.Received?.ToString("yyyy-MM-dd")},{record.ShortComment}";//,{record.PC},{record.Username}," +
-                              //$"{record.Date?.ToString("yyyy-MM-dd")},{record.ReportDate?.ToString("yyyy-MM-dd")},{record.PCLocation},{record.EmplMailAdresse}";
-
-                lines.Add(line);
-                System.Diagnostics.Debug.WriteLine($"ggLabel before save: {record.GgLabel}");
-            }
 
             try
             {
-                System.Diagnostics.Debug.WriteLine($"Before saving: UnifiedModel contains {UnifiedModel.Count} rows.");
-                File.WriteAllLines(filePath, lines);
-                MessageBox.Show("Changes saved successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                using var writer = new StreamWriter(filePath);
+                using var csv = new CsvWriter(writer, config);
+
+                csv.Context.RegisterClassMap<UnifiedModelMap>(); // only writes specific lines (skips fuc results when saving)
+
+                csv.WriteRecords(UnifiedModel);
+
+                MessageBox.Show("Changes saved successfully! with the new method", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error saving file: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Error saving file: {ex.Message} with new method", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        public sealed class UnifiedModelMap : ClassMap<UnifiedModel>
+        {
+            public UnifiedModelMap()
+            {
+                Map(m => m.Column).Name("Column");
+                Map(m => m.GgLabel).Name("GG-LABEL");
+                Map(m => m.Type).Name("TYPE");
+                Map(m => m.Make).Name("MAKE");
+                Map(m => m.Model).Name("MODEL");
+                Map(m => m.SerialNo).Name("SERIAL NO");
+                Map(m => m.SecurityId).Name("SECURITY ID");
+                Map(m => m.User).Name("User");
+                Map(m => m.Site).Name("Site");
+                Map(m => m.Status).Name("Status");
+                Map(m => m.PurchaseDate).Name("Purchase date");
+                Map(m => m.Received).Name("Recieved");
+                Map(m => m.ShortComment).Name("Short comment");
             }
         }
     }
