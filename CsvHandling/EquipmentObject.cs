@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ITEQ2.CsvHandling
 {
-    public class UnifiedModel : INotifyPropertyChanged
+    public class EquipmentObject : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 

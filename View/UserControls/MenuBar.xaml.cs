@@ -105,7 +105,7 @@ namespace ITEQ2.View.UserControls
             };
 
             // Create list to store parsed data
-            List<UnifiedModel> unifiedData = new();
+            List<EquipmentObject> unifiedData = new();
 
             Path path = new Path(); // determine path
             CSVHandler csvHandler = new CSVHandler(path); // put path in the CSVHandler class

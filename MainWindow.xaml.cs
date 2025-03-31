@@ -21,13 +21,13 @@ namespace ITEQ2
 {
     public partial class MainWindow : Window
     {
-        private List<UnifiedModel> UnifiedModel;  // Original dataset
-        private List<UnifiedModel> SearchRecords;   // Filtered dataset (after a search)
+        private List<EquipmentObject> EquipmentList;  // Original dataset
+        private List<EquipmentObject> SearchedEquipmentList;   // Filtered dataset (after a search)
 
         private GridViewColumnHeader _lastHeaderClicked = null; // Keeps track of the last header clicked
         private ListSortDirection _lastDirection = ListSortDirection.Ascending; // Switches between ascending and descending when filtering
 
-        private Dictionary<UnifiedModel, Dictionary<string, object>> _modifiedRecords = new(); // Keeps track of what fields have been changed and what they have been changed to
+        private Dictionary<EquipmentObject, Dictionary<string, object>> _modifiedRecords = new(); // Keeps track of what fields have been changed and what they have been changed to
 
         private string _workingDocPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "workingDoc.csv"); // local variable for the path of the working document
         private string _fucDocPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "fucReportExampleData.csv"); // local variable for the path of the fucreport
@@ -57,16 +57,16 @@ namespace ITEQ2
             if (menuBarInstance != null)
             {
                 menuBarInstance.openAndIdentifyFiles(filePaths);
-                LoadData(UnifiedModel);
+                LoadData(EquipmentList);
             }
             else
             {
                 MessageBox.Show("MenuBar instance not found!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
-            LoadData(UnifiedModel);
+            LoadData(EquipmentList);
         }
-        public void LoadData(List<UnifiedModel> unifiedData) // Loads the data from the UnifiedModel and generate columns based on the data.
+        public void LoadData(List<EquipmentObject> unifiedData) // Loads the data from the EquipmentObject and generate columns based on the data.
         {
             if (unifiedData == null || !unifiedData.Any()) // If the unifiedData is null, give error message
             {
@@ -76,21 +76,21 @@ namespace ITEQ2
             }
             else // if unifiedData has data -->
             {
-                UnifiedModel = unifiedData; // Create UnifiedModel variable to work with, so we dont change the original unifiedData
+                EquipmentList = unifiedData; // Create EquipmentObject variable to work with, so we dont change the original unifiedData
 
-                foreach (var record in UnifiedModel) // loop through and link each record in the UnifiedModel with a propertyChanged event. THis way we can "notice" when a field is changed.
+                foreach (var record in EquipmentList) // loop through and link each record in the EquipmentObject with a propertyChanged event. THis way we can "notice" when a field is changed.
                 {
                     record.PropertyChanged += OnPropertyChanged;
                 }
 
                 GenerateDynamicColumns(); // Call the GenerateDynamicColumns() method
-                UnifiedListView.ItemsSource = UnifiedModel; // updates the UI
+                UnifiedListView.ItemsSource = EquipmentList; // updates the UI
             }
             
         }
         private void GenerateDynamicColumns() // generates Columns based on the loaded data from LoadData()
         {
-            if (UnifiedModel == null || !UnifiedModel.Any()) //if there is no data, quit
+            if (EquipmentList == null || !EquipmentList.Any()) //if there is no data, quit
             {  
                 return; 
             }
@@ -104,7 +104,7 @@ namespace ITEQ2
                 GridView gridView = (GridView)UnifiedListView.View; // make GridView accessable inside the Unifiedlistview
                 gridView.Columns.Clear(); // clear the grid columns before doing changes to prevent duplications
 
-                PropertyInfo[] properties = typeof(UnifiedModel).GetProperties(); // gets the properties from the unifiedmodel
+                PropertyInfo[] properties = typeof(EquipmentObject).GetProperties(); // gets the properties from the unifiedmodel
 
                 foreach (PropertyInfo property in properties) // for each of the properties create a new editable data template
                 {
@@ -154,40 +154,40 @@ namespace ITEQ2
         }
         private void Sort(string propertyName, ListSortDirection direction)
         {
-            if (UnifiedModel == null || !UnifiedModel.Any()) return;
+            if (EquipmentList == null || !EquipmentList.Any()) return;
 
-            var propertyInfo = typeof(UnifiedModel).GetProperty(propertyName);
+            var propertyInfo = typeof(EquipmentObject).GetProperty(propertyName);
             if (propertyInfo == null) return;
 
-            UnifiedModel = direction == ListSortDirection.Ascending
-                ? UnifiedModel.OrderBy(x => propertyInfo.GetValue(x, null)).ToList()
-                : UnifiedModel.OrderByDescending(x => propertyInfo.GetValue(x, null)).ToList();
+            EquipmentList = direction == ListSortDirection.Ascending
+                ? EquipmentList.OrderBy(x => propertyInfo.GetValue(x, null)).ToList()
+                : EquipmentList.OrderByDescending(x => propertyInfo.GetValue(x, null)).ToList();
 
             UnifiedListView.ItemsSource = null;
-            UnifiedListView.ItemsSource = UnifiedModel;
+            UnifiedListView.ItemsSource = EquipmentList;
         }
         private void OnSearchPerformed(string query)
         {
-            if (UnifiedModel == null) return;
+            if (EquipmentList == null) return;
 
             if (string.IsNullOrWhiteSpace(query))
             {
-                UnifiedListView.ItemsSource = UnifiedModel; // Restore original data
+                UnifiedListView.ItemsSource = EquipmentList; // Restore original data
             }
             else
             {
-                SearchRecords = UnifiedModel
+                SearchedEquipmentList = EquipmentList
                     .Where(item => item.GetType().GetProperties()
                         .Any(prop => prop.GetValue(item)?.ToString()
                             .IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0))
                     .ToList();
 
-                UnifiedListView.ItemsSource = SearchRecords;
+                UnifiedListView.ItemsSource = SearchedEquipmentList;
             }
         }
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (sender is UnifiedModel model)
+            if (sender is EquipmentObject model)
             {
                 if (!_modifiedRecords.ContainsKey(model))
                     _modifiedRecords[model] = new Dictionary<string, object>();
@@ -217,7 +217,7 @@ namespace ITEQ2
         }
         public void SaveChangesToCsv(string filePath)
         {
-            if (UnifiedModel == null || !UnifiedModel.Any())
+            if (EquipmentList == null || !EquipmentList.Any())
             {
                 MessageBox.Show("No records to save.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
@@ -238,7 +238,7 @@ namespace ITEQ2
 
                 csv.Context.RegisterClassMap<UnifiedModelMap>(); // only writes specific lines (skips fuc results when saving)
 
-                csv.WriteRecords(UnifiedModel);
+                csv.WriteRecords(EquipmentList);
 
                 MessageBox.Show("Changes saved successfully! with the new method", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
@@ -247,7 +247,7 @@ namespace ITEQ2
                 MessageBox.Show($"Error saving file: {ex.Message} with new method", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-        public sealed class UnifiedModelMap : ClassMap<UnifiedModel>
+        public sealed class UnifiedModelMap : ClassMap<EquipmentObject>
         {
             public UnifiedModelMap()
             {

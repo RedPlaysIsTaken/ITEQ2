@@ -15,9 +15,9 @@ using Microsoft.Win32;
 
 public class DataMatcher
 {
-    public static List<UnifiedModel> MatchAndMerge(List<FucModel> fucData, List<ITEQModel> iteqData) // Creates a list with the merged data from the two CSV files
+    public static List<EquipmentObject> MatchAndMerge(List<FucModel> fucData, List<ITEQModel> iteqData) // Creates a list with the merged data from the two CSV files
     {
-        List<UnifiedModel> mergedRecords = new(); // Create new list to store the merged data
+        List<EquipmentObject> mergedRecords = new(); // Create new list to store the merged data
 
         // first match everything that matches between the iteq and the fuc
         foreach (var iteqRow in iteqData) // Loop through each row in ITEQ data csv file
@@ -26,7 +26,7 @@ public class DataMatcher
 
             var fucMatch = fucData.FirstOrDefault(f => ExtractNumber(f.PC) == matchNumber); // Use the ExtractNumber method to extract the number from the PC column, and match the number with the GG-LABEL number
 
-            var unified = new UnifiedModel // Merge the two Csv files where possible
+            var unified = new EquipmentObject // Merge the two Csv files where possible
             {
                 Column = iteqRow.Column,
                 GgLabel = iteqRow.GgLabel,
@@ -62,7 +62,7 @@ public class DataMatcher
 
             if (!alreadyMatched)
             {
-                var unified = new UnifiedModel
+                var unified = new EquipmentObject
                 {
                     Column = "",
                     GgLabel = matchNumber,
@@ -108,7 +108,7 @@ public class DataMatcher
         }
     }
 
-    public static void SaveToCsv(List<UnifiedModel> mergedRecords, string filePath) // Save the merged data to a CSV file
+    public static void SaveToCsv(List<EquipmentObject> mergedRecords, string filePath) // Save the merged data to a CSV file
     {
         var config = new CsvConfiguration(CultureInfo.InvariantCulture)
         {
@@ -130,7 +130,7 @@ public class DataMatcher
         }
     }
 
-    public static void LoadData(List<UnifiedModel> unifiedData, MainWindow mainWindow)
+    public static void LoadData(List<EquipmentObject> unifiedData, MainWindow mainWindow)
     {
         if (unifiedData == null || !unifiedData.Any())
         {
