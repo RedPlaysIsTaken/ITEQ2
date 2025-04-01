@@ -40,10 +40,151 @@
 
         <!-- Main Application -->
         <Grid Grid.Row="3">
-            <ListView x:Name="UnifiedListView" HorizontalAlignment="Stretch"/>
-            <!--
-            <DataGrid Name="CsvDataGrid" Margin="20,70,20,20" Background="LightGray" CanUserResizeColumns="True" AutoGenerateColumns="True" SelectionChanged="CsvDataGrid_SelectionChanged"/>
-             -->
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition x:Name="PropertiesRow" Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- List of Equipent -->
+            <ListView Grid.Row="0" x:Name="EquipmentListView" 
+                      MouseDoubleClick="EquipmentListView_MouseDoubleClick"
+                      ItemsSource="{Binding EquipmentList}"
+                      HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+                      FontSize="12">
+                <ListView.View>
+                    <GridView AllowsColumnReorder="False">
+                        <GridViewColumn DisplayMemberBinding="{Binding GgLabel}" Header="GG-LABEL" Width="100"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding Type}" Header="TYPE" Width="100"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding Make}" Header="MAKE" Width="100"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding Model}" Header="MODEL" Width="100"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding SerialNo}" Header="SERIAL NO" Width="100"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding SecurityId}" Header="SECURITY ID" Width="100"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding User}" Header="User" Width="100"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding Site}" Header="Site" Width="100"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding Status}" Header="Status" Width="100"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding PurchaseDate}" Header="Purchase date" Width="100"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding Received}" Header="Received" Width="100"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding ShortComment}" Header="Short comment" Width="100"/>
+
+                        <GridViewColumn DisplayMemberBinding="{Binding PC}" Header="PC" Width="100"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding FucUser}" Header="USER(Fuc)" Width="100"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding Username}" Header="Username" Width="100"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding Date}" Header="DATE" Width="100"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding ReportDate}" Header="ReportDATE" Width="100"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding PCLocation}" Header="PCLocation" Width="100"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding EmplMailAdresse}" Header="EmplMailAdresse" Width="100"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+
+            <!-- Equipment details Stackpanel -->
+            <StackPanel Grid.Row="1" x:Name="DetailsPanel"
+                DataContext="{Binding SelectedItem, ElementName=EquipmentListView}"
+                Visibility="Collapsed"
+                Margin="10" Background="LightGray">
+
+                <!-- Button to close detail panel -->
+                <Button Content="Close" HorizontalAlignment="Right" 
+                Click="CloseDetailsPanel_Click" Margin="5"/>
+
+                <WrapPanel Orientation="Horizontal">
+                    <StackPanel Margin="5">
+                        <TextBlock Text="GG-LABEL"/>
+                        <TextBox Text="{Binding GgLabel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120"/>
+                    </StackPanel>
+
+                    <StackPanel Margin="5">
+                        <TextBlock Text="TYPE"/>
+                        <TextBox Text="{Binding Type, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120"/>
+                    </StackPanel>
+
+                    <StackPanel Margin="5">
+                        <TextBlock Text="MAKE"/>
+                        <TextBox Text="{Binding Make, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120"/>
+                    </StackPanel>
+
+                    <StackPanel Margin="5">
+                        <TextBlock Text="MODEL"/>
+                        <TextBox Text="{Binding Model, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120"/>
+                    </StackPanel>
+
+                    <StackPanel Margin="5">
+                        <TextBlock Text="SERIAL NO"/>
+                        <TextBox Text="{Binding SerialNo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120"/>
+                    </StackPanel>
+
+                    <StackPanel Margin="5">
+                        <TextBlock Text="SECURITY ID"/>
+                        <TextBox Text="{Binding SecurityId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120"/>
+                    </StackPanel>
+
+                    <StackPanel Margin="5">
+                        <TextBlock Text="USER"/>
+                        <TextBox Text="{Binding User, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120"/>
+                    </StackPanel>
+
+                    <StackPanel Margin="5">
+                        <TextBlock Text="SITE"/>
+                        <TextBox Text="{Binding Site, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120"/>
+                    </StackPanel>
+
+                    <StackPanel Margin="5">
+                        <TextBlock Text="STATUS"/>
+                        <TextBox Text="{Binding Status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120"/>
+                    </StackPanel>
+
+                    <StackPanel Margin="5">
+                        <TextBlock Text="Purchase date"/>
+                        <TextBox Text="{Binding PurchaseDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120"/>
+                    </StackPanel>
+
+                    <StackPanel Margin="5">
+                        <TextBlock Text="Received date"/>
+                        <TextBox Text="{Binding Received, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120"/>
+                    </StackPanel>
+
+                    <StackPanel Margin="5">
+                        <TextBlock Text="Short comment"/>
+                        <TextBox Text="{Binding ShortComment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120"/>
+                    </StackPanel>
+
+                    <StackPanel Margin="5">
+                        <TextBlock Text="PC"/>
+                        <TextBox Text="{Binding PC, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120"/>
+                    </StackPanel>
+
+                    <StackPanel Margin="5">
+                        <TextBlock Text="USER"/>
+                        <TextBox Text="{Binding FucUser, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120"/>
+                    </StackPanel>
+
+                    <StackPanel Margin="5">
+                        <TextBlock Text="Username"/>
+                        <TextBox Text="{Binding Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120"/>
+                    </StackPanel>
+
+                    <StackPanel Margin="5">
+                        <TextBlock Text="DATE"/>
+                        <TextBox Text="{Binding Date, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120"/>
+                    </StackPanel>
+
+                    <StackPanel Margin="5">
+                        <TextBlock Text="ReportDATE"/>
+                        <TextBox Text="{Binding ReportDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120"/>
+                    </StackPanel>
+
+                    <StackPanel Margin="5">
+                        <TextBlock Text="PCLocation"/>
+                        <TextBox Text="{Binding PCLocation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120"/>
+                    </StackPanel>
+
+                    <StackPanel Margin="5">
+                        <TextBlock Text="EmplMailadresse"/>
+                        <TextBox Text="{Binding EmplMailAdresse, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120"/>
+                    </StackPanel>
+                    
+                </WrapPanel>
+            </StackPanel>
         </Grid>
 
     </Grid>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -15,9 +16,9 @@ using Microsoft.Win32;
 
 public class DataMatcher
 {
-    public static List<EquipmentObject> MatchAndMerge(List<FucModel> fucData, List<ITEQModel> iteqData) // Creates a list with the merged data from the two CSV files
+    public static ObservableCollection<EquipmentObject> MatchAndMerge(ObservableCollection<FucModel> fucData, ObservableCollection<ITEQModel> iteqData) // Creates a list with the merged data from the two CSV files
     {
-        List<EquipmentObject> mergedRecords = new(); // Create new list to store the merged data
+        ObservableCollection<EquipmentObject> mergedRecords = new(); // Create new list to store the merged data
 
         // first match everything that matches between the iteq and the fuc
         foreach (var iteqRow in iteqData) // Loop through each row in ITEQ data csv file
@@ -108,50 +109,50 @@ public class DataMatcher
         }
     }
 
-    public static void SaveToCsv(List<EquipmentObject> mergedRecords, string filePath) // Save the merged data to a CSV file
+    //public static void SaveToCsv(List<EquipmentObject> mergedRecords, string filePath) // Save the merged data to a CSV file
+    //{
+    //    var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+    //    {
+    //        Delimiter = ","
+    //    };
+
+    //    try
+    //    {
+    //        using var writer = new StreamWriter(filePath);
+    //        using var csv = new CsvWriter(writer, config);
+    //        csv.WriteRecords(mergedRecords);
+
+    //        System.Diagnostics.Debug.WriteLine($"File successfully saved to: {filePath}");
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        System.Diagnostics.Debug.WriteLine($"Error saving CSV: {ex.Message}");
+    //        MessageBox.Show($"Error saving CSV: {ex.Message}", "Save Error", MessageBoxButton.OK, MessageBoxImage.Error);
+    //    }
+    //}
+
+    public static void LoadData(ObservableCollection<EquipmentObject> CompleteItemCollection, MainWindow mainWindow)
     {
-        var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-        {
-            Delimiter = ","
-        };
-
-        try
-        {
-            using var writer = new StreamWriter(filePath);
-            using var csv = new CsvWriter(writer, config);
-            csv.WriteRecords(mergedRecords);
-
-            System.Diagnostics.Debug.WriteLine($"File successfully saved to: {filePath}");
-        }
-        catch (Exception ex)
-        {
-            System.Diagnostics.Debug.WriteLine($"Error saving CSV: {ex.Message}");
-            MessageBox.Show($"Error saving CSV: {ex.Message}", "Save Error", MessageBoxButton.OK, MessageBoxImage.Error);
-        }
-    }
-
-    public static void LoadData(List<EquipmentObject> unifiedData, MainWindow mainWindow)
-    {
-        if (unifiedData == null || !unifiedData.Any())
+        if (CompleteItemCollection == null || !CompleteItemCollection.Any())
         {
             MessageBox.Show("No data available.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
             return;
         }
 
         // Pass data to MainWindow and update ListView
-        mainWindow.LoadData(unifiedData);
+        mainWindow.LoadData(CompleteItemCollection);
     }
 
-    //public static string ShowSaveFileDialog() // Choose how to save the merged data
-    //{
-    //    SaveFileDialog saveFileDialog = new SaveFileDialog
-    //    {
-    //        Filter = "CSV files (*.csv)|*.csv",
-    //        Title = "Save Merged Data",
-    //        FileName = "MergedOutput.csv"
-    //    };
+    public static string ShowSaveFileDialog() // Choose how to save the merged data
+    {
+        SaveFileDialog saveFileDialog = new SaveFileDialog
+        {
+            Filter = "CSV files (*.csv)|*.csv",
+            Title = "Save Merged Data",
+            FileName = "MergedOutput.csv"
+        };
 
-    //    return saveFileDialog.ShowDialog() == true ? saveFileDialog.FileName : string.Empty;
-    //}
+        return saveFileDialog.ShowDialog() == true ? saveFileDialog.FileName : string.Empty;
+    }
 }
 

@@ -1,5 +1,6 @@
 ﻿using ITEQ2.CsvHandling;
 using Microsoft.Win32;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Xml.Linq;
@@ -22,8 +23,8 @@ namespace ITEQ2.View.UserControls
         public void openAndIdentifyFiles(string[] filePaths)
         {
             // Create lists to store parsed data
-            List<FucModel> fucData = new();
-            List<ITEQModel> iteqData = new();
+            ObservableCollection<FucModel> fucData = new();
+            ObservableCollection<ITEQModel> iteqData = new();
 
 
             foreach (string filePath in filePaths) // Loop for each file chosen
@@ -36,7 +37,8 @@ namespace ITEQ2.View.UserControls
 
                 if (tempFucData.Count > 0) // if FucModel succeeds
                 {
-                    fucData = tempFucData; // assign the tempFucData to the List<FucModel> fucData
+                    foreach (var item in tempFucData)
+                        fucData.Add(item); // Add element to object
                     System.Diagnostics.Debug.WriteLine($"File {filePath} identified as FucModel.");
                 }
                 else // If the FucModel fails, try the ITEQModel
@@ -46,7 +48,8 @@ namespace ITEQ2.View.UserControls
 
                     if (tempIteqData.Count > 0) // if ITEQModel succeeds
                     {
-                        iteqData = tempIteqData; // assign the tempITEQData to the List<IEQModel> ITEQData
+                        foreach (var item in tempIteqData)
+                            iteqData.Add(item); // Add element to object
                         System.Diagnostics.Debug.WriteLine($"File {filePath} identified as ITEQModel.");
                     }
                     else // if BOTH fail, headers are the problem
@@ -98,17 +101,17 @@ namespace ITEQ2.View.UserControls
 
         private void menuitemOpenCombined_Click(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog openFile = new OpenFileDialog // Open file dialog for CSV files omly
-            {
-                Multiselect = false,
-                Filter = "Csv Files|*.csv"
-            };
+            //OpenFileDialog openFile = new OpenFileDialog // Open file dialog for CSV files omly
+            //{
+            //    Multiselect = false,
+            //    Filter = "Csv Files|*.csv"
+            //};
 
-            // Create list to store parsed data
-            List<EquipmentObject> unifiedData = new();
+            //// Create list to store parsed data
+            //ObservableCollection<EquipmentObject> unifiedData = new();
 
-            Path path = new Path(); // determine path
-            CSVHandler csvHandler = new CSVHandler(path); // put path in the CSVHandler class
+            //Path path = new Path(); // determine path
+            //CSVHandler csvHandler = new CSVHandler(path); // put path in the CSVHandler class
         }
     }
 }
