@@ -48,6 +48,13 @@ namespace ITEQ2
             SearchBarControl.SearchPerformed += OnSearchPerformed; // Check if the save event has been called from the SearchBar
             MenuBarControl.SaveRequested += OnSaveRequested; // Check if the save event has been called from the MenuBar
 
+            Footer_Control footerControlInstance = this.FindName("FooterControl") as Footer_Control;
+            if (footerControlInstance != null)
+            {
+                footerControlInstance.WorkingDocPath = _workingDocPath;
+                footerControlInstance.FucDocPath = _fucDocPath;
+            }
+
             IntializeData();
         }
         private void EquipmentListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)

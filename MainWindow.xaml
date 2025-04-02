@@ -25,7 +25,7 @@
             <RowDefinition />
 
             <!-- Footer -->
-            <RowDefinition Height="20"/>
+            <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
 
 
@@ -39,7 +39,7 @@
         <UserControls:SearchBar x:Name="SearchBarControl" Grid.Row="2" Loaded="SearchBar_Loaded"/>
         
         <!-- Footer -->
-        <UserControls:Footer_Control Grid.Row="4"/>
+        <UserControls:Footer_Control x:Name="FooterControl" Grid.Row="4"/>
 
         <!-- Main Application -->
         <Grid Grid.Row="3">

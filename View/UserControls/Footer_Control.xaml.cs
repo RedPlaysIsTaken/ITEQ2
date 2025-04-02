@@ -21,6 +21,20 @@ namespace ITEQ2.View.UserControls
     /// </summary>
     public partial class Footer_Control : UserControl
     {
+        public static readonly DependencyProperty WorkingDocPathProperty =
+            DependencyProperty.Register("WorkingDocPath", typeof(string), typeof(Footer_Control), new PropertyMetadata(string.Empty));
+        public static readonly DependencyProperty FucDocPathProperty =
+            DependencyProperty.Register("FucDocPath", typeof(string), typeof(Footer_Control), new PropertyMetadata(string.Empty));
+
+        public string WorkingDocPath
+        {
+            get { return (string)GetValue(WorkingDocPathProperty); }
+            set { SetValue(WorkingDocPathProperty, value); }
+        }
+        public string FucDocPath
+        {             get { return (string)GetValue(FucDocPathProperty); }
+            set { SetValue(FucDocPathProperty, value); }
+        }
         public Footer_Control()
         {
             InitializeComponent();
