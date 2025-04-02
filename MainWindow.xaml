@@ -14,20 +14,20 @@
         <Grid.RowDefinitions>
             <!-- Title Bar -->
             <RowDefinition Height="40"/>
-            
+
             <!-- Menu Bar -->
             <RowDefinition Height="30"/>
-            
+
             <!-- Search Bar -->
             <RowDefinition Height="40"/>
-            
+
             <!-- Main Application -->
             <RowDefinition />
-            
+
             <!-- Footer -->
             <RowDefinition Height="20"/>
-            
         </Grid.RowDefinitions>
+
 
         <!-- Title Bar -->
         <UserControls:TitleBar Grid.Row="0" Loaded="TitleBar_Loaded"/>
@@ -37,6 +37,9 @@
         
         <!-- Search Bar -->
         <UserControls:SearchBar x:Name="SearchBarControl" Grid.Row="2" Loaded="SearchBar_Loaded"/>
+        
+        <!-- Footer -->
+        <UserControls:Footer_Control Grid.Row="4"/>
 
         <!-- Main Application -->
         <Grid Grid.Row="3">
@@ -44,6 +47,7 @@
                 <RowDefinition/>
                 <RowDefinition x:Name="PropertiesRow" Height="Auto"/>
             </Grid.RowDefinitions>
+         
 
             <!-- List of Equipent -->
             <ListView Grid.Row="0" x:Name="EquipmentListView" 
@@ -65,7 +69,6 @@
                         <GridViewColumn DisplayMemberBinding="{Binding PurchaseDate}" Header="Purchase date" Width="100"/>
                         <GridViewColumn DisplayMemberBinding="{Binding Received}" Header="Received" Width="100"/>
                         <GridViewColumn DisplayMemberBinding="{Binding ShortComment}" Header="Short comment" Width="100"/>
-
                         <GridViewColumn DisplayMemberBinding="{Binding PC}" Header="PC" Width="100"/>
                         <GridViewColumn DisplayMemberBinding="{Binding FucUser}" Header="USER(Fuc)" Width="100"/>
                         <GridViewColumn DisplayMemberBinding="{Binding Username}" Header="Username" Width="100"/>
@@ -185,6 +188,7 @@
                     
                 </WrapPanel>
             </StackPanel>
+            
         </Grid>
 
     </Grid>
