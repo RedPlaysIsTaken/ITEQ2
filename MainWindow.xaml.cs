@@ -26,10 +26,10 @@ namespace ITEQ2
     {
         //private GridViewColumnHeader _lastHeaderClicked = null; // Keeps track of the last header clicked
         //private ListSortDirection _lastDirection = ListSortDirection.Ascending; // Switches between ascending and descending when filtering
-        
-        
+
+
         public ObservableCollection<EquipmentObject> EquipmentList { get; set; } = new();
-        private List<EquipmentObject> SearchedEquipmentList;   // Filtered dataset (after a search)
+        public ObservableCollection<EquipmentObject> SearchedEquipmentList { get; set; }// = new();// Filtered dataset (after a search)
         private Dictionary<EquipmentObject, Dictionary<string, object>> _modifiedRecords = new(); // Keeps track of what fields have been changed and what they have been changed to
         private string _workingDocPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "workingDoc.csv"); // local variable for the path of the working document
         private string _fucDocPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "fucReportExampleData.csv"); // local variable for the path of the fucreport
@@ -45,8 +45,10 @@ namespace ITEQ2
 
             EquipmentListView.ItemsSource = EquipmentList;
 
-            //SearchBarControl.SearchPerformed += OnSearchPerformed; // Check if the save event has been called from the SearchBar
+            SearchBarControl.SearchPerformed += OnSearchPerformed; // Check if the save event has been called from the SearchBar
             MenuBarControl.SaveRequested += OnSaveRequested; // Check if the save event has been called from the MenuBar
+
+            IntializeData();
         }
         private void EquipmentListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
@@ -61,7 +63,6 @@ namespace ITEQ2
             DetailsPanel.Visibility = Visibility.Collapsed;
             EquipmentListView.Height = double.NaN;
         }
-
         private void TitleBar_Loaded(object sender, RoutedEventArgs e) // Executes when the titlebar loads (must be here for it to work apparantly)
         {
 
@@ -72,157 +73,55 @@ namespace ITEQ2
         }
         private void MenuBar_Loaded(object sender, RoutedEventArgs e) // Executes when the menubar loads (must be here for it to work apparantly)
         {
-            String[] filePaths = { _workingDocPath, _fucDocPath };
 
-            MenuBar menuBarInstance = this.FindName("MenuBarControl") as MenuBar;
-
-            if (menuBarInstance != null)
-            {
-                if (File.Exists(_workingDocPath) && File.Exists(_fucDocPath))
-                {
-                    menuBarInstance.openAndIdentifyFiles(filePaths);
-                }
-                else
-                {
-                    MessageBox.Show("Missing one or both CSV-files!", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
-                }
-            }
-            else
-            {
-                MessageBox.Show("MenuBar instance not found!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
         }
-        public void LoadData(ObservableCollection<EquipmentObject> EquipmentList) // Loads the data from the EquipmentObject and generate columns based on the data.
+        public void LoadData(ObservableCollection<EquipmentObject> equipmentList)
         {
-            if (EquipmentList == null || !EquipmentList.Any()) // If the unifiedData is null, give error message
+            if (equipmentList == null || !equipmentList.Any())
             {
                 MessageBox.Show("No data available.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-            else // if unifiedData has data -->
+            else
             {
-                EquipmentListView.ItemsSource = EquipmentList; // updates the UI
-                Debug.WriteLine("Items in Equipment list when Loading: " + EquipmentList.Count);
+                EquipmentList = equipmentList; // Ensure EquipmentList is set
+                EquipmentListView.ItemsSource = EquipmentList;
+                Debug.WriteLine("Items in Equipment list when Loading: " + equipmentList.Count);
             }
         }
-        //private void GenerateDynamicColumns() // generates Columns based on the loaded data from LoadData()
-        //{
-        //    if (EquipmentList == null || !EquipmentList.Any()) //if there is no data, quit
-        //    {  
-        //        return; 
-        //    }
-        //    else // if there is data -->
-        //    {
-        //        if (EquipmentListView.View == null) // if the listview is empty, create a new one
-        //        {
-        //            EquipmentListView.View = new GridView();
-        //        }
+        private void OnSearchPerformed(string query)
+        {
+            if (EquipmentList == null || !EquipmentList.Any())
+            {
+                Debug.WriteLine("No data to search in");
+                return;
+            }
 
-        //        GridView gridView = (GridView)EquipmentListView.View; // make GridView accessable inside the Unifiedlistview
-        //        gridView.Columns.Clear(); // clear the grid columns before doing changes to prevent duplications
+            Debug.WriteLine($"Search query: {query}");
 
-        //        PropertyInfo[] properties = typeof(EquipmentObject).GetProperties(); // gets the properties from the unifiedmodel
+            if (string.IsNullOrWhiteSpace(query))
+            {
+                EquipmentListView.ItemsSource = EquipmentList; // Restore original data
+                Debug.WriteLine("Restoring original data");
+            }
+            else
+            {
+                var filteredList = EquipmentList
+                    .Where(item => item.GetType().GetProperties()
+                        .Any(prop => prop.GetValue(item)?.ToString()
+                            .IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0))
+                    .ToList();
 
-        //        foreach (PropertyInfo property in properties) // for each of the properties create a new editable data template
-        //        {
+                SearchedEquipmentList = new ObservableCollection<EquipmentObject>(filteredList);
+                EquipmentListView.ItemsSource = SearchedEquipmentList;
 
-        //            GridViewColumnHeader header = new GridViewColumnHeader // create header with sorting
-        //            {
-        //                Content = property.Name,
-        //                Tag = property.Name     // give property name for sorting
-        //            };
+                Debug.WriteLine($"Filtered list count: {SearchedEquipmentList.Count}");
+            }
+        }
 
-        //            header.Click += GridViewColumnHeader_Click; // click handler for the header
-
-
-        //            DataTemplate template = new DataTemplate(); // template to dictate how a cell will look        
-        //            FrameworkElementFactory textBoxFactory = new FrameworkElementFactory(typeof(TextBox)); // creates dynamically created textboxes
-        //            textBoxFactory.SetBinding(TextBox.TextProperty, new Binding(property.Name) { Mode = BindingMode.TwoWay }); // bind each textbox to their respective property from the unified model. Additionaly TwoWay makes it update the unified model 
-        //            textBoxFactory.SetValue(TextBox.WidthProperty, 200.0); // Set the width to Auto
-
-        //            template.VisualTree = textBoxFactory; // sets the columns cell content into the textbox
-
-
-
-        //            GridViewColumn column = new() // create new column
-        //            {
-        //                Header = header,  //column header is set to the header with property name tag
-        //                CellTemplate = template,  //uses the template above
-        //                Width = Double.NaN, // sets the width of the column
-        //            };
-
-        //            gridView.Columns.Add(column);// adds the column into the gridView
-        //        }
-        //    }
-        //}
-        //private void GridViewColumnHeader_Click(object sender, RoutedEventArgs e)
-        //{
-        //    if (sender is GridViewColumnHeader header && header.Tag is string propertyName)
-        //    {
-        //        ListSortDirection direction = (_lastHeaderClicked == header && _lastDirection == ListSortDirection.Ascending)
-        //            ? ListSortDirection.Descending
-        //            : ListSortDirection.Ascending;
-
-        //        _lastHeaderClicked = header;
-        //        _lastDirection = direction;
-
-        //        Sort(propertyName, direction);
-        //    }
-        //}
-        //private void Sort(string propertyName, ListSortDirection direction)
-        //{
-        //    if (EquipmentList == null || !EquipmentList.Any()) return;
-
-        //    var propertyInfo = typeof(EquipmentObject).GetProperty(propertyName);
-        //    if (propertyInfo == null) return;
-
-        //    EquipmentList = direction == ListSortDirection.Ascending
-        //        ? EquipmentList.OrderBy(x => propertyInfo.GetValue(x, null)).ToList()
-        //        : EquipmentList.OrderByDescending(x => propertyInfo.GetValue(x, null)).ToList();
-
-        //    EquipmentListView.ItemsSource = null;
-        //    EquipmentListView.ItemsSource = EquipmentList;
-        //}
-        //private void OnSearchPerformed(string query)
-        //{
-        //    if (EquipmentList == null) return;
-
-        //    if (string.IsNullOrWhiteSpace(query))
-        //    {
-        //        EquipmentListView.ItemsSource = EquipmentList; // Restore original data
-        //    }
-        //    else
-        //    {
-        //        SearchedEquipmentList = EquipmentList
-        //            .Where(item => item.GetType().GetProperties()
-        //                .Any(prop => prop.GetValue(item)?.ToString()
-        //                    .IndexOf(query, StringComparison.OrdinalIgnoreCase) >= 0))
-        //            .ToList();
-
-        //        EquipmentListView.ItemsSource = SearchedEquipmentList;
-        //    }
-        //}
-        //private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
-        //{
-        //    if (sender is EquipmentObject model)
-        //    {
-        //        if (!_modifiedRecords.ContainsKey(model))
-        //            _modifiedRecords[model] = new Dictionary<string, object>();
-
-        //        PropertyInfo property = model.GetType().GetProperty(e.PropertyName);
-
-        //        if (property != null)
-        //        {
-        //            object newValue = property.GetValue(model);
-        //            _modifiedRecords[model][e.PropertyName] = newValue;
-
-        //            property.SetValue(model, newValue); // updates the unifiedRecords with the new value
-        //        }
-        //        System.Diagnostics.Debug.WriteLine($"Property {e.PropertyName} changed. New Value: {property?.GetValue(model)}");
-        //    }
-        //}
         private void OnSaveRequested()
         {
+
             if (string.IsNullOrEmpty(_workingDocPath))
             {
                 MessageBox.Show("Save path not found, cannot save.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -234,7 +133,7 @@ namespace ITEQ2
         }
         public void SaveChangesToCsv(string filePath)
         {
-            
+            EquipmentListView.ItemsSource = EquipmentList;
             Debug.WriteLine("Items in listview when saving: " + EquipmentListView.Items.Count);
             //System.Windows.Controls.ListView Items.Count
 
@@ -351,6 +250,28 @@ namespace ITEQ2
             SortDescription sd = new SortDescription(sortBy, direction);
             dataView.SortDescriptions.Add(sd);
             dataView.Refresh();
+        }
+        private void IntializeData()
+        {
+            String[] filePaths = { _workingDocPath, _fucDocPath };
+
+            MenuBar menuBarInstance = this.FindName("MenuBarControl") as MenuBar;
+
+            if (menuBarInstance != null)
+            {
+                if (File.Exists(_workingDocPath) && File.Exists(_fucDocPath))
+                {
+                    menuBarInstance.openAndIdentifyFiles(filePaths);
+                }
+                else
+                {
+                    MessageBox.Show("Missing one or both CSV-files!", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+            else
+            {
+                MessageBox.Show("MenuBar instance not found!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }

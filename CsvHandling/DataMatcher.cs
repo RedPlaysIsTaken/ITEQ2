@@ -108,29 +108,6 @@ public class DataMatcher
             return match.Success ? match.Value : string.Empty;
         }
     }
-
-    //public static void SaveToCsv(List<EquipmentObject> mergedRecords, string filePath) // Save the merged data to a CSV file
-    //{
-    //    var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-    //    {
-    //        Delimiter = ","
-    //    };
-
-    //    try
-    //    {
-    //        using var writer = new StreamWriter(filePath);
-    //        using var csv = new CsvWriter(writer, config);
-    //        csv.WriteRecords(mergedRecords);
-
-    //        System.Diagnostics.Debug.WriteLine($"File successfully saved to: {filePath}");
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        System.Diagnostics.Debug.WriteLine($"Error saving CSV: {ex.Message}");
-    //        MessageBox.Show($"Error saving CSV: {ex.Message}", "Save Error", MessageBoxButton.OK, MessageBoxImage.Error);
-    //    }
-    //}
-
     public static void LoadData(ObservableCollection<EquipmentObject> CompleteItemCollection, MainWindow mainWindow)
     {
         if (CompleteItemCollection == null || !CompleteItemCollection.Any())
