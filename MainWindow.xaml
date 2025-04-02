@@ -48,11 +48,14 @@
             <!-- List of Equipent -->
             <ListView Grid.Row="0" x:Name="EquipmentListView" 
                       MouseDoubleClick="EquipmentListView_MouseDoubleClick"
+                      GridViewColumnHeader.Click="EquipmentListView_Click"  
                       ItemsSource="{Binding EquipmentList}"
                       HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
                       FontSize="12">
+                      <!-- IsSynchronizedWithCurrentItem="True" -->
+                      
                 <ListView.View>
-                    <GridView AllowsColumnReorder="False">
+                    <GridView AllowsColumnReorder="True" >
                         <GridViewColumn DisplayMemberBinding="{Binding GgLabel}" Header="GG-LABEL" Width="100"/>
                         <GridViewColumn DisplayMemberBinding="{Binding Type}" Header="TYPE" Width="100"/>
                         <GridViewColumn DisplayMemberBinding="{Binding Make}" Header="MAKE" Width="100"/>
