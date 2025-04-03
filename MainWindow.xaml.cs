@@ -18,6 +18,7 @@ using CsvHelper;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Windows.Input;
+using System.Data.Common;
 
 
 namespace ITEQ2
@@ -36,6 +37,9 @@ namespace ITEQ2
 
         GridViewColumnHeader _lastHeaderClicked = null;
         ListSortDirection _lastDirection = ListSortDirection.Ascending;
+
+        //list of columns with 0 width
+        public ObservableCollection<string> HiddenColumns { get; set; } = new ObservableCollection<string>();
 
         public MainWindow() // Main program window
         {
@@ -91,7 +95,7 @@ namespace ITEQ2
             }
             else
             {
-                EquipmentList = equipmentList; // Ensure EquipmentList is set
+                EquipmentList = equipmentList;
                 EquipmentListView.ItemsSource = EquipmentList;
                 Debug.WriteLine("Items in Equipment list when Loading: " + equipmentList.Count);
             }
@@ -108,7 +112,7 @@ namespace ITEQ2
 
             if (string.IsNullOrWhiteSpace(query))
             {
-                EquipmentListView.ItemsSource = EquipmentList; // Restore original data
+                EquipmentListView.ItemsSource = EquipmentList;
                 Debug.WriteLine("Restoring original data");
             }
             else
@@ -125,7 +129,6 @@ namespace ITEQ2
                 Debug.WriteLine($"Filtered list count: {SearchedEquipmentList.Count}");
             }
         }
-
         private void OnSaveRequested()
         {
 
@@ -195,7 +198,6 @@ namespace ITEQ2
                 Map(m => m.ShortComment).Name("Short comment");
             }
         }
-
         private void EquipmentListView_Click(object sender, RoutedEventArgs e)
         {
             var headerClicked = e.OriginalSource as GridViewColumnHeader;
@@ -258,7 +260,7 @@ namespace ITEQ2
             dataView.SortDescriptions.Add(sd);
             dataView.Refresh();
         }
-        private void IntializeData()
+        public void IntializeData()
         {
             String[] filePaths = { _workingDocPath, _fucDocPath };
 
@@ -280,5 +282,82 @@ namespace ITEQ2
                 MessageBox.Show("MenuBar instance not found!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+        private void ColumnHeader_RightClick(object sender, ContextMenuEventArgs e)
+        {
+
+        }
+        private void HideColumn_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is MenuItem menuItem)
+            {
+                if (menuItem.Parent is ContextMenu contextMenu)
+                {
+                    if (contextMenu.PlacementTarget is GridViewColumnHeader header)
+                    {
+                        GridViewColumn column = header.Column;
+                        if (column != null)
+                        {
+                            column.Width = 0; // Hide the column
+                        }
+                    }
+                }
+            }
+        }
+        private void ResetColumns_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (var column in ((GridView)EquipmentListView.View).Columns)
+            {
+                column.Width = 100; // Reset to default width
+            }
+        }
+        //protected void OnWidthChanged(object sender, SizeChangedEventArgs e)
+        //{
+        //    if (column.Width == 0)
+        //    {
+        //        Debug.WriteLine("wingow");
+        //    }
+        //}
+        private void ListView_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            HiddenColumns.Clear();
+
+            foreach (GridViewColumn column in (EquipmentListView.View as GridView).Columns)
+            {
+                if (column.Width == 0)
+                {
+                    string headerText = (column.Header is GridViewColumnHeader header)
+                        ? header.Content.ToString()
+                        : column.Header.ToString();
+
+                    Debug.WriteLine($"{headerText} is now hidden!");
+                    HiddenColumns.Add(headerText);
+                }
+            }
+        }
+        private void HiddenColumn_Click(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is TextBlock textBlock)
+            {
+                string columnName = textBlock.Text; // Get clicked column name
+
+                foreach (GridViewColumn column in (EquipmentListView.View as GridView).Columns)
+                {
+                    string headerText = (column.Header is GridViewColumnHeader header)
+                        ? header.Content.ToString()
+                        : column.Header.ToString();
+
+                    if (headerText == columnName)
+                    {
+                        column.Width = 100; // Restore width
+                        Debug.WriteLine($"Restored column '{columnName}' to width 100");
+
+                        // Remove from HiddenColumns list (if using ObservableCollection)
+                        HiddenColumns.Remove(columnName);
+                        break;
+                    }
+                }
+            }
+        }
     }
+
 }

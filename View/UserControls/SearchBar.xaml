@@ -5,9 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ITEQ2.View.UserControls"
              mc:Ignorable="d" 
-             d:DesignHeight="80" d:DesignWidth="450">
+             d:DesignHeight="80" d:DesignWidth="700">
     <Grid>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
 
@@ -15,5 +16,7 @@
 
         <TextBox Grid.Column="0" x:Name="txtBoxSearchBar" Height="30" Width="400" Margin="5" VerticalAlignment="Top" HorizontalAlignment="Center"
                  FontSize="16" TextChanged="txtBoxSearchBar_TextChanged"/>
+        <Button Grid.Column="1"  x:Name="BtnRefresh" Height="30" Width="30" Margin="5" VerticalAlignment="Top" HorizontalAlignment="Right"
+                Content="🔄" Click="BtnRefresh_Click"/>
     </Grid>
 </UserControl>

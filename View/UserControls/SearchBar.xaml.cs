@@ -39,5 +39,14 @@ namespace ITEQ2.View.UserControls
 
             SearchPerformed?.Invoke(searchText); 
         }
+
+        private void BtnRefresh_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow mainWindow = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+            if (mainWindow != null)
+            {
+                mainWindow.IntializeData(); 
+            }
+        }
     }
 }

@@ -47,10 +47,18 @@
                 <RowDefinition/>
                 <RowDefinition x:Name="PropertiesRow" Height="Auto"/>
             </Grid.RowDefinitions>
-         
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+
+
+
 
             <!-- List of Equipent -->
-            <ListView Grid.Row="0" 
+            <ListView Grid.Row="0" Grid.Column="1" 
+                      SizeChanged="ListView_SizeChanged"
                       x:Name="EquipmentListView" 
                       MouseDoubleClick="EquipmentListView_MouseDoubleClick"
                       GridViewColumnHeader.Click="EquipmentListView_Click"  
@@ -58,9 +66,31 @@
                       HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
                       FontSize="12">
                 <ListView.View>
-                    <GridView AllowsColumnReorder="True" >
-                        <GridViewColumn DisplayMemberBinding="{Binding GgLabel}" Header="GG-LABEL" Width="100"/>
-                        <GridViewColumn DisplayMemberBinding="{Binding Type}" Header="TYPE" Width="100"/>
+                    <GridView AllowsColumnReorder="True">
+
+                        <GridViewColumn DisplayMemberBinding="{Binding GgLabel}" Width="100">
+
+                            <GridViewColumnHeader Content="GG-LABEL" ContextMenuOpening="ColumnHeader_RightClick">
+                                <GridViewColumnHeader.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem Header="Hide" Click="HideColumn_Click"/>
+                                        <MenuItem Header="Reset Columns" Click="ResetColumns_Click"/>
+                                    </ContextMenu>
+                                </GridViewColumnHeader.ContextMenu>
+                            </GridViewColumnHeader>
+                        </GridViewColumn>
+
+                        <GridViewColumn DisplayMemberBinding="{Binding Type}" Width="100">
+                            <GridViewColumnHeader Content="TYPE" ContextMenuOpening="ColumnHeader_RightClick">
+                                <GridViewColumnHeader.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem Header="Hide" Click="HideColumn_Click"/>
+                                        <MenuItem Header="Reset Columns" Click="ResetColumns_Click"/>
+                                    </ContextMenu>
+                                </GridViewColumnHeader.ContextMenu>
+                            </GridViewColumnHeader>
+                        </GridViewColumn>
+                        
                         <GridViewColumn DisplayMemberBinding="{Binding Make}" Header="MAKE" Width="100"/>
                         <GridViewColumn DisplayMemberBinding="{Binding Model}" Header="MODEL" Width="100"/>
                         <GridViewColumn DisplayMemberBinding="{Binding SerialNo}" Header="SERIAL NO" Width="100"/>
@@ -187,11 +217,52 @@
                         <TextBlock Text="EmplMailadresse"/>
                         <TextBox Text="{Binding EmplMailAdresse, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120"/>
                     </StackPanel>
-                    
+
                 </WrapPanel>
             </StackPanel>
+
+
+            <TabControl>
+                <TabItem Header="Hidden Columns" Name="HiddenColumnsTab">
+                    <Grid Background="#FFE5E5E5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Margin="10">
+                            <ItemsControl ItemsSource="{Binding HiddenColumns}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding}" Foreground="Black" Cursor="Hand" FontSize="14" FontWeight="Bold" Width="100" Height="30"
+                                                   MouseLeftButtonDown="HiddenColumn_Click"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Grid>
+                </TabItem>
+
+
+                <TabItem Header="Column Presets">
+                    <Grid Background="#FFE5E5E5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="55*"/>
+                            <ColumnDefinition Width="137*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Margin="5">
+                            <ItemsControl ItemsSource="{Binding HiddenColumns}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding}" Width="100" Height="30"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Grid>
+                </TabItem>
+            </TabControl>
             
         </Grid>
-
     </Grid>
 </Window>
