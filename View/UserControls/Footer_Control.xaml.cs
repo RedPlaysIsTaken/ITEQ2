@@ -97,7 +97,7 @@ namespace ITEQ2.View.UserControls
 
             if (File.Exists(path))
             {
-                control.WorkingDocLastModified = File.GetLastWriteTime(path).ToString("yyyy-MM-dd HH:mm");
+                control.WorkingDocLastModified = File.GetLastWriteTime(path).ToString("dd-MM-yyyy HH:mm");
             }
             else
             {
@@ -114,7 +114,7 @@ namespace ITEQ2.View.UserControls
 
             if (File.Exists(path))
             {
-                control.FucDocLastModified = File.GetLastWriteTime(path).ToString("yyyy-MM-dd HH:mm");
+                control.FucDocLastModified = File.GetLastWriteTime(path).ToString("dd-MM-yyyy HH:mm");
             }
             else
             {
