@@ -113,7 +113,7 @@
             </ListView>
 
             <!-- Equipment details Stackpanel -->
-            <StackPanel Grid.Row="1" x:Name="DetailsPanel"
+            <StackPanel Grid.Row="1" Grid.Column="1" x:Name="DetailsPanel"
                 DataContext="{Binding SelectedItem, ElementName=EquipmentListView}"
                 Visibility="Collapsed"
                 Margin="10" Background="LightGray">
