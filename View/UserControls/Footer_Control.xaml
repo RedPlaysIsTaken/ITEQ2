@@ -11,16 +11,20 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0.8*"/>
-            <ColumnDefinition Width="9*"/>
-        </Grid.ColumnDefinitions>
-        <TextBlock Grid.Column="0" Grid.Row="0" Text="Working Doc:" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-        <TextBlock Grid.Column="0" Grid.Row="1" Text="FUC Doc:" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-        <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding WorkingDocPath, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                     HorizontalAlignment="Left" VerticalAlignment="Center"/>
-        <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding FucDocPath,RelativeSource={RelativeSource AncestorType=UserControl}}"
-                        HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <TextBlock Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center">
+        <Run Text="IT-equipment: " />
+        <Run Text="{Binding WorkingDocFileName, Mode=OneWay}" />
+        <Run Text=" (Last modified: " />
+        <Run Text="{Binding WorkingDocLastModified, Mode=OneWay}" />
+        <Run Text=")" />
+        </TextBlock>
+        <TextBlock Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center">
+        <Run Text="FUC-Report: " />
+        <Run Text="{Binding FucDocFileName, Mode=OneWay}" />
+        <Run Text=" (Last modified: " />
+        <Run Text="{Binding FucDocLastModified, Mode=OneWay}" />
+        <Run Text=")" />
+        </TextBlock>
 
     </Grid>
 </UserControl>
