@@ -287,6 +287,12 @@
                 Visibility="Collapsed"
                 Margin="10" Background="LightGray">
 
+
+                <!-- Button to save changes -->
+                <Button Content="Save" HorizontalAlignment="Left" 
+                Click="SaveDetailsPanel_Click" Margin="5"/>
+                
+                
                 <!-- Button to close detail panel -->
                 <Button Content="Close" HorizontalAlignment="Right" 
                 Click="CloseDetailsPanel_Click" Margin="5"/>

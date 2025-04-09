@@ -10,7 +10,12 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
 
 
 
@@ -18,5 +23,7 @@
                  FontSize="16" TextChanged="txtBoxSearchBar_TextChanged"/>
         <Button Grid.Column="1"  x:Name="BtnRefresh" Height="30" Width="30" Margin="5" VerticalAlignment="Top" HorizontalAlignment="Right"
                 Content="🔄" Click="BtnRefresh_Click"/>
+        <Button Grid.Column="2"  x:Name="BtnAddRow" Height="30" Width="120" Margin="5" VerticalAlignment="Top" HorizontalAlignment="Right"
+                Content="Add new Equipment" Click="BtnAddRow_Click"/>
     </Grid>
 </UserControl>
