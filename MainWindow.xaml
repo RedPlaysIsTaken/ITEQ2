@@ -300,97 +300,97 @@
                 <WrapPanel Orientation="Horizontal">
                     <StackPanel Margin="5">
                         <TextBlock Text="GG-LABEL"/>
-                        <TextBox Text="{Binding GgLabel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120"/>
+                        <TextBox Text="{Binding GgLabel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Height="30" FontSize="18"/>
                     </StackPanel>
 
                     <StackPanel Margin="5">
                         <TextBlock Text="TYPE"/>
-                        <TextBox Text="{Binding Type, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120"/>
+                        <TextBox Text="{Binding Type, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Height="30" FontSize="18"/>
                     </StackPanel>
 
                     <StackPanel Margin="5">
                         <TextBlock Text="MAKE"/>
-                        <TextBox Text="{Binding Make, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120"/>
+                        <TextBox Text="{Binding Make, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Height="30" FontSize="18"/>
                     </StackPanel>
 
                     <StackPanel Margin="5">
                         <TextBlock Text="MODEL"/>
-                        <TextBox Text="{Binding Model, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120"/>
+                        <TextBox Text="{Binding Model, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Height="30" FontSize="18"/>
                     </StackPanel>
 
                     <StackPanel Margin="5">
                         <TextBlock Text="SERIAL NO"/>
-                        <TextBox Text="{Binding SerialNo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120"/>
+                        <TextBox Text="{Binding SerialNo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Height="30" FontSize="18"/>
                     </StackPanel>
 
                     <StackPanel Margin="5">
                         <TextBlock Text="SECURITY ID"/>
-                        <TextBox Text="{Binding SecurityId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120"/>
+                        <TextBox Text="{Binding SecurityId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Height="30" FontSize="18"/>
                     </StackPanel>
 
                     <StackPanel Margin="5">
                         <TextBlock Text="USER"/>
-                        <TextBox Text="{Binding User, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120"/>
+                        <TextBox Text="{Binding User, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Height="30" FontSize="18"/>
                     </StackPanel>
 
                     <StackPanel Margin="5">
                         <TextBlock Text="SITE"/>
-                        <TextBox Text="{Binding Site, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120"/>
+                        <TextBox Text="{Binding Site, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Height="30" FontSize="18"/>
                     </StackPanel>
 
                     <StackPanel Margin="5">
                         <TextBlock Text="STATUS"/>
-                        <TextBox Text="{Binding Status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120"/>
+                        <TextBox Text="{Binding Status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Height="30" FontSize="18"/>
                     </StackPanel>
 
                     <StackPanel Margin="5">
                         <TextBlock Text="Purchase date"/>
-                        <TextBox Text="{Binding PurchaseDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120"/>
+                        <TextBox Text="{Binding PurchaseDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Height="30" FontSize="18"/>
                     </StackPanel>
 
                     <StackPanel Margin="5">
                         <TextBlock Text="Received date"/>
-                        <TextBox Text="{Binding Received, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120"/>
+                        <TextBox Text="{Binding Received, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Height="30" FontSize="18"/>
                     </StackPanel>
 
                     <StackPanel Margin="5">
                         <TextBlock Text="Short comment"/>
-                        <TextBox Text="{Binding ShortComment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120"/>
+                        <TextBox Text="{Binding ShortComment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Height="30" FontSize="18"/>
                     </StackPanel>
 
                     <StackPanel Margin="5">
                         <TextBlock Text="PC"/>
-                        <TextBox Text="{Binding PC, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120"/>
+                        <TextBox Text="{Binding PC, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Height="30" FontSize="18"/>
                     </StackPanel>
 
                     <StackPanel Margin="5">
                         <TextBlock Text="USER"/>
-                        <TextBox Text="{Binding FucUser, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120"/>
+                        <TextBox Text="{Binding FucUser, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Height="30" FontSize="18"/>
                     </StackPanel>
 
                     <StackPanel Margin="5">
                         <TextBlock Text="Username"/>
-                        <TextBox Text="{Binding Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120"/>
+                        <TextBox Text="{Binding Username, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Height="30" FontSize="18"/>
                     </StackPanel>
 
                     <StackPanel Margin="5">
                         <TextBlock Text="DATE"/>
-                        <TextBox Text="{Binding Date, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120"/>
+                        <TextBox Text="{Binding Date, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Height="30" FontSize="18"/>
                     </StackPanel>
 
                     <StackPanel Margin="5">
                         <TextBlock Text="ReportDATE"/>
-                        <TextBox Text="{Binding ReportDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120"/>
+                        <TextBox Text="{Binding ReportDate, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Height="30" FontSize="18"/>
                     </StackPanel>
 
                     <StackPanel Margin="5">
                         <TextBlock Text="PCLocation"/>
-                        <TextBox Text="{Binding PCLocation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120"/>
+                        <TextBox Text="{Binding PCLocation, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Height="30" FontSize="18"/>
                     </StackPanel>
 
                     <StackPanel Margin="5">
                         <TextBlock Text="EmplMailadresse"/>
-                        <TextBox Text="{Binding EmplMailAdresse, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120"/>
+                        <TextBox Text="{Binding EmplMailAdresse, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Height="30" FontSize="18" />
                     </StackPanel>
 
                 </WrapPanel>

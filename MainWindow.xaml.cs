@@ -19,6 +19,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Windows.Input;
 using System.Data.Common;
+using System.Windows.Threading;
 
 
 namespace ITEQ2
@@ -71,7 +72,12 @@ namespace ITEQ2
             if (EquipmentListView.SelectedItem != null)
             {
                 DetailsPanel.Visibility = Visibility.Visible;
+                DetailsPanel.Height = double.NaN;
+                DetailsPanel.Width = 800;
+
                 EquipmentListView.Height = double.NaN;
+
+                RefreshHiddenColumns();
             }
         }
         private void CloseDetailsPanel_Click(object sender, RoutedEventArgs e)
@@ -317,6 +323,11 @@ namespace ITEQ2
         }
         private void ListView_SizeChanged(object sender, SizeChangedEventArgs e)
         {
+            RefreshHiddenColumns();
+            Debug.WriteLine("SIZE CHANGED");
+        }
+        private void RefreshHiddenColumns()
+        {
             HiddenColumns.Clear();
 
             foreach (GridViewColumn column in (EquipmentListView.View as GridView).Columns)
@@ -327,7 +338,6 @@ namespace ITEQ2
                         ? header.Content.ToString()
                         : column.Header.ToString();
 
-                    Debug.WriteLine($"{headerText} is now hidden!");
                     HiddenColumns.Add(headerText);
                 }
             }
@@ -372,7 +382,7 @@ namespace ITEQ2
             {
                 List<EquipmentObject> equipmentList;
 
-                // Step 1: Load existing records
+                // get current data
                 using (var reader = new StreamReader(_workingDocPath))
                 using (var csvReader = new CsvReader(reader, config))
                 {
@@ -380,7 +390,7 @@ namespace ITEQ2
                     equipmentList = csvReader.GetRecords<EquipmentObject>().ToList();
                 }
 
-                // Step 2: Get next gglabel value
+                // add next row number
                 int maxGgLabel = equipmentList.Any()
                     ? equipmentList.Max(e => int.TryParse(e.GgLabel, out int val) ? val : 0)
                     : 0;
@@ -388,12 +398,11 @@ namespace ITEQ2
                 var newItem = new EquipmentObject
                 {
                     GgLabel = (maxGgLabel + 1).ToString()
-                    // Other fields will remain blank/null
                 };
 
                 equipmentList.Add(newItem);
 
-                // Step 3: Save back to CSV
+                // Save the file with the new row
                 using (var writer = new StreamWriter(_workingDocPath))
                 using (var csvWriter = new CsvWriter(writer, config))
                 {
@@ -401,13 +410,7 @@ namespace ITEQ2
                     csvWriter.WriteRecords(equipmentList);
                 }
 
-                // Step 4: Reload to UI
-                EquipmentList.Clear();
-                foreach (var item in equipmentList)
-                    EquipmentList.Add(item);
-
-                EquipmentListView.ItemsSource = null;
-                EquipmentListView.ItemsSource = EquipmentList;
+                IntializeData(); //refresh
 
                 var addedItem = EquipmentList.FirstOrDefault(e => e.GgLabel == (maxGgLabel + 1).ToString());
                 if (addedItem != null)
