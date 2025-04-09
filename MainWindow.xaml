@@ -276,6 +276,7 @@
                                 </GridViewColumnHeader.ContextMenu>
                             </GridViewColumnHeader>
                         </GridViewColumn>
+                        
                     </GridView>
                 </ListView.View>
             </ListView>
