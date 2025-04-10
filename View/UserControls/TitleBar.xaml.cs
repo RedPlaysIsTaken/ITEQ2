@@ -13,6 +13,34 @@ namespace ITEQ2.View.UserControls
         public TitleBar()
         {
             InitializeComponent();
+
+            this.Loaded += (s, e) =>
+            {
+                var window = Window.GetWindow(this);
+                if (window != null)
+                {
+                    window.StateChanged += Window_StateChanged; // ✅ hook here
+                }
+            };
+        }
+        private void Window_StateChanged(object sender, EventArgs e)
+        {
+            var window = sender as Window;
+            if (window == null) return;
+
+            if (window.WindowState == WindowState.Maximized)
+            {
+                // Prevent actual maximize by restoring immediately
+                window.WindowState = WindowState.Normal;
+
+                // Optionally resize manually to simulate a "maximized" look
+                var workingArea = SystemParameters.WorkArea;
+                window.Left = workingArea.Left;
+                window.Top = workingArea.Top;
+                window.Width = workingArea.Width;
+                window.Height = workingArea.Height;
+                _isMaximized = true;
+            }
         }
 
         private Point _startPoint; // Tracks the initial mouse position
@@ -37,6 +65,7 @@ namespace ITEQ2.View.UserControls
             {
                 if (_isMaximized)
                 {
+                    // if the window is maximized, restore it to normal size
                     window.Width = 1280;
                     window.Height = 720;
                     window.Left = (SystemParameters.PrimaryScreenWidth - window.Width) / 2;
@@ -45,12 +74,13 @@ namespace ITEQ2.View.UserControls
                 }
                 else
                 {
+                    // if the window is not maximized, maximize it
                     var workingArea = SystemParameters.WorkArea;
                     window.Left = workingArea.Left;
                     window.Top = workingArea.Top;
                     window.Width = workingArea.Width;
                     window.Height = workingArea.Height;
-                    _isMaximized = true;
+                    _isMaximized = true; // sets maximized state to true
                 }
             }
         }
@@ -133,6 +163,7 @@ namespace ITEQ2.View.UserControls
             // Reset drag state on mouse release
             _isDragging = false;
         }
-        
+     
+
     }
 }
