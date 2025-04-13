@@ -10,11 +10,28 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Styles\icons\Alt.ico" />
+    <None Remove="Styles\icons\Icon1.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="CsvHelper" Version="33.0.1" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Temp\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Styles\icons\Alt.ico">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Styles\icons\Alt2.ico">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Styles\icons\Icon1.ico">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
 </Project>
