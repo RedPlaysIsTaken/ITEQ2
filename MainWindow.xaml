@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ITEQ2"
         xmlns:UserControls="clr-namespace:ITEQ2.View.UserControls"
         mc:Ignorable="d" WindowStyle="None"
-        Title="MainWindow" Height="720" Width="1280">
+        Title="MainWindow" Height="720" Width="1280" Icon="/Styles/icons/ChatGPT Image 13. apr. 2025, 13_53_38(1).ico">
     <WindowChrome.WindowChrome>
         <WindowChrome GlassFrameThickness="0" CornerRadius="0" CaptionHeight="0"/>
     </WindowChrome.WindowChrome>
