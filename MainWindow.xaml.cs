@@ -72,8 +72,8 @@ namespace ITEQ2
             if (EquipmentListView.SelectedItem != null)
             {
                 DetailsPanel.Visibility = Visibility.Visible;
-                DetailsPanel.Height = double.NaN;
-                DetailsPanel.Width = 800;
+                DetailsPanel.Height = 300;
+                DetailsPanel.Width = double.NaN;
 
                 EquipmentListView.Height = double.NaN;
 
