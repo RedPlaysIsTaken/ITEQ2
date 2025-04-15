@@ -72,8 +72,8 @@ namespace ITEQ2
             if (EquipmentListView.SelectedItem != null)
             {
                 DetailsPanel.Visibility = Visibility.Visible;
-                DetailsPanel.Height = double.NaN;
-                DetailsPanel.Width = 800;
+                DetailsPanel.Height = 300;
+                DetailsPanel.Width = double.NaN;
 
                 EquipmentListView.Height = double.NaN;
 
@@ -332,13 +332,30 @@ namespace ITEQ2
 
             foreach (GridViewColumn column in (EquipmentListView.View as GridView).Columns)
             {
-                if (column.Width == 0)
-                {
-                    string headerText = (column.Header is GridViewColumnHeader header)
+                string headerText = (column.Header is GridViewColumnHeader header)
                         ? header.Content.ToString()
                         : column.Header.ToString();
-
-                    HiddenColumns.Add(headerText);
+                if (column.Width == 0)
+                {
+                    if (HiddenColumns.Contains(headerText)) 
+                    {
+                        Debug.WriteLine($"Column '{headerText}' is already hidden.");
+                        return; // Skip if already hidden
+                    }
+                    else 
+                    {
+                        HiddenColumns.Add(headerText);
+                        Debug.WriteLine($"Column '{headerText}' is now hidden.");
+                    }
+                    
+                }
+                else
+                {
+                    if (HiddenColumns.Contains(headerText))
+                    {
+                        HiddenColumns.Remove(headerText);
+                        Debug.WriteLine($"Column '{headerText}' is now visible.");
+                    }
                 }
             }
         }
