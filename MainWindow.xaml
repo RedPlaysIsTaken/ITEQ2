@@ -397,7 +397,7 @@
             </StackPanel>
 
 
-            <TabControl>
+            <TabControl> 
                 <TabItem Header="Hidden Columns" Name="HiddenColumnsTab">
                     <Grid Background="#FFE5E5E5">
                         <Grid.ColumnDefinitions>
