@@ -50,8 +50,7 @@
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
 
 
@@ -291,8 +290,9 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Grid.Row="1" Grid.Column="1" x:Name="DetailsPanel"
-                DataContext="{Binding SelectedItem, ElementName=EquipmentListView}"
-                Visibility="Collapsed" HorizontalAlignment="Center" Background="LightGray">
+                            DataContext="{Binding SelectedItem, ElementName=EquipmentListView}"
+                            Visibility="Collapsed" 
+                            HorizontalAlignment="Center" Background="LightGray" Margin="10">
 
 
                     <!-- Button to save changes -->
