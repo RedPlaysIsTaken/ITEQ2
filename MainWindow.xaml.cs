@@ -19,6 +19,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Windows.Input;
 using System.Data.Common;
+using System.Windows.Threading;
 
 
 namespace ITEQ2
@@ -52,6 +53,7 @@ namespace ITEQ2
             SearchBarControl.SearchPerformed += OnSearchPerformed; // Check if the save event has been called from the SearchBar
             MenuBarControl.SaveRequested += OnSaveRequested; // Check if the save event has been called from the MenuBar
 
+
             Footer_Control footerControlInstance = this.FindName("FooterControl") as Footer_Control;
             if (footerControlInstance != null)
             {
@@ -61,12 +63,21 @@ namespace ITEQ2
 
             IntializeData();
         }
+        private void SaveDetailsPanel_Click(object sender, RoutedEventArgs e)
+        {
+            SaveChangesToCsv(_workingDocPath);
+        }
         private void EquipmentListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (EquipmentListView.SelectedItem != null)
             {
                 DetailsPanel.Visibility = Visibility.Visible;
+                DetailsPanel.Height = 300;
+                DetailsPanel.Width = double.NaN;
+
                 EquipmentListView.Height = double.NaN;
+
+                RefreshHiddenColumns();
             }
         }
         private void CloseDetailsPanel_Click(object sender, RoutedEventArgs e)
@@ -172,7 +183,7 @@ namespace ITEQ2
 
                 csv.WriteRecords(equipmentListCopy);
 
-                MessageBox.Show("Changes saved successfully! with the new method", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                //MessageBox.Show("Changes saved successfully! with the new method", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
             {
@@ -310,14 +321,12 @@ namespace ITEQ2
                 column.Width = 100; // Reset to default width
             }
         }
-        //protected void OnWidthChanged(object sender, SizeChangedEventArgs e)
-        //{
-        //    if (column.Width == 0)
-        //    {
-        //        Debug.WriteLine("wingow");
-        //    }
-        //}
         private void ListView_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            RefreshHiddenColumns();
+            Debug.WriteLine("SIZE CHANGED");
+        }
+        private void RefreshHiddenColumns()
         {
             HiddenColumns.Clear();
 
@@ -374,6 +383,73 @@ namespace ITEQ2
                 }
             }
         }
-    }
+        public void AddNewEquipment()
+        {
+            var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+            {
+                Delimiter = ",",
+                Quote = '"',
+                Escape = '"',
+                PrepareHeaderForMatch = args => args.Header.ToLower(),
+                MissingFieldFound = null,
+                HeaderValidated = null
+            };
 
+            try
+            {
+                List<EquipmentObject> equipmentList;
+
+                // get current data
+                using (var reader = new StreamReader(_workingDocPath))
+                using (var csvReader = new CsvReader(reader, config))
+                {
+                    csvReader.Context.RegisterClassMap<UnifiedModelMap>();
+                    equipmentList = csvReader.GetRecords<EquipmentObject>().ToList();
+                }
+
+                // add next row number
+                int maxGgLabel = equipmentList.Any()
+                    ? equipmentList.Max(e => int.TryParse(e.GgLabel, out int val) ? val : 0)
+                    : 0;
+
+                var newItem = new EquipmentObject
+                {
+                    GgLabel = (maxGgLabel + 1).ToString()
+                };
+
+                equipmentList.Add(newItem);
+
+                // Save the file with the new row
+                using (var writer = new StreamWriter(_workingDocPath))
+                using (var csvWriter = new CsvWriter(writer, config))
+                {
+                    csvWriter.Context.RegisterClassMap<UnifiedModelMap>();
+                    csvWriter.WriteRecords(equipmentList);
+                }
+
+                IntializeData(); //refresh
+
+                var addedItem = EquipmentList.FirstOrDefault(e => e.GgLabel == (maxGgLabel + 1).ToString());
+                if (addedItem != null)
+                {
+                    EquipmentListView.SelectedItem = addedItem;
+                    EquipmentListView.ScrollIntoView(addedItem);
+
+                    // Manually invoke double-click logic
+                    EquipmentListView_MouseDoubleClick(
+                        EquipmentListView,
+                        new MouseButtonEventArgs(Mouse.PrimaryDevice, 0, MouseButton.Left)
+                        {
+                            RoutedEvent = Control.MouseDoubleClickEvent
+                        }
+                    );
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error updating equipment list: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+    }
 }

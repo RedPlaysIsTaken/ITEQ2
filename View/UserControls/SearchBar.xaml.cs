@@ -37,7 +37,7 @@ namespace ITEQ2.View.UserControls
 
             string searchText = txtBoxSearchBar.Text.Trim();
 
-            SearchPerformed?.Invoke(searchText); 
+            SearchPerformed?.Invoke(searchText);
         }
 
         private void BtnRefresh_Click(object sender, RoutedEventArgs e)
@@ -46,6 +46,15 @@ namespace ITEQ2.View.UserControls
             if (mainWindow != null)
             {
                 mainWindow.IntializeData(); 
+            }
+        }
+
+        private void BtnAddRow_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow mainWindow = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+            if (mainWindow != null)
+            {
+                mainWindow.AddNewEquipment();
             }
         }
     }
