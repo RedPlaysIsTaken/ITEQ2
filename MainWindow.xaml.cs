@@ -62,6 +62,39 @@ namespace ITEQ2
             }
 
             IntializeData();
+
+            PropertyDescriptor pd = DependencyPropertyDescriptor.FromProperty(
+                GridViewColumn.WidthProperty, typeof(GridViewColumn));
+            GridView gv = (GridView)EquipmentListView.View;
+            foreach (GridViewColumn col in gv.Columns)
+            {
+                pd.AddValueChanged(col, ColumnWidthChanged);
+            }
+        }
+        private void ColumnWidthChanged(object sender, EventArgs e)
+        {
+            if (sender is GridViewColumn column)
+            {
+                string headerText = (column.Header is GridViewColumnHeader header)
+                        ? header.Content.ToString()
+                        : column.Header.ToString();
+                if (column.Width == 0)
+                {
+                    if (!HiddenColumns.Contains(headerText)) 
+                    {
+                        HiddenColumns.Add(headerText);
+                        Debug.WriteLine($"Column '{headerText}' is now hidden with new stuff.");
+                    }
+                }
+                else
+                {
+                    if (HiddenColumns.Contains(headerText))
+                    {
+                        HiddenColumns.Remove(headerText);
+                        Debug.WriteLine($"Column '{headerText}' is now visible with new stuff.");
+                    }
+                }
+            }
         }
         private void SaveDetailsPanel_Click(object sender, RoutedEventArgs e)
         {
@@ -77,7 +110,7 @@ namespace ITEQ2
 
                 EquipmentListView.Height = double.NaN;
 
-                RefreshHiddenColumns();
+                //RefreshHiddenColumns();
             }
         }
         private void CloseDetailsPanel_Click(object sender, RoutedEventArgs e)
@@ -319,44 +352,6 @@ namespace ITEQ2
             foreach (var column in ((GridView)EquipmentListView.View).Columns)
             {
                 column.Width = 100; // Reset to default width
-            }
-        }
-        private void ListView_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            RefreshHiddenColumns();
-            Debug.WriteLine("SIZE CHANGED");
-        }
-        private void RefreshHiddenColumns()
-        {
-            HiddenColumns.Clear();
-
-            foreach (GridViewColumn column in (EquipmentListView.View as GridView).Columns)
-            {
-                string headerText = (column.Header is GridViewColumnHeader header)
-                        ? header.Content.ToString()
-                        : column.Header.ToString();
-                if (column.Width == 0)
-                {
-                    if (HiddenColumns.Contains(headerText)) 
-                    {
-                        Debug.WriteLine($"Column '{headerText}' is already hidden.");
-                        return; // Skip if already hidden
-                    }
-                    else 
-                    {
-                        HiddenColumns.Add(headerText);
-                        Debug.WriteLine($"Column '{headerText}' is now hidden.");
-                    }
-                    
-                }
-                else
-                {
-                    if (HiddenColumns.Contains(headerText))
-                    {
-                        HiddenColumns.Remove(headerText);
-                        Debug.WriteLine($"Column '{headerText}' is now visible.");
-                    }
-                }
             }
         }
         private void HiddenColumn_Click(object sender, MouseButtonEventArgs e)

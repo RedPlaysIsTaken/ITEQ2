@@ -50,21 +50,23 @@
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="800*"/>
+                <ColumnDefinition Width="200"/>
             </Grid.ColumnDefinitions>
 
 
 
 
             <!-- List of Equipent -->
-            <ListView Grid.Row="0" Grid.Column="1" 
-                      SizeChanged="ListView_SizeChanged"
+            <ListView Grid.Row="0" Grid.Column="1"
                       x:Name="EquipmentListView" 
                       MouseDoubleClick="EquipmentListView_MouseDoubleClick"
                       GridViewColumnHeader.Click="EquipmentListView_Click"  
                       ItemsSource="{Binding EquipmentList}"
                       HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
                       FontSize="12">
+                <!-->SizeChanged="ListView_SizeChanged" -->
+
                 <ListView.View>
                     <GridView AllowsColumnReorder="True">
 
