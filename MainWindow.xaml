@@ -436,10 +436,11 @@
                         </Grid.ColumnDefinitions>
 
                         <StackPanel Margin="5">
-                            <ItemsControl ItemsSource="{Binding HiddenColumns}">
+                            <ItemsControl ItemsSource="{Binding GridViewPresets}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <TextBlock Text="{Binding}" Width="100" Height="30"/>
+                                        <TextBlock Text="{Binding}" Foreground="Black" Cursor="Hand" FontSize="14" FontWeight="Bold"
+                                   Width="100" Height="30" MouseLeftButtonDown="GridViewPreset_Click"/>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>

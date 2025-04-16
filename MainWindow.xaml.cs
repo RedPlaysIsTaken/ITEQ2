@@ -20,21 +20,20 @@ using System.Diagnostics;
 using System.Windows.Input;
 using System.Data.Common;
 using System.Windows.Threading;
+using ITEQ2.Presets;
+using Microsoft.VisualBasic;
 
 
 namespace ITEQ2
 {
     public partial class MainWindow : Window
     {
-        //private GridViewColumnHeader _lastHeaderClicked = null; // Keeps track of the last header clicked
-        //private ListSortDirection _lastDirection = ListSortDirection.Ascending; // Switches between ascending and descending when filtering
-
-
-        public ObservableCollection<EquipmentObject> EquipmentList { get; set; } = new();
+        public ObservableCollection<EquipmentObject> EquipmentList { get; set; } = new();// The list of equipment
         public ObservableCollection<EquipmentObject> SearchedEquipmentList { get; set; }// = new();// Filtered dataset (after a search)
         private Dictionary<EquipmentObject, Dictionary<string, object>> _modifiedRecords = new(); // Keeps track of what fields have been changed and what they have been changed to
         private string _workingDocPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "workingDoc.csv"); // local variable for the path of the working document
         private string _fucDocPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "fucReportExampleData.csv"); // local variable for the path of the fucreport
+        public ObservableCollection<string> GridViewPresets { get; set; } = new(); // list of the grid presets
 
         GridViewColumnHeader _lastHeaderClicked = null;
         ListSortDirection _lastDirection = ListSortDirection.Ascending;
@@ -70,6 +69,8 @@ namespace ITEQ2
             {
                 pd.AddValueChanged(col, ColumnWidthChanged);
             }
+
+            loadGridPresets();
         }
         private void ColumnWidthChanged(object sender, EventArgs e)
         {
@@ -78,12 +79,13 @@ namespace ITEQ2
                 string headerText = (column.Header is GridViewColumnHeader header)
                         ? header.Content.ToString()
                         : column.Header.ToString();
+                Debug.WriteLine($"Column '{headerText}' has width: '{column.Width}'.");
                 if (column.Width == 0)
                 {
                     if (!HiddenColumns.Contains(headerText)) 
                     {
                         HiddenColumns.Add(headerText);
-                        Debug.WriteLine($"Column '{headerText}' is now hidden with new stuff.");
+                        Debug.WriteLine($"Column '{headerText}' is now hidden.");
                     }
                 }
                 else
@@ -91,11 +93,57 @@ namespace ITEQ2
                     if (HiddenColumns.Contains(headerText))
                     {
                         HiddenColumns.Remove(headerText);
-                        Debug.WriteLine($"Column '{headerText}' is now visible with new stuff.");
+                        Debug.WriteLine($"Column '{headerText}' is now visible.");
                     }
                 }
             }
         }
+        public void SaveGridPreset()
+        {
+            GridView gv = (GridView)EquipmentListView.View;
+
+            string presetName = Interaction.InputBox("Enter preset name:", "Save GridView Preset", "MyPreset");
+            if (string.IsNullOrWhiteSpace(presetName)) return;
+
+            GridViewPresetManager.SavePreset(presetName, gv);
+
+            foreach (string name in GridViewPresetManager.GetAvailablePresets())
+            {
+                Debug.WriteLine($"Saved preset: '{name}'");
+            }
+            loadGridPresets();
+        }
+        private void loadGridPresets()
+        {
+            GridViewPresets.Clear();
+            foreach (var preset in GridViewPresetManager.GetAvailablePresets())
+            {
+                GridViewPresets.Add(preset);
+            }
+        }
+        private void GridViewPreset_Click(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is TextBlock tb && !string.IsNullOrWhiteSpace(tb.Text))
+            {
+                if (EquipmentListView.View is GridView gv)
+                {
+                    GridViewPresetManager.LoadPreset(tb.Text, gv);
+                }
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
         private void SaveDetailsPanel_Click(object sender, RoutedEventArgs e)
         {
             SaveChangesToCsv(_workingDocPath);
@@ -109,8 +157,6 @@ namespace ITEQ2
                 DetailsPanel.Width = double.NaN;
 
                 EquipmentListView.Height = double.NaN;
-
-                //RefreshHiddenColumns();
             }
         }
         private void CloseDetailsPanel_Click(object sender, RoutedEventArgs e)

@@ -1,4 +1,5 @@
 ﻿using ITEQ2.CsvHandling;
+using ITEQ2.Presets;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -55,6 +56,15 @@ namespace ITEQ2.View.UserControls
             if (mainWindow != null)
             {
                 mainWindow.AddNewEquipment();
+            }
+        }
+
+        private void BtnCreateGridPreset_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow mainWindow = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+            if (mainWindow != null)
+            {
+                mainWindow.SaveGridPreset();
             }
         }
     }
