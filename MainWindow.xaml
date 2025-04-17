@@ -60,6 +60,7 @@
             <!-- List of Equipent -->
             <ListView Grid.Row="0" Grid.Column="1"
                       x:Name="EquipmentListView" 
+                      SelectionMode="Extended"
                       MouseDoubleClick="EquipmentListView_MouseDoubleClick"
                       GridViewColumnHeader.Click="EquipmentListView_Click"  
                       ItemsSource="{Binding EquipmentList}"
@@ -406,6 +407,9 @@
                 </StackPanel>
             </Grid>
 
+            <Grid Grid.Column="2">
+                
+            </Grid>
 
             <TabControl> 
                 <TabItem Header="Hidden Columns" Name="HiddenColumnsTab">
@@ -431,8 +435,7 @@
                 <TabItem Header="Column Presets">
                     <Grid Background="#FFE5E5E5">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="55*"/>
-                            <ColumnDefinition Width="137*"/>
+                            <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
 
                         <StackPanel Margin="5">

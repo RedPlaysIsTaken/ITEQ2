@@ -22,6 +22,7 @@ using System.Data.Common;
 using System.Windows.Threading;
 using ITEQ2.Presets;
 using Microsoft.VisualBasic;
+using ITEQ2.View.Windows;
 
 
 namespace ITEQ2
@@ -70,7 +71,7 @@ namespace ITEQ2
                 pd.AddValueChanged(col, ColumnWidthChanged);
             }
 
-            loadGridPresets();
+            LoadGridPresets();
         }
         private void ColumnWidthChanged(object sender, EventArgs e)
         {
@@ -111,9 +112,9 @@ namespace ITEQ2
             {
                 Debug.WriteLine($"Saved preset: '{name}'");
             }
-            loadGridPresets();
+            LoadGridPresets();
         }
-        private void loadGridPresets()
+        private void LoadGridPresets()
         {
             GridViewPresets.Clear();
             foreach (var preset in GridViewPresetManager.GetAvailablePresets())
@@ -130,6 +131,52 @@ namespace ITEQ2
                     GridViewPresetManager.LoadPreset(tb.Text, gv);
                 }
             }
+        }
+        public void SetValuesForSelectedRows()
+        {
+            var selectedItems = EquipmentListView.SelectedItems.Cast<EquipmentObject>().ToList();
+            if (selectedItems.Count == 0)
+            {
+                MessageBox.Show("Please select one or more rows", "Warning", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            var changeValuesDialog = new ChangeMultipleValuesWindow();
+            changeValuesDialog.Owner = this;
+
+            changeValuesDialog.ApplyClicked += (field, value) =>
+            {
+                var selectedItems = EquipmentListView.SelectedItems.Cast<EquipmentObject>().ToList();
+
+                foreach (var item in selectedItems)
+                {
+                    switch (field)
+                    {
+                        case "GG-LABEL": item.GgLabel = value; break;
+                        case "TYPE": item.Type = value; break;
+                        case "MAKE": item.Make = value; break;
+                        case "MODEL": item.Model = value; break;
+                        case "SERIAL NO": item.SerialNo = value; break;
+                        case "SECURITY ID": item.SecurityId = value; break;
+                        case "User": item.User = value; break;
+                        case "Site": item.Site = value; break;
+                        case "Status": item.Status = value; break;
+                        case "Purchase date":
+                            if (DateTime.TryParse(value, out var d1)) item.PurchaseDate = d1;
+                            break;
+                        case "Recieved":
+                            if (DateTime.TryParse(value, out var d2)) item.Received = d2;
+                            break;
+                        case "Short comment": item.ShortComment = value; break;
+                    }
+
+                    if (!_modifiedRecords.ContainsKey(item))
+                        _modifiedRecords[item] = new Dictionary<string, object>();
+
+                    _modifiedRecords[item][field] = value;
+                }
+            };
+            changeValuesDialog.Show();
         }
 
 

@@ -67,5 +67,13 @@ namespace ITEQ2.View.UserControls
                 mainWindow.SaveGridPreset();
             }
         }
+        private void BtnSetValuesForSelectedRows_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow mainWindow = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+            if (mainWindow != null)
+            {
+                mainWindow.SetValuesForSelectedRows();
+            }
+        }
     }
 }
