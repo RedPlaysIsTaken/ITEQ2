@@ -42,8 +42,6 @@ namespace ITEQ2
         //list of columns with 0 width
         public ObservableCollection<string> HiddenColumns { get; set; } = new ObservableCollection<string>();
 
-
-
         public MainWindow() // Main program window
         {
             InitializeComponent(); // Start/open the main window.
@@ -54,6 +52,7 @@ namespace ITEQ2
 
             SearchBarControl.SearchPerformed += OnSearchPerformed; // Check if the save event has been called from the SearchBar
             MenuBarControl.SaveRequested += OnSaveRequested; // Check if the save event has been called from the MenuBar
+
 
             Footer_Control footerControlInstance = this.FindName("FooterControl") as Footer_Control;
             if (footerControlInstance != null)
@@ -123,25 +122,9 @@ namespace ITEQ2
                 GridViewPresets.Add(preset);
             }
         }
-        private string _selectedPresetName;
-        public string SelectedPresetName
-        {
-            get => _selectedPresetName;
-            set
-            {
-                _selectedPresetName = value;
-                OnPropertyChanged(nameof(SelectedPresetName));
-            }
-        }
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
         private void GridViewPreset_Click(object sender, MouseButtonEventArgs e)
         {
-            TextBlock tb = (TextBlock)sender;
-            if (sender is TextBlock && !string.IsNullOrWhiteSpace(tb.Text))
+            if (sender is TextBlock tb && !string.IsNullOrWhiteSpace(tb.Text))
             {
                 if (EquipmentListView.View is GridView gv)
                 {
