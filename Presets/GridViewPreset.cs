@@ -13,6 +13,7 @@ namespace ITEQ2.Presets
     {
         public string Name { get; set; }
         public List<double> ColumnWidths { get; set; } = new();
+        public List<string> ColumnOrder { get; set; } = new();
     }
 
     public static class GridViewPresetManager
@@ -26,9 +27,11 @@ namespace ITEQ2.Presets
             Directory.CreateDirectory(PresetFolder);
 
             var preset = new GridViewPreset { Name = name };
+
             foreach (var column in gridView.Columns)
             {
                 preset.ColumnWidths.Add(column.Width);
+                preset.ColumnOrder.Add(column.Header?.ToString());
             }
 
             var json = JsonSerializer.Serialize(preset);
@@ -42,6 +45,23 @@ namespace ITEQ2.Presets
 
             var json = File.ReadAllText(path);
             var preset = JsonSerializer.Deserialize<GridViewPreset>(json);
+
+            if (preset.ColumnOrder.Count > 0)
+            {
+                var currentColumns = gridView.Columns.ToList();
+                var orderedColumns = new List<GridViewColumn>();
+
+                foreach (var header in preset.ColumnOrder)
+                {
+                    var col = currentColumns.FirstOrDefault(c => c.Header?.ToString() == header);
+                    if (col != null)
+                        orderedColumns.Add(col);
+                }
+
+                gridView.Columns.Clear();
+                foreach (var col in orderedColumns)
+                    gridView.Columns.Add(col);
+            }
 
             for (int i = 0; i < preset.ColumnWidths.Count && i < gridView.Columns.Count; i++)
             {
