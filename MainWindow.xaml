@@ -43,379 +43,385 @@
 
         <!-- Main Application -->
         <Grid Grid.Row="3">
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition x:Name="PropertiesRow" Height="Auto"/>
-            </Grid.RowDefinitions>
-
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="800*"/>
                 <ColumnDefinition Width="200"/>
             </Grid.ColumnDefinitions>
+            
+            <Grid Grid.Row="1" Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition x:Name="PropertiesRow" Height="Auto"/>
+                </Grid.RowDefinitions>
 
 
+                <!-- List of Equipent -->
+                <ListView Grid.Row="0" Grid.Column="1"
+                          x:Name="EquipmentListView" 
+                          SelectionMode="Extended"
+                          MouseDoubleClick="EquipmentListView_MouseDoubleClick"
+                          PreviewMouseWheel="EquipmentListView_PreviewMouseWheel"
+                          GridViewColumnHeader.Click="EquipmentListView_Click"  
+                          ItemsSource="{Binding EquipmentList}"
+                          HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+                          FontSize="12">
+                    <!-->SizeChanged="ListView_SizeChanged" -->
+
+                    <ListView.LayoutTransform>
+                        <ScaleTransform x:Name="GridZoomTransform" ScaleX="1.0" ScaleY="1.0" />
+                    </ListView.LayoutTransform>
+                    <ListView.View>
+                        <GridView AllowsColumnReorder="True">
+
+                            <GridViewColumn DisplayMemberBinding="{Binding GgLabel}" Width="100">
+                                <GridViewColumnHeader Content="GG-LABEL" ContextMenuOpening="ColumnHeader_RightClick">
+                                    <GridViewColumnHeader.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="Hide" Click="HideColumn_Click"/>
+                                            <MenuItem Header="Reset Columns" Click="ResetColumns_Click"/>
+                                        </ContextMenu>
+                                    </GridViewColumnHeader.ContextMenu>
+                                </GridViewColumnHeader>
+                            </GridViewColumn>
+
+                            <GridViewColumn DisplayMemberBinding="{Binding Type}" Width="100">
+                                <GridViewColumnHeader Content="TYPE" ContextMenuOpening="ColumnHeader_RightClick">
+                                    <GridViewColumnHeader.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="Hide" Click="HideColumn_Click"/>
+                                            <MenuItem Header="Reset Columns" Click="ResetColumns_Click"/>
+                                        </ContextMenu>
+                                    </GridViewColumnHeader.ContextMenu>
+                                </GridViewColumnHeader>
+                            </GridViewColumn>
+
+                            <GridViewColumn DisplayMemberBinding="{Binding Make}" Width="100">
+                                <GridViewColumnHeader Content="MAKE" ContextMenuOpening="ColumnHeader_RightClick">
+                                    <GridViewColumnHeader.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="Hide" Click="HideColumn_Click"/>
+                                            <MenuItem Header="Reset Columns" Click="ResetColumns_Click"/>
+                                        </ContextMenu>
+                                    </GridViewColumnHeader.ContextMenu>
+                                </GridViewColumnHeader>
+                            </GridViewColumn>
+
+                            <GridViewColumn DisplayMemberBinding="{Binding Model}" Width="100">
+                                <GridViewColumnHeader Content="MODEL" ContextMenuOpening="ColumnHeader_RightClick">
+                                    <GridViewColumnHeader.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="Hide" Click="HideColumn_Click"/>
+                                            <MenuItem Header="Reset Columns" Click="ResetColumns_Click"/>
+                                        </ContextMenu>
+                                    </GridViewColumnHeader.ContextMenu>
+                                </GridViewColumnHeader>
+                            </GridViewColumn>
+
+                            <GridViewColumn DisplayMemberBinding="{Binding SerialNo}" Width="100">
+                                <GridViewColumnHeader Content="SERIAL NO" ContextMenuOpening="ColumnHeader_RightClick">
+                                    <GridViewColumnHeader.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="Hide" Click="HideColumn_Click"/>
+                                            <MenuItem Header="Reset Columns" Click="ResetColumns_Click"/>
+                                        </ContextMenu>
+                                    </GridViewColumnHeader.ContextMenu>
+                                </GridViewColumnHeader>
+                            </GridViewColumn>
+
+                            <GridViewColumn DisplayMemberBinding="{Binding SecurityId}" Width="100">
+                                <GridViewColumnHeader Content="SECURITY ID" ContextMenuOpening="ColumnHeader_RightClick">
+                                    <GridViewColumnHeader.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="Hide" Click="HideColumn_Click"/>
+                                            <MenuItem Header="Reset Columns" Click="ResetColumns_Click"/>
+                                        </ContextMenu>
+                                    </GridViewColumnHeader.ContextMenu>
+                                </GridViewColumnHeader>
+                            </GridViewColumn>
+
+                            <GridViewColumn DisplayMemberBinding="{Binding User}" Width="100">
+                                <GridViewColumnHeader Content="User" ContextMenuOpening="ColumnHeader_RightClick">
+                                    <GridViewColumnHeader.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="Hide" Click="HideColumn_Click"/>
+                                            <MenuItem Header="Reset Columns" Click="ResetColumns_Click"/>
+                                        </ContextMenu>
+                                    </GridViewColumnHeader.ContextMenu>
+                                </GridViewColumnHeader>
+                            </GridViewColumn>
+
+                            <GridViewColumn DisplayMemberBinding="{Binding Site}" Width="100">
+                                <GridViewColumnHeader Content="Site" ContextMenuOpening="ColumnHeader_RightClick">
+                                    <GridViewColumnHeader.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="Hide" Click="HideColumn_Click"/>
+                                            <MenuItem Header="Reset Columns" Click="ResetColumns_Click"/>
+                                        </ContextMenu>
+                                    </GridViewColumnHeader.ContextMenu>
+                                </GridViewColumnHeader>
+                            </GridViewColumn>
+
+                            <GridViewColumn DisplayMemberBinding="{Binding Status}" Width="100">
+                                <GridViewColumnHeader Content="Status" ContextMenuOpening="ColumnHeader_RightClick">
+                                    <GridViewColumnHeader.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="Hide" Click="HideColumn_Click"/>
+                                            <MenuItem Header="Reset Columns" Click="ResetColumns_Click"/>
+                                        </ContextMenu>
+                                    </GridViewColumnHeader.ContextMenu>
+                                </GridViewColumnHeader>
+                            </GridViewColumn>
+
+                            <GridViewColumn DisplayMemberBinding="{Binding PurchaseDate}" Width="100">
+                                <GridViewColumnHeader Content="Purchase date" ContextMenuOpening="ColumnHeader_RightClick">
+                                    <GridViewColumnHeader.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="Hide" Click="HideColumn_Click"/>
+                                            <MenuItem Header="Reset Columns" Click="ResetColumns_Click"/>
+                                        </ContextMenu>
+                                    </GridViewColumnHeader.ContextMenu>
+                                </GridViewColumnHeader>
+                            </GridViewColumn>
+
+                            <GridViewColumn DisplayMemberBinding="{Binding Received}" Width="100">
+                                <GridViewColumnHeader Content="Received" ContextMenuOpening="ColumnHeader_RightClick">
+                                    <GridViewColumnHeader.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="Hide" Click="HideColumn_Click"/>
+                                            <MenuItem Header="Reset Columns" Click="ResetColumns_Click"/>
+                                        </ContextMenu>
+                                    </GridViewColumnHeader.ContextMenu>
+                                </GridViewColumnHeader>
+                            </GridViewColumn>
+
+                            <GridViewColumn DisplayMemberBinding="{Binding ShortComment}" Width="100">
+                                <GridViewColumnHeader Content="Short comment" ContextMenuOpening="ColumnHeader_RightClick">
+                                    <GridViewColumnHeader.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="Hide" Click="HideColumn_Click"/>
+                                            <MenuItem Header="Reset Columns" Click="ResetColumns_Click"/>
+                                        </ContextMenu>
+                                    </GridViewColumnHeader.ContextMenu>
+                                </GridViewColumnHeader>
+                            </GridViewColumn>
+
+                            <GridViewColumn DisplayMemberBinding="{Binding PC}" Width="100">
+                                <GridViewColumnHeader Content="PC" ContextMenuOpening="ColumnHeader_RightClick">
+                                    <GridViewColumnHeader.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="Hide" Click="HideColumn_Click"/>
+                                            <MenuItem Header="Reset Columns" Click="ResetColumns_Click"/>
+                                        </ContextMenu>
+                                    </GridViewColumnHeader.ContextMenu>
+                                </GridViewColumnHeader>
+                            </GridViewColumn>
+
+                            <GridViewColumn DisplayMemberBinding="{Binding FucUser}" Width="100">
+                                <GridViewColumnHeader Content="USER(Fuc)" ContextMenuOpening="ColumnHeader_RightClick">
+                                    <GridViewColumnHeader.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="Hide" Click="HideColumn_Click"/>
+                                            <MenuItem Header="Reset Columns" Click="ResetColumns_Click"/>
+                                        </ContextMenu>
+                                    </GridViewColumnHeader.ContextMenu>
+                                </GridViewColumnHeader>
+                            </GridViewColumn>
+
+                            <GridViewColumn DisplayMemberBinding="{Binding Username}" Width="100">
+                                <GridViewColumnHeader Content="Username" ContextMenuOpening="ColumnHeader_RightClick">
+                                    <GridViewColumnHeader.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="Hide" Click="HideColumn_Click"/>
+                                            <MenuItem Header="Reset Columns" Click="ResetColumns_Click"/>
+                                        </ContextMenu>
+                                    </GridViewColumnHeader.ContextMenu>
+                                </GridViewColumnHeader>
+                            </GridViewColumn>
+
+                            <GridViewColumn DisplayMemberBinding="{Binding Date}" Width="100">
+                                <GridViewColumnHeader Content="DATE" ContextMenuOpening="ColumnHeader_RightClick">
+                                    <GridViewColumnHeader.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="Hide" Click="HideColumn_Click"/>
+                                            <MenuItem Header="Reset Columns" Click="ResetColumns_Click"/>
+                                        </ContextMenu>
+                                    </GridViewColumnHeader.ContextMenu>
+                                </GridViewColumnHeader>
+                            </GridViewColumn>
+
+                            <GridViewColumn DisplayMemberBinding="{Binding ReportDate}" Width="100">
+                                <GridViewColumnHeader Content="ReportDATE" ContextMenuOpening="ColumnHeader_RightClick">
+                                    <GridViewColumnHeader.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="Hide" Click="HideColumn_Click"/>
+                                            <MenuItem Header="Reset Columns" Click="ResetColumns_Click"/>
+                                        </ContextMenu>
+                                    </GridViewColumnHeader.ContextMenu>
+                                </GridViewColumnHeader>
+                            </GridViewColumn>
+
+                            <GridViewColumn DisplayMemberBinding="{Binding PCLocation}" Width="100">
+                                <GridViewColumnHeader Content="PCLocation" ContextMenuOpening="ColumnHeader_RightClick">
+                                    <GridViewColumnHeader.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="Hide" Click="HideColumn_Click"/>
+                                            <MenuItem Header="Reset Columns" Click="ResetColumns_Click"/>
+                                        </ContextMenu>
+                                    </GridViewColumnHeader.ContextMenu>
+                                </GridViewColumnHeader>
+                            </GridViewColumn>
+
+                            <GridViewColumn DisplayMemberBinding="{Binding EmplMailAdresse}" Width="100">
+                                <GridViewColumnHeader Content="EmplMailAdresse" ContextMenuOpening="ColumnHeader_RightClick">
+                                    <GridViewColumnHeader.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="Hide" Click="HideColumn_Click"/>
+                                            <MenuItem Header="Reset Columns" Click="ResetColumns_Click"/>
+                                        </ContextMenu>
+                                    </GridViewColumnHeader.ContextMenu>
+                                </GridViewColumnHeader>
+                            </GridViewColumn>
+
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+
+                <!-- Equipment details Stackpanel -->
+                <Grid Grid.Row="1" Grid.Column="1" Width="auto">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0*"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Row="1" Grid.Column="1" x:Name="DetailsPanel"
+                                DataContext="{Binding SelectedItem, ElementName=EquipmentListView}"
+                                Visibility="Collapsed" 
+                                HorizontalAlignment="Center" Background="LightGray" Margin="10">
 
 
-            <!-- List of Equipent -->
-            <ListView Grid.Row="0" Grid.Column="1"
-                      x:Name="EquipmentListView" 
-                      SelectionMode="Extended"
-                      MouseDoubleClick="EquipmentListView_MouseDoubleClick"
-                      GridViewColumnHeader.Click="EquipmentListView_Click"  
-                      ItemsSource="{Binding EquipmentList}"
-                      HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
-                      FontSize="12">
-                <!-->SizeChanged="ListView_SizeChanged" -->
-
-                <ListView.View>
-                    <GridView AllowsColumnReorder="True">
-
-                        <GridViewColumn DisplayMemberBinding="{Binding GgLabel}" Width="100">
-                            <GridViewColumnHeader Content="GG-LABEL" ContextMenuOpening="ColumnHeader_RightClick">
-                                <GridViewColumnHeader.ContextMenu>
-                                    <ContextMenu>
-                                        <MenuItem Header="Hide" Click="HideColumn_Click"/>
-                                        <MenuItem Header="Reset Columns" Click="ResetColumns_Click"/>
-                                    </ContextMenu>
-                                </GridViewColumnHeader.ContextMenu>
-                            </GridViewColumnHeader>
-                        </GridViewColumn>
-
-                        <GridViewColumn DisplayMemberBinding="{Binding Type}" Width="100">
-                            <GridViewColumnHeader Content="TYPE" ContextMenuOpening="ColumnHeader_RightClick">
-                                <GridViewColumnHeader.ContextMenu>
-                                    <ContextMenu>
-                                        <MenuItem Header="Hide" Click="HideColumn_Click"/>
-                                        <MenuItem Header="Reset Columns" Click="ResetColumns_Click"/>
-                                    </ContextMenu>
-                                </GridViewColumnHeader.ContextMenu>
-                            </GridViewColumnHeader>
-                        </GridViewColumn>
-
-                        <GridViewColumn DisplayMemberBinding="{Binding Make}" Width="100">
-                            <GridViewColumnHeader Content="MAKE" ContextMenuOpening="ColumnHeader_RightClick">
-                                <GridViewColumnHeader.ContextMenu>
-                                    <ContextMenu>
-                                        <MenuItem Header="Hide" Click="HideColumn_Click"/>
-                                        <MenuItem Header="Reset Columns" Click="ResetColumns_Click"/>
-                                    </ContextMenu>
-                                </GridViewColumnHeader.ContextMenu>
-                            </GridViewColumnHeader>
-                        </GridViewColumn>
-
-                        <GridViewColumn DisplayMemberBinding="{Binding Model}" Width="100">
-                            <GridViewColumnHeader Content="MODEL" ContextMenuOpening="ColumnHeader_RightClick">
-                                <GridViewColumnHeader.ContextMenu>
-                                    <ContextMenu>
-                                        <MenuItem Header="Hide" Click="HideColumn_Click"/>
-                                        <MenuItem Header="Reset Columns" Click="ResetColumns_Click"/>
-                                    </ContextMenu>
-                                </GridViewColumnHeader.ContextMenu>
-                            </GridViewColumnHeader>
-                        </GridViewColumn>
-
-                        <GridViewColumn DisplayMemberBinding="{Binding SerialNo}" Width="100">
-                            <GridViewColumnHeader Content="SERIAL NO" ContextMenuOpening="ColumnHeader_RightClick">
-                                <GridViewColumnHeader.ContextMenu>
-                                    <ContextMenu>
-                                        <MenuItem Header="Hide" Click="HideColumn_Click"/>
-                                        <MenuItem Header="Reset Columns" Click="ResetColumns_Click"/>
-                                    </ContextMenu>
-                                </GridViewColumnHeader.ContextMenu>
-                            </GridViewColumnHeader>
-                        </GridViewColumn>
-
-                        <GridViewColumn DisplayMemberBinding="{Binding SecurityId}" Width="100">
-                            <GridViewColumnHeader Content="SECURITY ID" ContextMenuOpening="ColumnHeader_RightClick">
-                                <GridViewColumnHeader.ContextMenu>
-                                    <ContextMenu>
-                                        <MenuItem Header="Hide" Click="HideColumn_Click"/>
-                                        <MenuItem Header="Reset Columns" Click="ResetColumns_Click"/>
-                                    </ContextMenu>
-                                </GridViewColumnHeader.ContextMenu>
-                            </GridViewColumnHeader>
-                        </GridViewColumn>
-
-                        <GridViewColumn DisplayMemberBinding="{Binding User}" Width="100">
-                            <GridViewColumnHeader Content="User" ContextMenuOpening="ColumnHeader_RightClick">
-                                <GridViewColumnHeader.ContextMenu>
-                                    <ContextMenu>
-                                        <MenuItem Header="Hide" Click="HideColumn_Click"/>
-                                        <MenuItem Header="Reset Columns" Click="ResetColumns_Click"/>
-                                    </ContextMenu>
-                                </GridViewColumnHeader.ContextMenu>
-                            </GridViewColumnHeader>
-                        </GridViewColumn>
-
-                        <GridViewColumn DisplayMemberBinding="{Binding Site}" Width="100">
-                            <GridViewColumnHeader Content="Site" ContextMenuOpening="ColumnHeader_RightClick">
-                                <GridViewColumnHeader.ContextMenu>
-                                    <ContextMenu>
-                                        <MenuItem Header="Hide" Click="HideColumn_Click"/>
-                                        <MenuItem Header="Reset Columns" Click="ResetColumns_Click"/>
-                                    </ContextMenu>
-                                </GridViewColumnHeader.ContextMenu>
-                            </GridViewColumnHeader>
-                        </GridViewColumn>
-
-                        <GridViewColumn DisplayMemberBinding="{Binding Status}" Width="100">
-                            <GridViewColumnHeader Content="Status" ContextMenuOpening="ColumnHeader_RightClick">
-                                <GridViewColumnHeader.ContextMenu>
-                                    <ContextMenu>
-                                        <MenuItem Header="Hide" Click="HideColumn_Click"/>
-                                        <MenuItem Header="Reset Columns" Click="ResetColumns_Click"/>
-                                    </ContextMenu>
-                                </GridViewColumnHeader.ContextMenu>
-                            </GridViewColumnHeader>
-                        </GridViewColumn>
-
-                        <GridViewColumn DisplayMemberBinding="{Binding PurchaseDate}" Width="100">
-                            <GridViewColumnHeader Content="Purchase date" ContextMenuOpening="ColumnHeader_RightClick">
-                                <GridViewColumnHeader.ContextMenu>
-                                    <ContextMenu>
-                                        <MenuItem Header="Hide" Click="HideColumn_Click"/>
-                                        <MenuItem Header="Reset Columns" Click="ResetColumns_Click"/>
-                                    </ContextMenu>
-                                </GridViewColumnHeader.ContextMenu>
-                            </GridViewColumnHeader>
-                        </GridViewColumn>
-
-                        <GridViewColumn DisplayMemberBinding="{Binding Received}" Width="100">
-                            <GridViewColumnHeader Content="Received" ContextMenuOpening="ColumnHeader_RightClick">
-                                <GridViewColumnHeader.ContextMenu>
-                                    <ContextMenu>
-                                        <MenuItem Header="Hide" Click="HideColumn_Click"/>
-                                        <MenuItem Header="Reset Columns" Click="ResetColumns_Click"/>
-                                    </ContextMenu>
-                                </GridViewColumnHeader.ContextMenu>
-                            </GridViewColumnHeader>
-                        </GridViewColumn>
-
-                        <GridViewColumn DisplayMemberBinding="{Binding ShortComment}" Width="100">
-                            <GridViewColumnHeader Content="Short comment" ContextMenuOpening="ColumnHeader_RightClick">
-                                <GridViewColumnHeader.ContextMenu>
-                                    <ContextMenu>
-                                        <MenuItem Header="Hide" Click="HideColumn_Click"/>
-                                        <MenuItem Header="Reset Columns" Click="ResetColumns_Click"/>
-                                    </ContextMenu>
-                                </GridViewColumnHeader.ContextMenu>
-                            </GridViewColumnHeader>
-                        </GridViewColumn>
-
-                        <GridViewColumn DisplayMemberBinding="{Binding PC}" Width="100">
-                            <GridViewColumnHeader Content="PC" ContextMenuOpening="ColumnHeader_RightClick">
-                                <GridViewColumnHeader.ContextMenu>
-                                    <ContextMenu>
-                                        <MenuItem Header="Hide" Click="HideColumn_Click"/>
-                                        <MenuItem Header="Reset Columns" Click="ResetColumns_Click"/>
-                                    </ContextMenu>
-                                </GridViewColumnHeader.ContextMenu>
-                            </GridViewColumnHeader>
-                        </GridViewColumn>
-
-                        <GridViewColumn DisplayMemberBinding="{Binding FucUser}" Width="100">
-                            <GridViewColumnHeader Content="USER(Fuc)" ContextMenuOpening="ColumnHeader_RightClick">
-                                <GridViewColumnHeader.ContextMenu>
-                                    <ContextMenu>
-                                        <MenuItem Header="Hide" Click="HideColumn_Click"/>
-                                        <MenuItem Header="Reset Columns" Click="ResetColumns_Click"/>
-                                    </ContextMenu>
-                                </GridViewColumnHeader.ContextMenu>
-                            </GridViewColumnHeader>
-                        </GridViewColumn>
-
-                        <GridViewColumn DisplayMemberBinding="{Binding Username}" Width="100">
-                            <GridViewColumnHeader Content="Username" ContextMenuOpening="ColumnHeader_RightClick">
-                                <GridViewColumnHeader.ContextMenu>
-                                    <ContextMenu>
-                                        <MenuItem Header="Hide" Click="HideColumn_Click"/>
-                                        <MenuItem Header="Reset Columns" Click="ResetColumns_Click"/>
-                                    </ContextMenu>
-                                </GridViewColumnHeader.ContextMenu>
-                            </GridViewColumnHeader>
-                        </GridViewColumn>
-
-                        <GridViewColumn DisplayMemberBinding="{Binding Date}" Width="100">
-                            <GridViewColumnHeader Content="DATE" ContextMenuOpening="ColumnHeader_RightClick">
-                                <GridViewColumnHeader.ContextMenu>
-                                    <ContextMenu>
-                                        <MenuItem Header="Hide" Click="HideColumn_Click"/>
-                                        <MenuItem Header="Reset Columns" Click="ResetColumns_Click"/>
-                                    </ContextMenu>
-                                </GridViewColumnHeader.ContextMenu>
-                            </GridViewColumnHeader>
-                        </GridViewColumn>
-
-                        <GridViewColumn DisplayMemberBinding="{Binding ReportDate}" Width="100">
-                            <GridViewColumnHeader Content="ReportDATE" ContextMenuOpening="ColumnHeader_RightClick">
-                                <GridViewColumnHeader.ContextMenu>
-                                    <ContextMenu>
-                                        <MenuItem Header="Hide" Click="HideColumn_Click"/>
-                                        <MenuItem Header="Reset Columns" Click="ResetColumns_Click"/>
-                                    </ContextMenu>
-                                </GridViewColumnHeader.ContextMenu>
-                            </GridViewColumnHeader>
-                        </GridViewColumn>
-
-                        <GridViewColumn DisplayMemberBinding="{Binding PCLocation}" Width="100">
-                            <GridViewColumnHeader Content="PCLocation" ContextMenuOpening="ColumnHeader_RightClick">
-                                <GridViewColumnHeader.ContextMenu>
-                                    <ContextMenu>
-                                        <MenuItem Header="Hide" Click="HideColumn_Click"/>
-                                        <MenuItem Header="Reset Columns" Click="ResetColumns_Click"/>
-                                    </ContextMenu>
-                                </GridViewColumnHeader.ContextMenu>
-                            </GridViewColumnHeader>
-                        </GridViewColumn>
-
-                        <GridViewColumn DisplayMemberBinding="{Binding EmplMailAdresse}" Width="100">
-                            <GridViewColumnHeader Content="EmplMailAdresse" ContextMenuOpening="ColumnHeader_RightClick">
-                                <GridViewColumnHeader.ContextMenu>
-                                    <ContextMenu>
-                                        <MenuItem Header="Hide" Click="HideColumn_Click"/>
-                                        <MenuItem Header="Reset Columns" Click="ResetColumns_Click"/>
-                                    </ContextMenu>
-                                </GridViewColumnHeader.ContextMenu>
-                            </GridViewColumnHeader>
-                        </GridViewColumn>
-
-                    </GridView>
-                </ListView.View>
-            </ListView>
-
-            <!-- Equipment details Stackpanel -->
-
-            <Grid Grid.Row="1" Grid.Column="1" Width="800" HorizontalAlignment="Left">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0*"/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-
-                <StackPanel Grid.Row="1" Grid.Column="1" x:Name="DetailsPanel"
-                            DataContext="{Binding SelectedItem, ElementName=EquipmentListView}"
-                            Visibility="Collapsed" 
-                            HorizontalAlignment="Center" Background="LightGray" Margin="10">
+                        <!-- Button to save changes -->
+                        <Button Content="Save" HorizontalAlignment="Left" VerticalAlignment="Top" 
+                    Click="SaveDetailsPanel_Click" Margin="5"/>
 
 
-                    <!-- Button to save changes -->
-                    <Button Content="Save" HorizontalAlignment="Left" 
-                Click="SaveDetailsPanel_Click" Margin="5"/>
+                        <!-- Button to close detail panel -->
+                        <Button Content="Close" HorizontalAlignment="Left" VerticalAlignment="Top" 
+                    Click="CloseDetailsPanel_Click" Margin="5"/>
 
+                        <WrapPanel Orientation="Horizontal" MaxWidth="900">
+                            <StackPanel Margin="5">
+                                <TextBlock Text="GG-LABEL"/>
+                                <TextBox Text="{Binding GgLabel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Height="30" FontSize="18"/>
+                            </StackPanel>
 
-                    <!-- Button to close detail panel -->
-                    <Button Content="Close" HorizontalAlignment="Right" 
-                Click="CloseDetailsPanel_Click" Margin="5"/>
+                            <StackPanel Margin="5">
+                                <TextBlock Text="TYPE"/>
+                                <TextBox Text="{Binding Type, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Height="30" FontSize="18"/>
+                            </StackPanel>
 
-                    <WrapPanel Orientation="Horizontal">
-                        <StackPanel Margin="5">
-                            <TextBlock Text="GG-LABEL"/>
-                            <TextBox Text="{Binding GgLabel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Height="30" FontSize="18"/>
-                        </StackPanel>
+                            <StackPanel Margin="5">
+                                <TextBlock Text="MAKE"/>
+                                <TextBox Text="{Binding Make, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Height="30" FontSize="18"/>
+                            </StackPanel>
 
-                        <StackPanel Margin="5">
-                            <TextBlock Text="TYPE"/>
-                            <TextBox Text="{Binding Type, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Height="30" FontSize="18"/>
-                        </StackPanel>
+                            <StackPanel Margin="5">
+                                <TextBlock Text="MODEL"/>
+                                <TextBox Text="{Binding Model, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Height="30" FontSize="18"/>
+                            </StackPanel>
 
-                        <StackPanel Margin="5">
-                            <TextBlock Text="MAKE"/>
-                            <TextBox Text="{Binding Make, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Height="30" FontSize="18"/>
-                        </StackPanel>
+                            <StackPanel Margin="5">
+                                <TextBlock Text="SERIAL NO"/>
+                                <TextBox Text="{Binding SerialNo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Height="30" FontSize="18"/>
+                            </StackPanel>
 
-                        <StackPanel Margin="5">
-                            <TextBlock Text="MODEL"/>
-                            <TextBox Text="{Binding Model, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Height="30" FontSize="18"/>
-                        </StackPanel>
+                            <StackPanel Margin="5">
+                                <TextBlock Text="SECURITY ID"/>
+                                <TextBox Text="{Binding SecurityId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Height="30" FontSize="18"/>
+                            </StackPanel>
 
-                        <StackPanel Margin="5">
-                            <TextBlock Text="SERIAL NO"/>
-                            <TextBox Text="{Binding SerialNo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Height="30" FontSize="18"/>
-                        </StackPanel>
+                            <StackPanel Margin="5">
+                                <TextBlock Text="USER"/>
+                                <TextBox Text="{Binding User, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Height="30" FontSize="18"/>
+                            </StackPanel>
 
-                        <StackPanel Margin="5">
-                            <TextBlock Text="SECURITY ID"/>
-                            <TextBox Text="{Binding SecurityId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Height="30" FontSize="18"/>
-                        </StackPanel>
+                            <StackPanel Margin="5">
+                                <TextBlock Text="SITE"/>
+                                <TextBox Text="{Binding Site, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Height="30" FontSize="18"/>
+                            </StackPanel>
 
-                        <StackPanel Margin="5">
-                            <TextBlock Text="USER"/>
-                            <TextBox Text="{Binding User, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Height="30" FontSize="18"/>
-                        </StackPanel>
+                            <StackPanel Margin="5">
+                                <TextBlock Text="STATUS"/>
+                                <TextBox Text="{Binding Status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Height="30" FontSize="18"/>
+                            </StackPanel>
 
-                        <StackPanel Margin="5">
-                            <TextBlock Text="SITE"/>
-                            <TextBox Text="{Binding Site, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Height="30" FontSize="18"/>
-                        </StackPanel>
+                            <StackPanel Margin="5">
+                                <TextBlock Text="Purchase date"/>
+                                <TextBox Text="{Binding PurchaseDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Height="30" FontSize="18"/>
+                            </StackPanel>
 
-                        <StackPanel Margin="5">
-                            <TextBlock Text="STATUS"/>
-                            <TextBox Text="{Binding Status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Height="30" FontSize="18"/>
-                        </StackPanel>
+                            <StackPanel Margin="5">
+                                <TextBlock Text="Received date"/>
+                                <TextBox Text="{Binding Received, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Height="30" FontSize="18"/>
+                            </StackPanel>
 
-                        <StackPanel Margin="5">
-                            <TextBlock Text="Purchase date"/>
-                            <TextBox Text="{Binding PurchaseDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Height="30" FontSize="18"/>
-                        </StackPanel>
+                            <StackPanel Margin="5">
+                                <TextBlock Text="Short comment"/>
+                                <TextBox Text="{Binding ShortComment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Height="30" FontSize="18"/>
+                            </StackPanel>
 
-                        <StackPanel Margin="5">
-                            <TextBlock Text="Received date"/>
-                            <TextBox Text="{Binding Received, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Height="30" FontSize="18"/>
-                        </StackPanel>
+                            <StackPanel Margin="5">
+                                <TextBlock Text="PC"/>
+                                <TextBox Text="{Binding PC, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Height="30" FontSize="18"/>
+                            </StackPanel>
 
-                        <StackPanel Margin="5">
-                            <TextBlock Text="Short comment"/>
-                            <TextBox Text="{Binding ShortComment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Height="30" FontSize="18"/>
-                        </StackPanel>
+                            <StackPanel Margin="5">
+                                <TextBlock Text="USER"/>
+                                <TextBox Text="{Binding FucUser, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Height="30" FontSize="18"/>
+                            </StackPanel>
 
-                        <StackPanel Margin="5">
-                            <TextBlock Text="PC"/>
-                            <TextBox Text="{Binding PC, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Height="30" FontSize="18"/>
-                        </StackPanel>
+                            <StackPanel Margin="5">
+                                <TextBlock Text="Username"/>
+                                <TextBox Text="{Binding Username, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Height="30" FontSize="18"/>
+                            </StackPanel>
 
-                        <StackPanel Margin="5">
-                            <TextBlock Text="USER"/>
-                            <TextBox Text="{Binding FucUser, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Height="30" FontSize="18"/>
-                        </StackPanel>
+                            <StackPanel Margin="5">
+                                <TextBlock Text="DATE"/>
+                                <TextBox Text="{Binding Date, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Height="30" FontSize="18"/>
+                            </StackPanel>
 
-                        <StackPanel Margin="5">
-                            <TextBlock Text="Username"/>
-                            <TextBox Text="{Binding Username, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Height="30" FontSize="18"/>
-                        </StackPanel>
+                            <StackPanel Margin="5">
+                                <TextBlock Text="ReportDATE"/>
+                                <TextBox Text="{Binding ReportDate, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Height="30" FontSize="18"/>
+                            </StackPanel>
 
-                        <StackPanel Margin="5">
-                            <TextBlock Text="DATE"/>
-                            <TextBox Text="{Binding Date, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Height="30" FontSize="18"/>
-                        </StackPanel>
+                            <StackPanel Margin="5">
+                                <TextBlock Text="PCLocation"/>
+                                <TextBox Text="{Binding PCLocation, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Height="30" FontSize="18"/>
+                            </StackPanel>
 
-                        <StackPanel Margin="5">
-                            <TextBlock Text="ReportDATE"/>
-                            <TextBox Text="{Binding ReportDate, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Height="30" FontSize="18"/>
-                        </StackPanel>
+                            <StackPanel Margin="5">
+                                <TextBlock Text="EmplMailadresse"/>
+                                <TextBox Text="{Binding EmplMailAdresse, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Height="30" FontSize="18" />
+                            </StackPanel>
 
-                        <StackPanel Margin="5">
-                            <TextBlock Text="PCLocation"/>
-                            <TextBox Text="{Binding PCLocation, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Height="30" FontSize="18"/>
-                        </StackPanel>
-
-                        <StackPanel Margin="5">
-                            <TextBlock Text="EmplMailadresse"/>
-                            <TextBox Text="{Binding EmplMailAdresse, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Width="120" Height="30" FontSize="18" />
-                        </StackPanel>
-
-                    </WrapPanel>
-                </StackPanel>
+                        </WrapPanel>
+                    </StackPanel>
+                </Grid>
             </Grid>
 
             <Grid Grid.Column="2">
-                
+                <WrapPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                    <Slider x:Name="ZoomSlider" Minimum="0.5" Maximum="2.0" Value="1.0" TickFrequency="0.1" Width="150" />
+                    <Button Content="Reset Zoom" Click="ResetZoom_Click" Margin="10" Height="30" Width="auto" />
+                </WrapPanel>
             </Grid>
 
             <TabControl> 
-                <TabItem Header="Hidden Columns" Name="HiddenColumnsTab">
+                <TabItem Header="Hidden Columns" Name="HiddenColumnsTab" Width="110">
                     <Grid Background="#FFE5E5E5">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="200" MaxWidth="200" />
                         </Grid.ColumnDefinitions>
 
                         <StackPanel Margin="10">
@@ -432,10 +438,10 @@
                 </TabItem>
 
 
-                <TabItem Header="Column Presets">
+                <TabItem Header="Column Presets" Width="110">
                     <Grid Background="#FFE5E5E5">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="auto" MaxWidth="200"/>
                         </Grid.ColumnDefinitions>
 
                         <StackPanel Margin="5">
@@ -443,7 +449,7 @@
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding}" Foreground="Black" Cursor="Hand" FontSize="14" FontWeight="Bold"
-                                   Width="100" Height="30" MouseLeftButtonDown="GridViewPreset_Click"/>
+                                   Width="auto" Height="30" MouseLeftButtonDown="GridViewPreset_Click"/>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>

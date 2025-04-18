@@ -23,6 +23,8 @@ using System.Windows.Threading;
 using ITEQ2.Presets;
 using Microsoft.VisualBasic;
 using ITEQ2.View.Windows;
+using System.Windows.Media.Animation;
+using System.Windows.Media;
 
 
 namespace ITEQ2
@@ -52,7 +54,10 @@ namespace ITEQ2
 
             SearchBarControl.SearchPerformed += OnSearchPerformed; // Check if the save event has been called from the SearchBar
             MenuBarControl.SaveRequested += OnSaveRequested; // Check if the save event has been called from the MenuBar
+            ZoomSlider.Value = Properties.Settings.Default.GridZoom;
+            ApplyZoom(ZoomSlider.Value);
 
+            ZoomSlider.ValueChanged += (s, e) => ApplyZoom(e.NewValue);
 
             Footer_Control footerControlInstance = this.FindName("FooterControl") as Footer_Control;
             if (footerControlInstance != null)
@@ -72,6 +77,52 @@ namespace ITEQ2
             }
 
             LoadGridPresets();
+        }
+        private void ApplyZoom(double zoom)
+        {
+            AnimateScale(GridZoomTransform, zoom);
+
+            // Save setting
+            Properties.Settings.Default.GridZoom = zoom;
+            Properties.Settings.Default.Save();
+        }
+
+        private void AnimateScale(ScaleTransform transform, double targetZoom)
+        {
+            var duration = TimeSpan.FromMilliseconds(200);
+
+            var scaleXAnim = new DoubleAnimation
+            {
+                To = targetZoom,
+                Duration = new Duration(duration),
+                EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseInOut }
+            };
+
+            var scaleYAnim = new DoubleAnimation
+            {
+                To = targetZoom,
+                Duration = new Duration(duration),
+                EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseInOut }
+            };
+
+            transform.BeginAnimation(ScaleTransform.ScaleXProperty, scaleXAnim);
+            transform.BeginAnimation(ScaleTransform.ScaleYProperty, scaleYAnim);
+        }
+
+        private void ResetZoom_Click(object sender, RoutedEventArgs e)
+        {
+            ZoomSlider.Value = 1.0;
+        }
+
+        private void EquipmentListView_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (Keyboard.Modifiers == ModifierKeys.Control)
+            {
+                double delta = e.Delta > 0 ? 0.1 : -0.1;
+                double newZoom = Math.Clamp(ZoomSlider.Value + delta, ZoomSlider.Minimum, ZoomSlider.Maximum);
+                ZoomSlider.Value = newZoom;
+                e.Handled = true;
+            }
         }
         private void ColumnWidthChanged(object sender, EventArgs e)
         {
