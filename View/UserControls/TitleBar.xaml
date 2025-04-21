@@ -5,13 +5,19 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ITEQ2.View.UserControls"
              mc:Ignorable="d" 
-             d:DesignHeight="40" d:DesignWidth="1080">
-    <Grid Name="titleBar" Height="41" Background="DarkGray" 
+             d:DesignHeight="60" d:DesignWidth="1080">
+    <Grid Name="titleBar" Height="60" Background="DarkGray" 
           MouseDown="titleBar_MouseDown"
           MouseMove="titleBar_MouseMove"
           MouseUp="titleBar_MouseUp">
-        <TextBlock Text="ITEQ2" FontWeight="Bold" VerticalAlignment="Center" Foreground="Black" FontSize="16" Margin="15,0" />
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="IT" FontWeight="Bold" VerticalAlignment="Center" Foreground="#133b8f" FontSize="16" Margin="15,0,0,0" />
+        <TextBlock Grid.Row="0" Text="EQ" FontWeight="Bold" VerticalAlignment="Center" Foreground="#6e21c1" FontSize="16" Margin="30,0,0, 0" />
+        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right">
             <Button Name="btnMinimize" Content="🗕" Width="34" Height="34" BorderBrush="Transparent" Background="Transparent" Margin="3"
             Click="btnMinimize_Click"/>
             <Button Name="btnMaximize" Content="🗖" Width="34" Height="34" BorderBrush="Transparent" Background="Transparent" Margin="3"
@@ -19,6 +25,7 @@
             <Button Name="btnClose" Content="❌" Width="34" Height="34" BorderBrush="Transparent" Background="Transparent" Margin="3"
             Click="btnClose_Click"/>
         </StackPanel>
+        <local:MenuBar x:Name="MenuBarControl" Grid.Row="1" Loaded="MenuBar_Loaded"/>
 
     </Grid>
 </UserControl>

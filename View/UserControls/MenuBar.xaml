@@ -5,14 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ITEQ2.View.UserControls"
              mc:Ignorable="d" 
-             d:DesignHeight="30" d:DesignWidth="1080">
-    
+             d:DesignHeight="15" d:DesignWidth="1080">
+
     <!-- Menu Bar -->
-    <Grid>
+    <Grid Background="DarkGray">
         <Grid.RowDefinitions>
-            <RowDefinition Height="30"/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
-        <Menu>
+        <Menu Background="DarkGray">
             <MenuItem Header="File" FontSize="12">
                 <MenuItem Name="menuitemOpen" Header="Open File" FontSize="12"
                           Click="menuitemOpen_Click"/>

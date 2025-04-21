@@ -53,7 +53,7 @@ namespace ITEQ2
             EquipmentListView.ItemsSource = EquipmentList;
 
             SearchBarControl.SearchPerformed += OnSearchPerformed; // Check if the save event has been called from the SearchBar
-            MenuBarControl.SaveRequested += OnSaveRequested; // Check if the save event has been called from the MenuBar
+            TitleBarControl.MenuBarControlInstance.SaveRequested += OnSaveRequested; // Check if the save event has been called from the MenuBar
             ZoomSlider.Value = Properties.Settings.Default.GridZoom;
             ApplyZoom(ZoomSlider.Value);
 
@@ -270,10 +270,7 @@ namespace ITEQ2
         {
 
         }
-        private void MenuBar_Loaded(object sender, RoutedEventArgs e) // Executes when the menubar loads (must be here for it to work apparantly)
-        {
-
-        }
+      
         public void LoadData(ObservableCollection<EquipmentObject> equipmentList)
         {
             if (equipmentList == null || !equipmentList.Any())
@@ -452,7 +449,7 @@ namespace ITEQ2
         {
             String[] filePaths = { _workingDocPath, _fucDocPath };
 
-            MenuBar menuBarInstance = this.FindName("MenuBarControl") as MenuBar;
+            MenuBar menuBarInstance = TitleBarControl.MenuBarControlInstance;
 
             if (menuBarInstance != null)
             {

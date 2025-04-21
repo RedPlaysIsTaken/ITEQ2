@@ -23,6 +23,7 @@ namespace ITEQ2.View.UserControls
                 }
             };
         }
+        public MenuBar MenuBarControlInstance => MenuBarControl;
         private void Window_StateChanged(object sender, EventArgs e)
         {
             var window = sender as Window;
@@ -85,7 +86,10 @@ namespace ITEQ2.View.UserControls
             }
         }
 
-
+        private void MenuBar_Loaded(object sender, RoutedEventArgs e)
+        {
+            //
+        }
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
             var window = Window.GetWindow(this);

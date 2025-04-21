@@ -13,10 +13,7 @@
     <Grid> 
         <Grid.RowDefinitions>
             <!-- Title Bar -->
-            <RowDefinition Height="40"/>
-
-            <!-- Menu Bar -->
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="60"/>
 
             <!-- Search Bar -->
             <RowDefinition Height="40"/>
@@ -30,19 +27,18 @@
 
 
         <!-- Title Bar -->
-        <UserControls:TitleBar Grid.Row="0" Loaded="TitleBar_Loaded"/>
+        <UserControls:TitleBar x:Name="TitleBarControl" Grid.Row="0" Loaded="TitleBar_Loaded"/>
 
-        <!-- Menu Bar -->
-        <UserControls:MenuBar x:Name="MenuBarControl" Grid.Row="1" Loaded="MenuBar_Loaded"/>
+     
 
         <!-- Search Bar -->
-        <UserControls:SearchBar x:Name="SearchBarControl" Grid.Row="2" Loaded="SearchBar_Loaded"/>
+        <UserControls:SearchBar x:Name="SearchBarControl" Grid.Row="1" Loaded="SearchBar_Loaded"/>
 
         <!-- Footer -->
-        <UserControls:Footer_Control x:Name="FooterControl" Grid.Row="4"/>
+        <UserControls:Footer_Control x:Name="FooterControl" Grid.Row="3"/>
 
         <!-- Main Application -->
-        <Grid Grid.Row="3">
+        <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="800*"/>
@@ -66,7 +62,7 @@
                           ItemsSource="{Binding EquipmentList}"
                           HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
                           FontSize="12">
-                    <!-->SizeChanged="ListView_SizeChanged" -->
+                    <!-- SizeChanged="ListView_SizeChanged" -->
 
                     <ListView.LayoutTransform>
                         <ScaleTransform x:Name="GridZoomTransform" ScaleX="1.0" ScaleY="1.0" />
