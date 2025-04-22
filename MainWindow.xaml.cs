@@ -54,10 +54,21 @@ namespace ITEQ2
 
             SearchBarControl.SearchPerformed += OnSearchPerformed; // Check if the save event has been called from the SearchBar
             TitleBarControl.MenuBarControlInstance.SaveRequested += OnSaveRequested; // Check if the save event has been called from the MenuBar
-            ZoomSlider.Value = Properties.Settings.Default.GridZoom;
-            ApplyZoom(ZoomSlider.Value);
 
-            ZoomSlider.ValueChanged += (s, e) => ApplyZoom(e.NewValue);
+            double currentZoom = Properties.Settings.Default.GridZoom;
+
+            SearchBarControl.ZoomResetRequested += () =>
+            {
+                currentZoom = 1.0;
+                ApplyZoom(currentZoom);
+            };
+            SearchBarControl.ZoomChangedByWheel += newZoom =>
+            {
+                currentZoom = Math.Clamp(newZoom, 0.25, 2.0);
+                ApplyZoom(currentZoom);
+            };
+
+
 
             Footer_Control footerControlInstance = this.FindName("FooterControl") as Footer_Control;
             if (footerControlInstance != null)
@@ -109,6 +120,7 @@ namespace ITEQ2
             transform.BeginAnimation(ScaleTransform.ScaleYProperty, scaleYAnim);
         }
 
+      /* 
         private void ResetZoom_Click(object sender, RoutedEventArgs e)
         {
             ZoomSlider.Value = 1.0;
@@ -124,6 +136,7 @@ namespace ITEQ2
                 e.Handled = true;
             }
         }
+      */
         private void ColumnWidthChanged(object sender, EventArgs e)
         {
             if (sender is GridViewColumn column)
@@ -229,17 +242,6 @@ namespace ITEQ2
             };
             changeValuesDialog.Show();
         }
-
-
-
-
-
-
-
-
-
-
-
 
 
         private void SaveDetailsPanel_Click(object sender, RoutedEventArgs e)

@@ -9,9 +9,7 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
-            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
 
@@ -21,15 +19,34 @@
 
 
 
-        <TextBox Grid.Column="0" x:Name="txtBoxSearchBar" Height="30" Width="400" Margin="5" VerticalAlignment="Top" HorizontalAlignment="Center"
-                 FontSize="16" TextChanged="txtBoxSearchBar_TextChanged"/>
-        <Button Grid.Column="1"  x:Name="BtnRefresh" Height="30" Width="30" Margin="5" VerticalAlignment="Top" HorizontalAlignment="Right"
+        <StackPanel Grid.Column="0" HorizontalAlignment="Left" Orientation="Horizontal">
+            <Button x:Name="BtnRefresh" Height="30" Width="30" Margin="5" VerticalAlignment="Top" 
                 Content="🔄" Click="BtnRefresh_Click"/>
-        <Button Grid.Column="2"  x:Name="BtnAddRow" Height="30" Width="120" Margin="5" VerticalAlignment="Top" HorizontalAlignment="Right"
+            <Button x:Name="BtnAddRow" Height="30" Width="120" Margin="5" VerticalAlignment="Top"
                 Content="Add new Equipment" Click="BtnAddRow_Click"/>
-        <Button Grid.Column="3"  x:Name="BtnCreateGridPreset" Height="30" Width="120" Margin="5" VerticalAlignment="Top" HorizontalAlignment="Right"
+            <Button x:Name="BtnCreateGridPreset" Height="30" Width="120" Margin="5" VerticalAlignment="Top" 
                 Content="Save Grid Preset" Click="BtnCreateGridPreset_Click"/>
-        <Button Grid.Column="4" x:Name="BtnSetValuesForSelectedRows" Margin="5" Height="30" Width="160" VerticalAlignment="Top" HorizontalAlignment="Left" 
+            <Button x:Name="BtnSetValuesForSelectedRows" Margin="5" Height="30" Width="160" VerticalAlignment="Top"  
                 Content="Set values for selected rows" Click="BtnSetValuesForSelectedRows_Click"/>
+        </StackPanel>
+        <TextBox Grid.Column="1" x:Name="txtBoxSearchBar" Height="30" Width="auto" Margin="5" VerticalAlignment="Top" HorizontalAlignment="Stretch"
+                 FontSize="16" TextChanged="txtBoxSearchBar_TextChanged"/>
+        
+        <WrapPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" >
+            <Button x:Name="RedZoom" Content="+" Click="RedZoom_Click" Width="25" Height="30" Margin="2.5,5,0,2.5" VerticalAlignment="Top"/>
+            <ComboBox x:Name="ZoomComboBox" Width="150" Height="30" Margin="2.5,5,0,2.5" SelectionChanged="ZoomComboBox_SelectionChanged" VerticalAlignment="Top" >
+                <ComboBoxItem Tag="0.25">25%</ComboBoxItem>
+                <ComboBoxItem Tag="0.5">50%</ComboBoxItem>
+                <ComboBoxItem Tag="0.75">75%</ComboBoxItem>
+                <ComboBoxItem Tag="1.0" IsSelected="True">100% (Default)</ComboBoxItem>
+                <ComboBoxItem Tag="1.25">125%</ComboBoxItem>
+                <ComboBoxItem Tag="1.5">150%</ComboBoxItem>
+                <ComboBoxItem Tag="1.75">175%</ComboBoxItem>
+                <ComboBoxItem Tag="2.0">200%</ComboBoxItem>
+            </ComboBox>
+            <Button x:Name="IncZoom" Content="-" Click="IncZoom_Click" Width="25" Height="30" Margin="2.5,5,0,2.5" VerticalAlignment="Top"/>
+            <Button Content="Reset Zoom" Click="ResetZoom_Click" Height="30" Width="auto" Margin="5" VerticalAlignment="Top"/>
+         </WrapPanel>
+        
     </Grid>
 </UserControl>

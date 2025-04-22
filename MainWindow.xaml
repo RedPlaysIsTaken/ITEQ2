@@ -57,7 +57,7 @@
                           x:Name="EquipmentListView" 
                           SelectionMode="Extended"
                           MouseDoubleClick="EquipmentListView_MouseDoubleClick"
-                          PreviewMouseWheel="EquipmentListView_PreviewMouseWheel"
+                         
                           GridViewColumnHeader.Click="EquipmentListView_Click"  
                           ItemsSource="{Binding EquipmentList}"
                           HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
@@ -406,12 +406,7 @@
                 </Grid>
             </Grid>
 
-            <Grid Grid.Column="2">
-                <WrapPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                    <Slider x:Name="ZoomSlider" Minimum="0.5" Maximum="2.0" Value="1.0" TickFrequency="0.1" Width="150" />
-                    <Button Content="Reset Zoom" Click="ResetZoom_Click" Margin="10" Height="30" Width="auto" />
-                </WrapPanel>
-            </Grid>
+           
 
             <TabControl> 
                 <TabItem Header="Hidden Columns" Name="HiddenColumnsTab" Width="110">
