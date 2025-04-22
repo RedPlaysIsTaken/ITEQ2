@@ -2,6 +2,9 @@
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
 using System.Windows.Input;
+using System.Runtime.InteropServices;
+using System.Windows.Interop;
+using System.Drawing;
 
 namespace ITEQ2.View.UserControls
 {
@@ -10,6 +13,7 @@ namespace ITEQ2.View.UserControls
     /// </summary>
     public partial class TitleBar : UserControl
     {
+
         public TitleBar()
         {
             InitializeComponent();
@@ -31,11 +35,11 @@ namespace ITEQ2.View.UserControls
 
             if (window.WindowState == WindowState.Maximized)
             {
-                // Prevent actual maximize by restoring immediately
+                // Prevent the changing of windowstate to maximized
                 window.WindowState = WindowState.Normal;
 
                 // Optionally resize manually to simulate a "maximized" look
-                var workingArea = SystemParameters.WorkArea;
+                var workingArea = GetCurrentMonitorWorkingArea(window);
                 window.Left = workingArea.Left;
                 window.Top = workingArea.Top;
                 window.Width = workingArea.Width;
@@ -44,7 +48,7 @@ namespace ITEQ2.View.UserControls
             }
         }
 
-        private Point _startPoint; // Tracks the initial mouse position
+        private System.Windows.Point _startPoint; // Tracks the initial mouse position
         private bool _isDragging;  // Indicates if the drag threshold is met
         private const int DragThreshold = 1; // Minimum distance to activate drag
         private double _relativeX; // Proportional X position
@@ -76,7 +80,7 @@ namespace ITEQ2.View.UserControls
                 else
                 {
                     // if the window is not maximized, maximize it
-                    var workingArea = SystemParameters.WorkArea;
+                    var workingArea = GetCurrentMonitorWorkingArea(window);
                     window.Left = workingArea.Left;
                     window.Top = workingArea.Top;
                     window.Width = workingArea.Width;
@@ -168,6 +172,48 @@ namespace ITEQ2.View.UserControls
             _isDragging = false;
         }
 
+        // logic for dynamic maximize regardless of the monitor size
 
+        [DllImport("user32.dll")]
+        static extern IntPtr MonitorFromWindow(IntPtr hwnd, uint dwFlags);// hwnd is the handle to the window
+        // tells the program what monitor the window is on, if on two monitors get the nearest one
+
+        [DllImport("user32.dll")]
+        static extern bool GetMonitorInfo(IntPtr hMonitor, ref MONITORINFO lpmi);
+        // gets the monitor information, like the size of the monitor and the working area
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct MONITORINFO // fils out the monitor information
+        {
+            public int cbSize; 
+            public RECT rcMonitor; // the size of the monitor
+            public RECT rcWork;// the working area of the monitor
+            public uint dwFlags;
+        }
+        [StructLayout(LayoutKind.Sequential)]
+        public struct RECT
+        {
+            public int left;
+            public int top;
+            public int right;
+            public int bottom;
+
+        }
+        private Rect GetCurrentMonitorWorkingArea(Window window)
+        {
+            var hwnd = new WindowInteropHelper(window).Handle;
+            IntPtr monitor = MonitorFromWindow(hwnd, 2); // finds the monitor the window is on or closest to
+
+            MONITORINFO monitorInfo = new MONITORINFO(); //
+            monitorInfo.cbSize = Marshal.SizeOf(typeof(MONITORINFO)); //Create the monitor info structure and set its size
+           
+            if (GetMonitorInfo(monitor, ref monitorInfo)) // if getting monitor size is succsesfull sets the rc
+            {
+                var rc = monitorInfo.rcWork;
+                return new Rect(rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top);
+            }
+            return new Rect(SystemParameters.WorkArea.Left, SystemParameters.WorkArea.Top, SystemParameters.WorkArea.Width, SystemParameters.WorkArea.Height);// if we can't get the monitor size, use WPF syspam WorkingArea instead
+
+        }
     }
 }
