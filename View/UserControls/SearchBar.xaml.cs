@@ -104,19 +104,21 @@ namespace ITEQ2.View.UserControls
         }
         private void IncZoom_Click(object sender, RoutedEventArgs e)
         {
-            double newZoom = Math.Clamp(LastZoomValue + 0.05, 0.25, 2.0);
+
+            double newZoom = Math.Clamp(LastZoomValue - 0.05, 0.25, 2.0);
             ZoomChangedByWheel?.Invoke(newZoom);
             LastZoomValue = newZoom;
-         //   Debug.WriteLine($"Zoom increased to {newZoom}");
+            //  Debug.WriteLine($"Zoom decreased to {newZoom}");
             UpdateZoomComboBox(newZoom);
+
         }
 
         private void RedZoom_Click(object sender, RoutedEventArgs e)
         {
-            double newZoom = Math.Clamp(LastZoomValue - 0.05, 0.25, 2.0);
+            double newZoom = Math.Clamp(LastZoomValue + 0.05, 0.25, 2.0);
             ZoomChangedByWheel?.Invoke(newZoom);
             LastZoomValue = newZoom;
-          //  Debug.WriteLine($"Zoom decreased to {newZoom}");
+            //   Debug.WriteLine($"Zoom increased to {newZoom}");
             UpdateZoomComboBox(newZoom);
         }
         private void EquipmentListView_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
@@ -168,7 +170,7 @@ namespace ITEQ2.View.UserControls
     }
 
     // No match found — show a custom label
-    string customLabel = $"{Math.Round(zoom * 100)}%";
+    string customLabel = $" {Math.Round(zoom * 100)}%";
 
     // Check if there's already a custom item
     ComboBoxItem customItem = ZoomComboBox.Items
