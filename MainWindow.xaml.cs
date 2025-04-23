@@ -25,6 +25,7 @@ using Microsoft.VisualBasic;
 using ITEQ2.View.Windows;
 using System.Windows.Media.Animation;
 using System.Windows.Media;
+using ITEQ2.Logging;
 
 
 namespace ITEQ2
@@ -58,30 +59,6 @@ namespace ITEQ2
             SearchBar searchBar = SearchBarControl as SearchBar;
             searchBar.ZoomChanged += ApplyZoom;
 
-            /* double currentZoom = Properties.Settings.Default.GridZoom;
-
-            SearchBarControl.ZoomResetRequested += () =>
-            {
-                currentZoom = 1.0;
-                ApplyZoom(currentZoom);
-            };
-            SearchBarControl.ZoomChangedByWheel += newZoom =>
-            {
-                currentZoom = Math.Clamp(newZoom, 0.25, 2.0);
-                ApplyZoom(currentZoom);
-            };*/
-
-
-
-            Footer_Control footerControlInstance = this.FindName("FooterControl") as Footer_Control;
-            if (footerControlInstance != null)
-            {
-                footerControlInstance.WorkingDocPath = _workingDocPath;
-                footerControlInstance.FucDocPath = _fucDocPath;
-            }
-
-            IntializeData();
-
             PropertyDescriptor pd = DependencyPropertyDescriptor.FromProperty(
                 GridViewColumn.WidthProperty, typeof(GridViewColumn));
             GridView gv = (GridView)EquipmentListView.View;
@@ -89,9 +66,68 @@ namespace ITEQ2
             {
                 pd.AddValueChanged(col, ColumnWidthChanged);
             }
-
+            IntializeData();
             LoadGridPresets();
+            CheckName();
         }
+        private void CheckName()
+        {
+            if (string.IsNullOrWhiteSpace(Properties.Settings.Default.User))
+            {
+                var settingsWindow = new SettingsWindow();
+                settingsWindow.ShowDialog();
+            }
+        }
+        private void SubscribeToEquipment(EquipmentObject obj)
+        {
+            obj.PropertyChanged += EquipmentObject_PropertyChanged;
+
+            // Save initial values (for diffing later)
+            if (!_modifiedRecords.ContainsKey(obj))
+            {
+                _modifiedRecords[obj] = new Dictionary<string, object>();
+            }
+        }
+        private void EquipmentObject_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (sender is EquipmentObject obj)
+            {
+                var propInfo = obj.GetType().GetProperty(e.PropertyName);
+                if (propInfo != null)
+                {
+                    object newValue = propInfo.GetValue(obj);
+                    var record = _modifiedRecords[obj];
+
+                    record.TryGetValue(e.PropertyName, out object oldValue);
+
+                    if (!Equals(oldValue, newValue))
+                    {
+                        // Log change
+                        LogChanges.AddChange(e.PropertyName, oldValue?.ToString(), newValue?.ToString(), obj.GgLabel);
+
+                        // Update record
+                        record[e.PropertyName] = newValue;
+                    }
+                }
+            }
+
+        }
+        private void EquipmentListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (EquipmentListView.SelectedItem is EquipmentObject selected)
+            {
+                var logs = LogChanges.LoadLogsForItem(selected.GgLabel);
+                ChangeHistoryListBox.ItemsSource = logs;
+            }
+            else
+            {
+                Debug.WriteLine("This is where the error is");
+            }
+        }
+
+
+
+
         private void ApplyZoom(double zoom)
         {
             AnimateScale(GridZoomTransform, zoom);
@@ -99,7 +135,6 @@ namespace ITEQ2
             Properties.Settings.Default.GridZoom = zoom;
             Properties.Settings.Default.Save();
         }
-
         private void AnimateScale(ScaleTransform transform, double targetZoom)
         {
             var duration = TimeSpan.FromMilliseconds(200);
@@ -133,24 +168,6 @@ namespace ITEQ2
                 e.Handled = true;
             }
         }
-
-        /* 
-          private void ResetZoom_Click(object sender, RoutedEventArgs e)
-          {
-              ZoomSlider.Value = 1.0;
-          }
-
-          private void EquipmentListView_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
-          {
-              if (Keyboard.Modifiers == ModifierKeys.Control)
-              {
-                  double delta = e.Delta > 0 ? 0.1 : -0.1;
-                  double newZoom = Math.Clamp(ZoomSlider.Value + delta, ZoomSlider.Minimum, ZoomSlider.Maximum);
-                  ZoomSlider.Value = newZoom;
-                  e.Handled = true;
-              }
-          }
-        */
         private void ColumnWidthChanged(object sender, EventArgs e)
         {
             if (sender is GridViewColumn column)
@@ -256,8 +273,6 @@ namespace ITEQ2
             };
             changeValuesDialog.Show();
         }
-
-
         private void SaveDetailsPanel_Click(object sender, RoutedEventArgs e)
         {
             SaveChangesToCsv(_workingDocPath);
@@ -266,16 +281,16 @@ namespace ITEQ2
         {
             if (EquipmentListView.SelectedItem != null)
             {
-                DetailsPanel.Visibility = Visibility.Visible;
-                DetailsPanel.Height = 300;
-                DetailsPanel.Width = double.NaN;
+                DetailsPanelGrid.Visibility = Visibility.Visible;
+                DetailsPanelGrid.Height = 300;
+                DetailsPanelGrid.Width = double.NaN;
 
                 EquipmentListView.Height = double.NaN;
             }
         }
         private void CloseDetailsPanel_Click(object sender, RoutedEventArgs e)
         {
-            DetailsPanel.Visibility = Visibility.Collapsed;
+            DetailsPanelGrid.Visibility = Visibility.Collapsed;
             EquipmentListView.Height = double.NaN;
         }
         private void TitleBar_Loaded(object sender, RoutedEventArgs e) // Executes when the titlebar loads (must be here for it to work apparantly)
@@ -286,7 +301,6 @@ namespace ITEQ2
         {
 
         }
-      
         public void LoadData(ObservableCollection<EquipmentObject> equipmentList)
         {
             if (equipmentList == null || !equipmentList.Any())
@@ -344,6 +358,17 @@ namespace ITEQ2
         }
         public void SaveChangesToCsv(string filePath)
         {
+            LogChanges.SaveLog();
+
+            // refreshes UI List
+            if (EquipmentListView.SelectedItem is EquipmentObject selected)
+            {
+                var logs = LogChanges.LoadLogsForItem(selected.GgLabel);
+                ChangeHistoryListBox.ItemsSource = null; // force WPF to refresh
+                ChangeHistoryListBox.ItemsSource = logs;
+            }
+
+
             EquipmentListView.ItemsSource = EquipmentList;
             Debug.WriteLine("Items in listview when saving: " + EquipmentListView.Items.Count);
             //System.Windows.Controls.ListView Items.Count
@@ -481,6 +506,28 @@ namespace ITEQ2
             else
             {
                 MessageBox.Show("MenuBar instance not found!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+            // make list to track changes for logging
+            foreach (var item in _modifiedRecords.Keys)
+            {
+                item.PropertyChanged -= EquipmentObject_PropertyChanged; // clear list 
+            }
+            _modifiedRecords.Clear();
+            foreach (var item in EquipmentList)
+            {
+                SubscribeToEquipment(item); // create list
+            }
+
+            InitializeFooter();
+        }
+        public void InitializeFooter()
+        {
+            Footer_Control footerControlInstance = this.FindName("FooterControl") as Footer_Control;
+            if (footerControlInstance != null)
+            {
+                footerControlInstance.WorkingDocPath = _workingDocPath;
+                footerControlInstance.FucDocPath = _fucDocPath;
             }
         }
         private void ColumnHeader_RightClick(object sender, ContextMenuEventArgs e)

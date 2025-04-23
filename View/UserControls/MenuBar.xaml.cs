@@ -1,4 +1,5 @@
 ﻿using ITEQ2.CsvHandling;
+using ITEQ2.View.Windows;
 using Microsoft.Win32;
 using System.Collections.ObjectModel;
 using System.Windows;
@@ -112,6 +113,12 @@ namespace ITEQ2.View.UserControls
 
             //Path path = new Path(); // determine path
             //CSVHandler csvHandler = new CSVHandler(path); // put path in the CSVHandler class
+        }
+
+        private void menuitemSettingsOpen_Click(object sender, RoutedEventArgs e)
+        {
+            var settingsDialog = new SettingsWindow();
+            settingsDialog.ShowDialog();
         }
     }
 }

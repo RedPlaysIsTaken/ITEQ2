@@ -18,10 +18,12 @@
                           Click="menuitemOpen_Click"/>
                 <MenuItem Name="menuitemSave" Header="Save File" FontSize="12"
                           Click="menuitemSave_Click"/>
-                <MenuItem Name="menuitemOpenCombined" Header="Open Combined File" FontSize="12"
-                          Click="menuitemOpenCombined_Click"/>
             </MenuItem>
             <MenuItem Header="Edit" FontSize="12"/>
+            <MenuItem Header="Settings" FontSize="12">
+                <MenuItem Name="menuitemSettingsOpen" Header="Open Settings" FontSize="12"
+                          Click="menuitemSettingsOpen_Click"/>
+            </MenuItem>
         </Menu>
     </Grid>
 </UserControl>
