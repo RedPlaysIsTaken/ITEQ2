@@ -29,8 +29,6 @@
         <!-- Title Bar -->
         <UserControls:TitleBar x:Name="TitleBarControl" Grid.Row="0" Loaded="TitleBar_Loaded"/>
 
-     
-
         <!-- Search Bar -->
         <UserControls:SearchBar x:Name="SearchBarControl" Grid.Row="1" Loaded="SearchBar_Loaded"/>
 
@@ -44,20 +42,19 @@
                 <ColumnDefinition Width="800*"/>
                 <ColumnDefinition Width="200"/>
             </Grid.ColumnDefinitions>
-            
+
             <Grid Grid.Row="1" Grid.Column="1">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition x:Name="PropertiesRow" Height="Auto"/>
                 </Grid.RowDefinitions>
 
-
                 <!-- List of Equipent -->
                 <ListView Grid.Row="0" Grid.Column="1"
                           x:Name="EquipmentListView" 
                           SelectionMode="Extended"
                           MouseDoubleClick="EquipmentListView_MouseDoubleClick"
-                         
+                          PreviewMouseWheel="EquipmentListView_PreviewMouseWheel"
                           GridViewColumnHeader.Click="EquipmentListView_Click"  
                           ItemsSource="{Binding EquipmentList}"
                           HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
@@ -406,8 +403,7 @@
                 </Grid>
             </Grid>
 
-           
-
+            <!-- Left Tab display -->
             <TabControl> 
                 <TabItem Header="Hidden Columns" Name="HiddenColumnsTab" Width="110">
                     <Grid Background="#FFE5E5E5">

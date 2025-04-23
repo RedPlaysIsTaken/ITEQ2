@@ -31,13 +31,16 @@ namespace ITEQ2.View.UserControls
         public event Action<double> ZoomChangedByWheel;
 
         private double LastZoomValue = 1.0;
-       
+
+        public event Action<double> ZoomChanged;
 
         public SearchBar()
         {
             InitializeComponent();
 
-            ZoomComboBox.SelectionChanged += ZoomComboBox_SelectionChanged;
+            //ZoomSlider.ValueChanged += ZoomSlider_ValueChanged;
+            ZoomSlider.ValueChanged += (s, e) => ZoomChanged?.Invoke(e.NewValue);
+            //ZoomComboBox.SelectionChanged += ZoomComboBox_SelectionChanged;
         }
 
         private async void txtBoxSearchBar_TextChanged(object sender, TextChangedEventArgs e)
@@ -85,23 +88,38 @@ namespace ITEQ2.View.UserControls
                 mainWindow.SetValuesForSelectedRows();
             }
         }
+        private void ZoomSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+
+            double zoom = e.NewValue;
+
+            MainWindow mainWindow = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+            if (mainWindow != null)
+            {
+                mainWindow.GridZoomTransform.ScaleX = zoom;
+                mainWindow.GridZoomTransform.ScaleY = zoom;
+            }
+            
+        }
 
         // zoom logic
 
-       
-    
 
-       
+
+
+
         
         private void ResetZoom_Click(object sender, RoutedEventArgs e)
         {
-            double resetZoom = 1.0;
-            ZoomChangedByWheel?.Invoke(resetZoom);
-            LastZoomValue = resetZoom;
-            UpdateZoomComboBox(resetZoom);
+            //double resetZoom = 1.0;
+            ZoomSlider.Value = 1.0;
+            //ZoomChangedByWheel?.Invoke(resetZoom);
+            //LastZoomValue = resetZoom;
+            //UpdateZoomComboBox(resetZoom);
+
             Debug.WriteLine("Zoom reset to 100%");
 
-        }
+        }/*
         private void IncZoom_Click(object sender, RoutedEventArgs e)
         {
 
@@ -153,7 +171,7 @@ namespace ITEQ2.View.UserControls
                  //   Debug.WriteLine($"Failed to convert Tag to double: {ex.Message}");
                 }
             }
-        }
+        } 
     private void UpdateZoomComboBox(double zoom)
 {
     // Try to find a matching predefined item
@@ -185,7 +203,7 @@ namespace ITEQ2.View.UserControls
 
     customItem.Content = customLabel;
     ZoomComboBox.SelectedItem = customItem;
-}
+} */
 
 
     }

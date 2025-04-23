@@ -55,7 +55,10 @@ namespace ITEQ2
             SearchBarControl.SearchPerformed += OnSearchPerformed; // Check if the save event has been called from the SearchBar
             TitleBarControl.MenuBarControlInstance.SaveRequested += OnSaveRequested; // Check if the save event has been called from the MenuBar
 
-            double currentZoom = Properties.Settings.Default.GridZoom;
+            SearchBar searchBar = SearchBarControl as SearchBar;
+            searchBar.ZoomChanged += ApplyZoom;
+
+            /* double currentZoom = Properties.Settings.Default.GridZoom;
 
             SearchBarControl.ZoomResetRequested += () =>
             {
@@ -66,7 +69,7 @@ namespace ITEQ2
             {
                 currentZoom = Math.Clamp(newZoom, 0.25, 2.0);
                 ApplyZoom(currentZoom);
-            };
+            };*/
 
 
 
@@ -93,7 +96,6 @@ namespace ITEQ2
         {
             AnimateScale(GridZoomTransform, zoom);
 
-            // Save setting
             Properties.Settings.Default.GridZoom = zoom;
             Properties.Settings.Default.Save();
         }
@@ -119,24 +121,36 @@ namespace ITEQ2
             transform.BeginAnimation(ScaleTransform.ScaleXProperty, scaleXAnim);
             transform.BeginAnimation(ScaleTransform.ScaleYProperty, scaleYAnim);
         }
-
-      /* 
-        private void ResetZoom_Click(object sender, RoutedEventArgs e)
-        {
-            ZoomSlider.Value = 1.0;
-        }
-
         private void EquipmentListView_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
+            SearchBar searchBar = SearchBarControl as SearchBar;
+
             if (Keyboard.Modifiers == ModifierKeys.Control)
             {
                 double delta = e.Delta > 0 ? 0.1 : -0.1;
-                double newZoom = Math.Clamp(ZoomSlider.Value + delta, ZoomSlider.Minimum, ZoomSlider.Maximum);
-                ZoomSlider.Value = newZoom;
+                double newZoom = Math.Clamp(searchBar.ZoomSlider.Value + delta, searchBar.ZoomSlider.Minimum, searchBar.ZoomSlider.Maximum);
+                searchBar.ZoomSlider.Value = newZoom;
                 e.Handled = true;
             }
         }
-      */
+
+        /* 
+          private void ResetZoom_Click(object sender, RoutedEventArgs e)
+          {
+              ZoomSlider.Value = 1.0;
+          }
+
+          private void EquipmentListView_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+          {
+              if (Keyboard.Modifiers == ModifierKeys.Control)
+              {
+                  double delta = e.Delta > 0 ? 0.1 : -0.1;
+                  double newZoom = Math.Clamp(ZoomSlider.Value + delta, ZoomSlider.Minimum, ZoomSlider.Maximum);
+                  ZoomSlider.Value = newZoom;
+                  e.Handled = true;
+              }
+          }
+        */
         private void ColumnWidthChanged(object sender, EventArgs e)
         {
             if (sender is GridViewColumn column)
