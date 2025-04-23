@@ -38,9 +38,7 @@ namespace ITEQ2.View.UserControls
         {
             InitializeComponent();
 
-            //ZoomSlider.ValueChanged += ZoomSlider_ValueChanged;
             ZoomSlider.ValueChanged += (s, e) => ZoomChanged?.Invoke(e.NewValue);
-            //ZoomComboBox.SelectionChanged += ZoomComboBox_SelectionChanged;
         }
 
         private async void txtBoxSearchBar_TextChanged(object sender, TextChangedEventArgs e)
@@ -101,25 +99,11 @@ namespace ITEQ2.View.UserControls
             }
             
         }
-
-        // zoom logic
-
-
-
-
-
-        
         private void ResetZoom_Click(object sender, RoutedEventArgs e)
         {
-            //double resetZoom = 1.0;
             ZoomSlider.Value = 1.0;
-            //ZoomChangedByWheel?.Invoke(resetZoom);
-            //LastZoomValue = resetZoom;
-            //UpdateZoomComboBox(resetZoom);
-
-            Debug.WriteLine("Zoom reset to 100%");
-
-        }/*
+        }
+        /*
         private void IncZoom_Click(object sender, RoutedEventArgs e)
         {
 

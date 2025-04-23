@@ -70,12 +70,22 @@ namespace ITEQ2.View.UserControls
             {
                 if (_isMaximized)
                 {
+                    var workingArea = GetCurrentMonitorWorkingArea(window);
+                    window.Left = workingArea.Left + workingArea.Width / 6;
+                    window.Top = workingArea.Top + workingArea.Height / 6;
+                    window.Width = workingArea.Width / 1.5;
+                    window.Height = workingArea.Height / 1.5;
+                    _isMaximized = false; // sets maximized state to true
+
+
+
+
                     // if the window is maximized, restore it to normal size
-                    window.Width = 1280;
+                    /*window.Width = 1280;
                     window.Height = 720;
                     window.Left = (SystemParameters.PrimaryScreenWidth - window.Width) / 2;
                     window.Top = (SystemParameters.PrimaryScreenHeight - window.Height) / 2;
-                    _isMaximized = false;
+                    _isMaximized = false;*/
                 }
                 else
                 {

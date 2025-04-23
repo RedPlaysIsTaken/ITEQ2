@@ -280,7 +280,7 @@
                     </ListView.View>
                 </ListView>
 
-                <!-- Equipment details Stackpanel -->
+                <!-- Equipment details -->
                 <Grid Grid.Row="1" Grid.Column="1" Width="auto">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="0*"/>
@@ -404,7 +404,7 @@
             </Grid>
 
             <!-- Left Tab display -->
-            <TabControl> 
+            <TabControl>
                 <TabItem Header="Hidden Columns" Name="HiddenColumnsTab" Width="110">
                     <Grid Background="#FFE5E5E5">
                         <Grid.ColumnDefinitions>
@@ -445,6 +445,10 @@
                 </TabItem>
             </TabControl>
 
+            <!-- Right Tab display -->
+            <Grid Grid.Row="0" Grid.Column="2">
+                
+            </Grid>
         </Grid>
     </Grid>
 </Window>

@@ -32,7 +32,7 @@
         <TextBox Grid.Column="1" x:Name="txtBoxSearchBar" Height="30" Width="auto" Margin="5" VerticalAlignment="Top" HorizontalAlignment="Stretch"
                  FontSize="16" TextChanged="txtBoxSearchBar_TextChanged"/>
 
-        <WrapPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" >
+        <WrapPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
             <!-- <ComboBox x:Name="ZoomComboBox" Width="150" Height="30" Margin="2.5,5,0,2.5" SelectionChanged="ZoomComboBox_SelectionChanged" VerticalAlignment="Top" >
                 <ComboBoxItem Tag="0.25">25%</ComboBoxItem>
                 <ComboBoxItem Tag="0.5">50%</ComboBoxItem>
