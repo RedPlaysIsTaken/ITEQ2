@@ -459,11 +459,8 @@
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock>
-<Run Text="{Binding Timestamp}" /> -
-<Run Text="{Binding User}" /> CHANGED 
-<Run Text="{Binding FieldName}" /> 
-<Run Text="{Binding OldValue}" />TO
-<Run Text="{Binding NewValue}" />
+<Run Text="{Binding Timestamp}"/> -
+<Run Text="{Binding User}"/> CHANGED FIELD "<Run Text="{Binding FieldName}"/>" FROM "<Run Text="{Binding OldValue}"/>" TO "<Run Text="{Binding NewValue}"/>"
                             </TextBlock>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
