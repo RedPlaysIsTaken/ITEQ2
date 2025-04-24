@@ -31,6 +31,7 @@ namespace ITEQ2.View.UserControls
         public event Action<double> ZoomChangedByWheel;
 
         private double LastZoomValue = 1.0;
+        private int focusedElement;
 
         public event Action<double> ZoomChanged;
 
@@ -55,9 +56,13 @@ namespace ITEQ2.View.UserControls
         private void BtnRefresh_Click(object sender, RoutedEventArgs e)
         {
             MainWindow mainWindow = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+            focusedElement = mainWindow.EquipmentListView.SelectedIndex;
             if (mainWindow != null)
             {
-                mainWindow.IntializeData(); 
+                mainWindow.IntializeData();
+                string searchText = txtBoxSearchBar.Text.Trim();
+                SearchPerformed?.Invoke(searchText);
+                mainWindow.EquipmentListView.SelectedIndex = focusedElement;
             }
         }
 
