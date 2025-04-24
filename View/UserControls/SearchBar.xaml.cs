@@ -16,6 +16,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Globalization;
+using System.Collections.ObjectModel;
+using System.Collections;
 
 
 namespace ITEQ2.View.UserControls
@@ -29,6 +31,7 @@ namespace ITEQ2.View.UserControls
         public event Action<string> SearchPerformed;
         public event Action ZoomResetRequested;
         public event Action<double> ZoomChangedByWheel;
+        private CancellationTokenSource _searchCts;
 
         private double LastZoomValue = 1.0;
         private int focusedElement;
@@ -44,13 +47,34 @@ namespace ITEQ2.View.UserControls
 
         private async void txtBoxSearchBar_TextChanged(object sender, TextChangedEventArgs e)
         {
-            //Debug.WriteLine("wow du skrev: " + txtBoxSearchBar.Text);
+            _searchCts?.Cancel(); // cancel previous search
+            _searchCts = new CancellationTokenSource();
+            var token = _searchCts.Token;
 
-            await Task.Delay(700);
+            try
+            {
+                await Task.Delay(500, token); // shorter delay
 
-            string searchText = txtBoxSearchBar.Text.Trim();
+                if (token.IsCancellationRequested)
+                    return;
 
-            SearchPerformed?.Invoke(searchText);
+                string searchText = txtBoxSearchBar.Text.Trim();
+                Debug.WriteLine($"User typed: '{searchText}'");
+
+                MainWindow mainWindow = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+                if (mainWindow != null)
+                {
+                    var result = AdvancedSearch.Search(mainWindow.EquipmentList, searchText);
+                    mainWindow.SearchedEquipmentList = new ObservableCollection<EquipmentObject>(result);
+                    mainWindow.EquipmentListView.ItemsSource = null;
+                    mainWindow.EquipmentListView.ItemsSource = mainWindow.SearchedEquipmentList;
+                }
+            }
+            catch (TaskCanceledException)
+            {
+                Debug.WriteLine("Search task was canceled, ignore: Exception thrown: System.Threading.Tasks.TaskCanceledException' in System.Private.CoreLib.dll");
+                // safe to ignore, user typed again quickly
+            }
         }
 
         private void BtnRefresh_Click(object sender, RoutedEventArgs e)
@@ -108,92 +132,10 @@ namespace ITEQ2.View.UserControls
         {
             ZoomSlider.Value = 1.0;
         }
-        /*
-        private void IncZoom_Click(object sender, RoutedEventArgs e)
-        {
 
-            double newZoom = Math.Clamp(LastZoomValue - 0.05, 0.25, 2.0);
-            ZoomChangedByWheel?.Invoke(newZoom);
-            LastZoomValue = newZoom;
-            //  Debug.WriteLine($"Zoom decreased to {newZoom}");
-            UpdateZoomComboBox(newZoom);
+        private void BtnAdvancedSearch_Click(object sender, RoutedEventArgs e)
+        {
 
         }
-
-        private void RedZoom_Click(object sender, RoutedEventArgs e)
-        {
-            double newZoom = Math.Clamp(LastZoomValue + 0.05, 0.25, 2.0);
-            ZoomChangedByWheel?.Invoke(newZoom);
-            LastZoomValue = newZoom;
-            //   Debug.WriteLine($"Zoom increased to {newZoom}");
-            UpdateZoomComboBox(newZoom);
-        }
-        private void EquipmentListView_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
-        {
-            if (Keyboard.Modifiers == ModifierKeys.Control)
-            {
-                double delta = e.Delta > 0 ? 0.1 : -0.1;
-                ZoomChangedByWheel?.Invoke(delta); // Send zoom delta to MainWindow
-                e.Handled = true;
-            }
-        }
-
-        private void ZoomComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            Debug.WriteLine("ZoomComboBox_SelectionChanged called");
-
-            if (ZoomComboBox.SelectedItem is ComboBoxItem selectedItem)
-            {
-                Debug.WriteLine($"Selected Tag: {selectedItem.Tag}");
-
-                // Try using `Convert.ToDouble` instead (it can handle boxed doubles)
-                try
-                {
-                    double zoom = double.Parse(selectedItem.Tag.ToString(), CultureInfo.InvariantCulture);
-
-                    ZoomChangedByWheel?.Invoke(zoom);
-                    LastZoomValue = zoom;
-                   // Debug.WriteLine($"Zoom changed to {zoom}");
-                }
-                catch (Exception ex)
-                {
-                 //   Debug.WriteLine($"Failed to convert Tag to double: {ex.Message}");
-                }
-            }
-        } 
-    private void UpdateZoomComboBox(double zoom)
-{
-    // Try to find a matching predefined item
-    foreach (ComboBoxItem item in ZoomComboBox.Items)
-    {
-        if (double.TryParse(item.Tag.ToString(), NumberStyles.Float, CultureInfo.InvariantCulture, out double tagValue))
-        {
-            if (Math.Abs(tagValue - zoom) < 0.01)
-            {
-                ZoomComboBox.SelectedItem = item;
-                return;
-            }
-        }
-    }
-
-    // No match found — show a custom label
-    string customLabel = $" {Math.Round(zoom * 100)}%";
-
-    // Check if there's already a custom item
-    ComboBoxItem customItem = ZoomComboBox.Items
-        .OfType<ComboBoxItem>()
-        .FirstOrDefault(i => i.Tag?.ToString() == "custom");
-
-    if (customItem == null)
-    {
-        customItem = new ComboBoxItem { Tag = "custom" };
-        ZoomComboBox.Items.Add(customItem);
-    }
-
-    customItem.Content = customLabel;
-    ZoomComboBox.SelectedItem = customItem;
-} */
-
-
     }
 }
