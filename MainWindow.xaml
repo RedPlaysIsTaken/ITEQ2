@@ -10,7 +10,7 @@
     <WindowChrome.WindowChrome>
         <WindowChrome GlassFrameThickness="0" CornerRadius="0" CaptionHeight="0"/>
     </WindowChrome.WindowChrome>
-    <Grid Background="white"> 
+    <Grid Background="white">
         <Grid.RowDefinitions>
             <!-- Title Bar -->
             <RowDefinition Height="60"/>
@@ -39,9 +39,11 @@
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto" MinWidth="110"/>
-                <ColumnDefinition Width="5"/> <!-- GridSplitter -->
+                <ColumnDefinition Width="5"/>
+                <!-- GridSplitter -->
                 <ColumnDefinition Width="800*"/>
-                <ColumnDefinition Width="5"/> <!-- GridSplitter -->
+                <ColumnDefinition Width="5"/>
+                <!-- GridSplitter -->
                 <ColumnDefinition Width="200"/>
             </Grid.ColumnDefinitions>
 
@@ -52,10 +54,11 @@
             <Grid Grid.Row="1" Grid.Column="2">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
-                    <RowDefinition Height="5"/> <!-- GridSplitter -->
+                    <RowDefinition Height="5"/>
+                    <!-- GridSplitter -->
                     <RowDefinition x:Name="PropertiesRow" Height="Auto"/>
                 </Grid.RowDefinitions>
-                
+
                 <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" Background="White"/>
 
 
@@ -312,172 +315,184 @@ User "<Run Text="{Binding User}"/>" ON <Run Text="{Binding Timestamp}"/>  CHANGE
 
 
 
-
+                    <!-- EDit Part-->
                     <StackPanel Grid.Column="0" x:Name="DetailsPanel"
                                 DataContext="{Binding SelectedItem, ElementName=EquipmentListView}"
-                                HorizontalAlignment="Center" Background="LightGray" Margin="10">
+                                HorizontalAlignment="Center" Background="LightGray" Margin="0">
 
 
-
-                        <!-- Button to save changes -->
-                        <Button Content="Save" HorizontalAlignment="Left" VerticalAlignment="Top" 
-                    Click="SaveDetailsPanel_Click" Margin="5"/>
-
-
-                        <!-- Button to close detail panel -->
-                        <Button Content="Close" HorizontalAlignment="Left" VerticalAlignment="Top" 
-                    Click="CloseDetailsPanel_Click" Margin="5"/>
+                        <StackPanel Orientation="Horizontal" >
+                            <!-- Button to save changes -->
+                            <Button Background="White" Content="Save" HorizontalAlignment="Left" VerticalAlignment="Top" 
+                              Click="SaveDetailsPanel_Click" Margin="5"/>
 
 
+                            <!-- Button to close detail panel -->
+                            <Button Background="White" Content="Close" HorizontalAlignment="Left" VerticalAlignment="Top" 
+                                 Click="CloseDetailsPanel_Click" Margin="5"/>
+                        </StackPanel>
 
+                        <TextBlock x:Name="IT_title" Text="IT-Equipment:"/>
                         <WrapPanel Orientation="Horizontal" MaxWidth="900">
-                            <StackPanel Margin="5">
+
+                            <StackPanel Margin="2.5">
                                 <TextBlock Text="GG-LABEL"/>
                                 <TextBox Text="{Binding GgLabel, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="120" Height="30" FontSize="18"/>
                             </StackPanel>
 
-                            <StackPanel Margin="5">
+                            <StackPanel Margin="2.5">
                                 <TextBlock Text="TYPE"/>
                                 <TextBox Text="{Binding Type, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="120" Height="30" FontSize="18"/>
                             </StackPanel>
 
-                            <StackPanel Margin="5">
+                            <StackPanel Margin="2.5">
                                 <TextBlock Text="MAKE"/>
                                 <TextBox Text="{Binding Make, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="120" Height="30" FontSize="18"/>
                             </StackPanel>
 
-                            <StackPanel Margin="5">
+                            <StackPanel Margin="2.5">
                                 <TextBlock Text="MODEL"/>
                                 <TextBox Text="{Binding Model, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="120" Height="30" FontSize="18"/>
                             </StackPanel>
 
-                            <StackPanel Margin="5">
+                            <StackPanel Margin="2.5">
                                 <TextBlock Text="SERIAL NO"/>
                                 <TextBox Text="{Binding SerialNo, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="120" Height="30" FontSize="18"/>
                             </StackPanel>
 
-                            <StackPanel Margin="5">
+                            <StackPanel Margin="2.5">
                                 <TextBlock Text="SECURITY ID"/>
                                 <TextBox Text="{Binding SecurityId, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="120" Height="30" FontSize="18"/>
                             </StackPanel>
 
-                            <StackPanel Margin="5">
+                            <StackPanel Margin="2.5">
                                 <TextBlock Text="USER"/>
                                 <TextBox Text="{Binding User, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="120" Height="30" FontSize="18"/>
                             </StackPanel>
+                        </WrapPanel>
+                        <TextBlock x:Name="FUC_title" Text="FUC-Report:"/>
+                        <WrapPanel Orientation="Horizontal" MaxWidth="900">
 
-                            <StackPanel Margin="5">
-                                <TextBlock Text="SITE"/>
-                                <TextBox Text="{Binding Site, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="120" Height="30" FontSize="18"/>
-                            </StackPanel>
-
-                            <StackPanel Margin="5">
-                                <TextBlock Text="STATUS"/>
-                                <TextBox Text="{Binding Status, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="120" Height="30" FontSize="18"/>
-                            </StackPanel>
-
-                            <StackPanel Margin="5">
-                                <TextBlock Text="Purchase date"/>
-                                <TextBox Text="{Binding PurchaseDate, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="120" Height="30" FontSize="18"/>
-                            </StackPanel>
-
-                            <StackPanel Margin="5">
-                                <TextBlock Text="Received date"/>
-                                <TextBox Text="{Binding Received, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="120" Height="30" FontSize="18"/>
-                            </StackPanel>
-
-                            <StackPanel Margin="5">
-                                <TextBlock Text="Short comment"/>
-                                <TextBox Text="{Binding ShortComment, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="120" Height="30" FontSize="18"/>
-                            </StackPanel>
-
-                            <StackPanel Margin="5">
+                            <StackPanel Margin="2.5">
                                 <TextBlock Text="PC"/>
                                 <TextBox Text="{Binding PC, Mode=OneWay, UpdateSourceTrigger=LostFocus}" Width="120" Height="30" FontSize="18"/>
                             </StackPanel>
 
-                            <StackPanel Margin="5">
+                            <StackPanel Margin="2.5">
+                                <TextBlock Text="SITE"/>
+                                <TextBox Text="{Binding Site, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="120" Height="30" FontSize="18"/>
+                            </StackPanel>
+
+                            <StackPanel Margin="2.5">
+                                <TextBlock Text="STATUS"/>
+                                <!-- <TextBox Text="{Binding Status, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="120" Height="30" FontSize="18"/> -->
+                                <ComboBox SelectedValue="{Binding Status, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                           Width="120" Height="30" FontSize="18" SelectedValuePath="Tag" FontWeight="Light" IsSynchronizedWithCurrentItem="False" BorderBrush="White" Background="White">
+                                    <ComboBoxItem Tag="INSTOCK" Content="INSTOCK" Background="White"/>
+                                    <ComboBoxItem Tag="NETWORKED" Content="NETWORKED" Background="White"/>
+                                    <ComboBoxItem Tag="TERMINATED" Content="TERMINATED" Background="White"/>
+                                </ComboBox>
+                            </StackPanel>
+
+                            <StackPanel Margin="2.5">
+                                <TextBlock Text="Purchase date"/>
+                                <TextBox Text="{Binding PurchaseDate, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="120" Height="30" FontSize="18"/>
+                            </StackPanel>
+
+                            <StackPanel Margin="2.5">
+                                <TextBlock Text="Received date"/>
+                                <TextBox Text="{Binding Received, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="120" Height="30" FontSize="18"/>
+                            </StackPanel>
+
+                            <StackPanel Margin="2.5">
+                                <TextBlock Text="Short comment"/>
+                                <TextBox Text="{Binding ShortComment, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="120" Height="30" FontSize="18"/>
+                            </StackPanel>
+
+
+
+                            <StackPanel Margin="2.5">
                                 <TextBlock Text="USER"/>
                                 <TextBox Text="{Binding FucUser, Mode=OneWay, UpdateSourceTrigger=LostFocus}" Width="120" Height="30" FontSize="18"/>
                             </StackPanel>
 
-                            <StackPanel Margin="5">
+                            <StackPanel Margin="2.5">
                                 <TextBlock Text="Username"/>
                                 <TextBox Text="{Binding Username, Mode=OneWay, UpdateSourceTrigger=LostFocus}" Width="120" Height="30" FontSize="18"/>
                             </StackPanel>
 
-                            <StackPanel Margin="5">
+                            <StackPanel Margin="2.5">
                                 <TextBlock Text="DATE"/>
                                 <TextBox Text="{Binding Date, Mode=OneWay, UpdateSourceTrigger=LostFocus}" Width="120" Height="30" FontSize="18"/>
                             </StackPanel>
 
-                            <StackPanel Margin="5">
+                            <StackPanel Margin="2.5">
                                 <TextBlock Text="ReportDATE"/>
                                 <TextBox Text="{Binding ReportDate, Mode=OneWay, UpdateSourceTrigger=LostFocus}" Width="120" Height="30" FontSize="18"/>
                             </StackPanel>
 
-                            <StackPanel Margin="5">
+                            <StackPanel Margin="2.5">
                                 <TextBlock Text="PCLocation"/>
                                 <TextBox Text="{Binding PCLocation, Mode=OneWay, UpdateSourceTrigger=LostFocus}" Width="120" Height="30" FontSize="18"/>
                             </StackPanel>
 
-                            <StackPanel Margin="5">
+                            <StackPanel Margin="2.5">
                                 <TextBlock Text="EmplMailadresse"/>
                                 <TextBox Text="{Binding EmplMailAdresse, Mode=OneWay, UpdateSourceTrigger=LostFocus}" Width="120" Height="30" FontSize="18" />
                             </StackPanel>
-
                         </WrapPanel>
+
                     </StackPanel>
                 </Grid>
             </Grid>
 
             <!-- Left Tab display -->
             <Grid Grid.Row="0" Grid.Column="0">
-            <TabControl>
-                <TabItem Header="Hidden Columns" Name="HiddenColumnsTab" Width="110">
-                    <Grid Background="White">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="200" MaxWidth="200" />
-                        </Grid.ColumnDefinitions>
+                <TabControl>
+                    <TabItem Header="Hidden Columns" Name="HiddenColumnsTab" Width="110">
+                        <Grid Background="White">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="200" MaxWidth="200" />
+                            </Grid.ColumnDefinitions>
 
-                        <StackPanel Margin="10">
-                            <ItemsControl ItemsSource="{Binding HiddenColumns}">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding}" Foreground="Black" Cursor="Hand" FontSize="14" FontWeight="Bold" Width="100" Height="30"
+                            <StackPanel Margin="10">
+                                <ItemsControl ItemsSource="{Binding HiddenColumns}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding}" Foreground="Black" Cursor="Hand" FontSize="14" FontWeight="Bold" Width="100" Height="30"
                                                    MouseLeftButtonDown="HiddenColumn_Click"/>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </StackPanel>
-                    </Grid>
-                </TabItem>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </Grid>
+                    </TabItem>
 
 
-                <TabItem Header="Column Presets" Width="110">
-                    <Grid Background="White">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto" MaxWidth="200"/>
-                        </Grid.ColumnDefinitions>
+                    <TabItem Header="Column Presets" Width="110">
+                        <Grid Background="White">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" MaxWidth="200"/>
+                            </Grid.ColumnDefinitions>
 
-                        <StackPanel Margin="5">
-                            <ItemsControl ItemsSource="{Binding GridViewPresets}">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding}" Foreground="Black" Cursor="Hand" FontSize="14" FontWeight="Bold"
+                            <StackPanel Margin="5">
+                                <ItemsControl ItemsSource="{Binding GridViewPresets}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding}" Foreground="Black" Cursor="Hand" FontSize="14" FontWeight="Bold"
                                    Width="auto" Height="30" MouseLeftButtonDown="GridViewPreset_Click"/>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </StackPanel>
-                    </Grid>
-                </TabItem>
-            </TabControl>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </Grid>
+                    </TabItem>
+                </TabControl>
             </Grid>
 
             <!-- Right Tab display -->
             <Grid Grid.Row="0" Grid.Column="4">
-                
+
             </Grid>
         </Grid>
     </Grid>

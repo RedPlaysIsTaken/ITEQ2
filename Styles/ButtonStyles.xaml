@@ -2,18 +2,23 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     
     
-    <!--<Style TargetType="Button">
-        <Setter Property="Width" Value="100"/>
-        <Setter Property="Height" Value="40"/>
-        <Setter Property="FontSize" Value="16"/>
+    
+    
+    
+    <Style TargetType="Button">
+
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="Background" Value="White"/>
+
+
     </Style>
 
-    <Style TargetType="Button" x:Key="ConfirmationButton">
+   <!-- <Style TargetType="Button" x:Key="ConfirmationButton">
         <Setter Property="Width" Value="100"/>
         <Setter Property="Height" Value="40"/>
         <Setter Property="FontSize" Value="20"/>
         <Setter Property="Foreground" Value="LimeGreen"/>
         <Setter Property="Content" Value="OK"/>
-    </Style>-->
+    </Style> -->
 
 </ResourceDictionary>
