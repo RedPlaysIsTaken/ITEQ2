@@ -8,6 +8,9 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Styles/TextBoxStyles.xaml"/>
                 <ResourceDictionary Source="Styles/ButtonStyles.xaml"/>
+                <ResourceDictionary Source="Styles/ComboboxStyles.xaml"/>
+                <ResourceDictionary Source="Styles/ComboboxStyles.xaml"/>
+                <ResourceDictionary Source="/Styles/GridViewColumnHeaderStyles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

@@ -76,17 +76,17 @@
                     <!-- SizeChanged="ListView_SizeChanged" -->
 
                     <ListView.LayoutTransform>
-                        <ScaleTransform x:Name="GridZoomTransform" ScaleX="1.0" ScaleY="1.0" />
+                        <ScaleTransform x:Name="GridZoomTransform" ScaleX="1.0" ScaleY="1.0"/>
                     </ListView.LayoutTransform>
-                    <ListView.View>
+                    <ListView.View >
                         <GridView AllowsColumnReorder="True">
 
                             <GridViewColumn DisplayMemberBinding="{Binding GgLabel}" Width="100">
-                                <GridViewColumnHeader Content="GG-LABEL" ContextMenuOpening="ColumnHeader_RightClick">
-                                    <GridViewColumnHeader.ContextMenu>
+                                <GridViewColumnHeader Background="black" Content="GG-LABEL" ContextMenuOpening="ColumnHeader_RightClick" >
+                                    <GridViewColumnHeader.ContextMenu >
                                         <ContextMenu>
-                                            <MenuItem Header="Hide" Click="HideColumn_Click"/>
-                                            <MenuItem Header="Reset Columns" Click="ResetColumns_Click"/>
+                                            <MenuItem  Header="Hide" Click="HideColumn_Click"/>
+                                            <MenuItem  Header="Reset Columns" Click="ResetColumns_Click"/>
                                         </ContextMenu>
                                     </GridViewColumnHeader.ContextMenu>
                                 </GridViewColumnHeader>
@@ -323,12 +323,12 @@ User "<Run Text="{Binding User}"/>" ON <Run Text="{Binding Timestamp}"/>  CHANGE
 
                         <StackPanel Orientation="Horizontal" >
                             <!-- Button to save changes -->
-                            <Button Background="White" Content="Save" HorizontalAlignment="Left" VerticalAlignment="Top" 
+                            <Button Content="Save" HorizontalAlignment="Left" VerticalAlignment="Top" 
                               Click="SaveDetailsPanel_Click" Margin="5"/>
 
 
                             <!-- Button to close detail panel -->
-                            <Button Background="White" Content="Close" HorizontalAlignment="Left" VerticalAlignment="Top" 
+                            <Button Content="Close" HorizontalAlignment="Left" VerticalAlignment="Top" 
                                  Click="CloseDetailsPanel_Click" Margin="5"/>
                         </StackPanel>
 
