@@ -82,7 +82,7 @@
                         <GridView AllowsColumnReorder="True">
 
                             <GridViewColumn DisplayMemberBinding="{Binding GgLabel}" Width="100">
-                                <GridViewColumnHeader Background="black" Content="GG-LABEL" ContextMenuOpening="ColumnHeader_RightClick" >
+                                <GridViewColumnHeader Content="GG-LABEL" ContextMenuOpening="ColumnHeader_RightClick" >
                                     <GridViewColumnHeader.ContextMenu >
                                         <ContextMenu>
                                             <MenuItem  Header="Hide" Click="HideColumn_Click"/>
