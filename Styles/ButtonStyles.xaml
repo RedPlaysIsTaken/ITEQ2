@@ -21,11 +21,11 @@
             </Setter.Value>
         </Setter>
     </Style>
-    <SolidColorBrush x:Key="Button.Static.Background" Color="#dcf7fa"/>
+    <SolidColorBrush x:Key="Button.Static.Background" Color="#c3d3f9"/>
     <SolidColorBrush x:Key="Button.Static.Border" Color="#FF707070"/>
     <SolidColorBrush x:Key="Button.MouseOver.Background" Color="#FFBEE6FD"/>
     <SolidColorBrush x:Key="Button.MouseOver.Border" Color="#a4bbbb"/>
-    <SolidColorBrush x:Key="Button.Pressed.Background" Color="#FFC4E5F6"/>
+    <SolidColorBrush x:Key="Button.Pressed.Background" Color="#8095c9"/>
     <SolidColorBrush x:Key="Button.Pressed.Border" Color="#133b8f"/>
     <SolidColorBrush x:Key="Button.Disabled.Background" Color="#FFF4F4F4"/>
     <SolidColorBrush x:Key="Button.Disabled.Border" Color="#FFADB2B5"/>

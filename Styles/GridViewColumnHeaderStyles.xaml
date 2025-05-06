@@ -6,17 +6,17 @@
         <GradientStop Color="#FFD5D5D5" Offset="1"/>
     </LinearGradientBrush>
     <LinearGradientBrush x:Key="GridViewColumnHeaderBackground" EndPoint="0,1" StartPoint="0,0">
-        <GradientStop Color="#FFFFFFFF" Offset="0"/>
-        <GradientStop Color="#FFFFFFFF" Offset="0.4091"/>
-        <GradientStop Color="#FFF7F8F9" Offset="1"/>
+        <GradientStop Color="#c3d3f9" Offset="0"/>
+        <GradientStop Color="#c3d3f9" Offset="0.4091"/>
+        <GradientStop Color="#dae6ff" Offset="1"/>
     </LinearGradientBrush>
     <LinearGradientBrush x:Key="GridViewColumnHeaderHoverBackground" EndPoint="0,1" StartPoint="0,0">
-        <GradientStop Color="#FFBDEDFF" Offset="0"/>
-        <GradientStop Color="#FFB7E7FB" Offset="1"/>
+        <GradientStop Color="#c3d3f9" Offset="0"/>
+        <GradientStop Color="#c3d3f9" Offset="1"/>
     </LinearGradientBrush>
     <LinearGradientBrush x:Key="GridViewColumnHeaderPressBackground" EndPoint="0,1" StartPoint="0,0">
-        <GradientStop Color="#FF8DD6F7" Offset="0"/>
-        <GradientStop Color="#FF8AD1F5" Offset="1"/>
+        <GradientStop Color="#c3d3f9" Offset="0"/>
+        <GradientStop Color="#c3d3f9" Offset="1"/>
     </LinearGradientBrush>
     <Style x:Key="GridViewColumnHeaderGripper" TargetType="{x:Type Thumb}">
         <Setter Property="Canvas.Right" Value="-9"/>
@@ -58,8 +58,8 @@
                                 </Border>
                             </Grid>
                         </Border>
-                        <Border x:Name="HeaderHoverBorder" BorderThickness="1,0,1,1" Margin="1,1,0,0"/>
-                        <Border x:Name="HeaderPressBorder" BorderThickness="1,1,1,0" Margin="1,0,0,1"/>
+                        <Border x:Name="HeaderHoverBorder" BorderThickness="1,1,1,1" Margin="0,0,0,0"/>
+                        <Border x:Name="HeaderPressBorder" BorderThickness="1,1,1,1" Margin="0,0,0,0"/>
                         <Canvas>
                             <Thumb x:Name="PART_HeaderGripper" Style="{StaticResource GridViewColumnHeaderGripper}"/>
                         </Canvas>
@@ -67,7 +67,7 @@
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="true">
                             <Setter Property="Background" TargetName="HeaderBorder" Value="{StaticResource GridViewColumnHeaderHoverBackground}"/>
-                            <Setter Property="BorderBrush" TargetName="HeaderHoverBorder" Value="#FF88CBEB"/>
+                            <Setter Property="BorderBrush" TargetName="HeaderHoverBorder" Value="#FF707070"/>
                             <Setter Property="Visibility" TargetName="UpperHighlight" Value="Visible"/>
                             <Setter Property="Background" TargetName="PART_HeaderGripper" Value="Transparent"/>
                         </Trigger>
