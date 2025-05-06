@@ -273,7 +273,7 @@ namespace ITEQ2
             };
             changeValuesDialog.Show();
         }
-        private void SaveDetailsPanel_Click(object sender, RoutedEventArgs e)
+        public void SaveDetailsPanel_Click(object sender, RoutedEventArgs e)
         {
             SaveChangesToCsv(_workingDocPath);
         }

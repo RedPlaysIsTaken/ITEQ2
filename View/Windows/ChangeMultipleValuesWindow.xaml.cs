@@ -44,6 +44,12 @@ namespace ITEQ2.View.Windows
             }
 
             ApplyClicked?.Invoke(FieldComboBox.SelectedItem as string, ValueTextBox.Text);
+
+            MainWindow mainWindow = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
+            if (mainWindow != null)
+            {
+                mainWindow.SaveDetailsPanel_Click(sender, e);
+            }
         }
     }
 }

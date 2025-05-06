@@ -5,8 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ITEQ2"
         xmlns:UserControls="clr-namespace:ITEQ2.View.UserControls"
+        xmlns:conv="clr-namespace:ITEQ2.Converters"
         mc:Ignorable="d" WindowStyle="None"
         Title="MainWindow" Height="720" Width="1280" Icon="/Styles/icons/Alt2.ico">
+    <Window.Resources>
+        <conv:ChangeTypeToTextConverter x:Key="ChangeTypeToTextConverter"/>
+    </Window.Resources>
     <WindowChrome.WindowChrome>
         <WindowChrome GlassFrameThickness="0" CornerRadius="0" CaptionHeight="0"/>
     </WindowChrome.WindowChrome>
@@ -307,7 +311,18 @@
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock>
-User "<Run Text="{Binding User}"/>" ON <Run Text="{Binding Timestamp}"/>  CHANGED FIELD "<Run Text="{Binding FieldName}"/>" FROM "<Run Text="{Binding OldValue}"/>" TO "<Run Text="{Binding NewValue}"/>"
+    <Run Text="User &quot;"/>
+    <Run Text="{Binding User}"/>
+    <Run Text="&quot; ON "/>
+    <Run Text="{Binding Timestamp}"/>
+    <Run Text=" "/>
+    <Run Text="{Binding ChangeType, Converter={StaticResource ChangeTypeToTextConverter}}"/>
+    <Run Text=" FIELD &quot;"/>
+    <Run Text="{Binding FieldName}"/>
+    <Run Text="&quot; FROM &quot;"/>
+    <Run Text="{Binding OldValue}"/>
+    <Run Text="&quot; TO &quot;"/>
+    <Run Text="{Binding NewValue}"/>
                                 </TextBlock>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
