@@ -48,7 +48,7 @@
                 <ColumnDefinition Width="800*"/>
                 <ColumnDefinition Width="5"/>
                 <!-- GridSplitter -->
-                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="20"/>
             </Grid.ColumnDefinitions>
 
             <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" Background="White"/>
@@ -506,7 +506,7 @@
             </Grid>
 
             <!-- Right Tab display -->
-            <Grid Grid.Row="0" Grid.Column="4">
+            <Grid Grid.Row="0" Grid.Column="4" Width="1">
 
             </Grid>
         </Grid>
