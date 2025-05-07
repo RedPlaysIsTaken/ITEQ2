@@ -13,7 +13,7 @@
     </Window.Resources>
     <WindowChrome.WindowChrome>
         <WindowChrome GlassFrameThickness="0" CornerRadius="0" CaptionHeight="0"/>
-    </WindowChrome.WindowChrome>
+    </WindowChrome.WindowChrome> 
     <Grid Background="white">
         <Grid.RowDefinitions>
             <!-- Title Bar -->
