@@ -407,28 +407,24 @@
                                 <TextBlock Text="USER"/>
                                 <TextBox Text="{Binding User, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="120" Height="30" FontSize="18"/>
                             </StackPanel>
-                        </WrapPanel>
-                        <TextBlock x:Name="FUC_title" Text="FUC-Report:"/>
-                        <WrapPanel Orientation="Horizontal" MaxWidth="900">
-
-                            <StackPanel Margin="2.5">
-                                <TextBlock Text="PC"/>
-                                <TextBox Text="{Binding PC, Mode=OneWay, UpdateSourceTrigger=LostFocus}" Width="120" Height="30" FontSize="18"/>
-                            </StackPanel>
-
+                            
                             <StackPanel Margin="2.5">
                                 <TextBlock Text="SITE"/>
                                 <TextBox Text="{Binding Site, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="120" Height="30" FontSize="18"/>
                             </StackPanel>
-
+                            
                             <StackPanel Margin="2.5">
                                 <TextBlock Text="STATUS"/>
                                 <!-- <TextBox Text="{Binding Status, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="120" Height="30" FontSize="18"/> -->
                                 <ComboBox SelectedValue="{Binding Status, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                           Width="120" Height="30" FontSize="18" SelectedValuePath="Tag" FontWeight="Light" IsSynchronizedWithCurrentItem="False" BorderBrush="White" Background="White">
+               Width="120" Height="30" FontSize="18" SelectedValuePath="Tag" FontWeight="Light" IsSynchronizedWithCurrentItem="False" BorderBrush="White" Background="White">
                                     <ComboBoxItem Tag="INSTOCK" Content="INSTOCK" Background="White"/>
                                     <ComboBoxItem Tag="NETWORKED" Content="NETWORKED" Background="White"/>
                                     <ComboBoxItem Tag="TERMINATED" Content="TERMINATED" Background="White"/>
+                                    <ComboBoxItem Tag="DISCONNECTED" Content="DISCONNECTED" Background="White"/>
+                                    <ComboBoxItem Tag="NOTRETRUNED" Content="NOTRETRUNED" Background="White"/>
+                                    <ComboBoxItem Tag="TOBERETRUNED" Content="TOBERETRUNED" Background="White"/>
+                                    <ComboBoxItem Tag="INTRANSIT" Content="INTRANSIT" Background="White"/>
                                 </ComboBox>
                             </StackPanel>
 
@@ -446,8 +442,17 @@
                                 <TextBlock Text="Short comment"/>
                                 <TextBox Text="{Binding ShortComment, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Width="120" Height="30" FontSize="18"/>
                             </StackPanel>
+                            
+                        </WrapPanel>
+                        <TextBlock x:Name="FUC_title" Text="FUC-Report:"/>
+                        <WrapPanel Orientation="Horizontal" MaxWidth="900">
 
+                            <StackPanel Margin="2.5">
+                                <TextBlock Text="PC"/>
+                                <TextBox Text="{Binding PC, Mode=OneWay, UpdateSourceTrigger=LostFocus}" Width="120" Height="30" FontSize="18"/>
+                            </StackPanel>
 
+                            
 
                             <StackPanel Margin="2.5">
                                 <TextBlock Text="USER"/>
