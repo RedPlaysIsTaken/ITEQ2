@@ -73,6 +73,9 @@
                           MouseDoubleClick="EquipmentListView_MouseDoubleClick"
                           PreviewMouseWheel="EquipmentListView_PreviewMouseWheel"
                           SelectionChanged="EquipmentListView_SelectionChanged"
+                  
+                          AlternationCount="2"
+                  
                           GridViewColumnHeader.Click="EquipmentListView_Click"  
                           ItemsSource="{Binding EquipmentList}"
                           HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
@@ -82,7 +85,7 @@
                     <ListView.LayoutTransform>
                         <ScaleTransform x:Name="GridZoomTransform" ScaleX="1.0" ScaleY="1.0"/>
                     </ListView.LayoutTransform>
-                    <ListView.View >
+                    <ListView.View>
                         <GridView AllowsColumnReorder="True">
 
                             <GridViewColumn DisplayMemberBinding="{Binding GgLabel}" Width="100">
@@ -296,6 +299,26 @@
 
                         </GridView>
                     </ListView.View>
+                    <ListView.Resources>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="Background" Value="White"/>
+                            <Setter Property="Foreground" Value="black"/>
+                            <Setter Property="FontSize" Value="12"/>
+                            <Setter Property="Padding" Value="0"/>
+                            <Setter Property="Margin" Value="0,0,0,0"/>
+                            <Setter Property="BorderBrush" Value="#dce5ff"/>
+                            <Setter Property="BorderThickness" Value="0.25"/>
+
+
+                            <Setter Property="Background" Value="#e8eeff"/>
+                            <Style.Triggers>
+                                <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                                    <Setter Property="Background" Value="#f2f6ff"/>
+                                </Trigger>
+                            </Style.Triggers>
+
+                        </Style>
+                    </ListView.Resources>
                 </ListView>
 
                 <!-- Equipment details -->
