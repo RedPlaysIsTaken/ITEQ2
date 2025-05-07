@@ -8,11 +8,11 @@ using System.Drawing;
 
 namespace ITEQ2.View.UserControls
 {
-    /// <summary>
-    /// Interaction logic for TitleBar.xaml
-    /// </summary>
     public partial class TitleBar : UserControl
     {
+        private bool _isMaximized = false;
+        private Rect _restoreBounds;
+        public MenuBar MenuBarControlInstance => MenuBarControl;
 
         public TitleBar()
         {
@@ -23,11 +23,11 @@ namespace ITEQ2.View.UserControls
                 var window = Window.GetWindow(this);
                 if (window != null)
                 {
-                    window.StateChanged += Window_StateChanged; // ✅ hook here
+                    window.StateChanged += Window_StateChanged;
                 }
             };
         }
-        public MenuBar MenuBarControlInstance => MenuBarControl;
+        
         private void Window_StateChanged(object sender, EventArgs e)
         {
             var window = sender as Window;
@@ -35,10 +35,8 @@ namespace ITEQ2.View.UserControls
 
             if (window.WindowState == WindowState.Maximized)
             {
-                // Prevent the changing of windowstate to maximized
                 window.WindowState = WindowState.Normal;
 
-                // Optionally resize manually to simulate a "maximized" look
                 var workingArea = GetCurrentMonitorWorkingArea(window);
                 window.Left = workingArea.Left;
                 window.Top = workingArea.Top;
@@ -48,20 +46,18 @@ namespace ITEQ2.View.UserControls
             }
         }
 
-        private System.Windows.Point _startPoint; // Tracks the initial mouse position
-        private bool _isDragging;  // Indicates if the drag threshold is met
-        private const int DragThreshold = 1; // Minimum distance to activate drag
-        private double _relativeX; // Proportional X position
-        private double _relativeY; // Proportional Y position
+        private System.Windows.Point _startPoint; // initial mouse position
+        private bool _isDragging;  
+        private const int DragThreshold = 1; // distance to activate drag
+        private double _relativeX;
+        private double _relativeY;
 
         private void btnMinimize_Click(object sender, RoutedEventArgs e)
         {
-            var window = Window.GetWindow(this); // Get the parent window
+            var window = Window.GetWindow(this);
             if (window != null)
                 window.WindowState = WindowState.Minimized;
         }
-
-        private bool _isMaximized = false;
 
         private void btnMaximize_Click(object sender, RoutedEventArgs e)
         {
@@ -70,34 +66,40 @@ namespace ITEQ2.View.UserControls
             {
                 if (_isMaximized)
                 {
-                    var workingArea = GetCurrentMonitorWorkingArea(window);
-                    window.Left = workingArea.Left + workingArea.Width / 6;
-                    window.Top = workingArea.Top + workingArea.Height / 6;
-                    window.Width = workingArea.Width / 1.5;
-                    window.Height = workingArea.Height / 1.5;
-                    _isMaximized = false; // sets maximized state to true
-
-
-
-
-                    // if the window is maximized, restore it to normal size
-                    /*window.Width = 1280;
-                    window.Height = 720;
-                    window.Left = (SystemParameters.PrimaryScreenWidth - window.Width) / 2;
-                    window.Top = (SystemParameters.PrimaryScreenHeight - window.Height) / 2;
-                    _isMaximized = false;*/
+                    window.Left = _restoreBounds.Left;
+                    window.Top = _restoreBounds.Top;
+                    window.Width = _restoreBounds.Width;
+                    window.Height = _restoreBounds.Height;
+                    _isMaximized = false;
                 }
                 else
                 {
-                    // if the window is not maximized, maximize it
-                    var workingArea = GetCurrentMonitorWorkingArea(window);
+                    _restoreBounds = new Rect(window.Left, window.Top, window.Width, window.Height);
+                    var workingArea = GetScreenFromWindowCenter(window);
+
                     window.Left = workingArea.Left;
                     window.Top = workingArea.Top;
                     window.Width = workingArea.Width;
                     window.Height = workingArea.Height;
-                    _isMaximized = true; // sets maximized state to true
+                    _isMaximized = true;
                 }
             }
+        }
+        private Rect GetScreenFromWindowCenter(Window window)
+        {
+            var centerPoint = new POINT((int)(window.Left + window.Width / 2), (int)(window.Top + window.Height / 2));
+            IntPtr monitor = MonitorFromPoint(centerPoint, 2);
+
+            MONITORINFO monitorInfo = new MONITORINFO();
+            monitorInfo.cbSize = Marshal.SizeOf(typeof(MONITORINFO));
+
+            if (GetMonitorInfo(monitor, ref monitorInfo))
+            {
+                var rc = monitorInfo.rcWork;
+                return new Rect(rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top);
+            }
+
+            return new Rect(SystemParameters.WorkArea.Left, SystemParameters.WorkArea.Top, SystemParameters.WorkArea.Width, SystemParameters.WorkArea.Height);
         }
 
         private void MenuBar_Loaded(object sender, RoutedEventArgs e)
@@ -116,7 +118,7 @@ namespace ITEQ2.View.UserControls
 
         private void titleBar_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            var window = Window.GetWindow(this); // Get the parent window
+            var window = Window.GetWindow(this);
 
             if (window != null && e.ChangedButton == System.Windows.Input.MouseButton.Left)
             {
@@ -126,15 +128,14 @@ namespace ITEQ2.View.UserControls
                 }
                 else
                 {
-                    // Record the starting position of the mouse
+                    // starting position of the mouse
                     _startPoint = e.GetPosition(window);
                     _isDragging = false;
 
                     if (_isMaximized)
                     {
-                        // Calculate proportional position relative to the maximized window
-                        _relativeX = e.GetPosition(window).X / window.ActualWidth;  // X ratio
-                        _relativeY = e.GetPosition(window).Y / window.ActualHeight; // Y ratio
+                        _relativeX = e.GetPosition(window).X / window.ActualWidth;
+                        _relativeY = e.GetPosition(window).Y / window.ActualHeight;
                     }
                 }
             }
@@ -142,34 +143,29 @@ namespace ITEQ2.View.UserControls
 
         private void titleBar_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            var window = Window.GetWindow(this); // Get the parent window
+            var window = Window.GetWindow(this);
 
             if (window != null && e.LeftButton == System.Windows.Input.MouseButtonState.Pressed)
             {
-                // Calculate the distance the mouse has moved
                 var currentPosition = e.GetPosition(window);
                 var deltaX = Math.Abs(currentPosition.X - _startPoint.X);
                 var deltaY = Math.Abs(currentPosition.Y - _startPoint.Y);
 
-                // If the mouse has moved beyond the threshold, enable dragging
                 if (!_isDragging && (deltaX > DragThreshold || deltaY > DragThreshold))
                 {
                     if (_isMaximized)
                     {
-                        // Restore the window to Normal state
                         window.Width = 1280;
                         window.Height = 720;
 
-                        // Calculate the new window position proportionally
-                        var mousePos = Mouse.GetPosition(window); // Get mouse position relative to the window
-                        var screenPos = window.PointToScreen(mousePos); // Convert to screen coordinates
+                        var mousePos = Mouse.GetPosition(window);
+                        var screenPos = window.PointToScreen(mousePos);
 
                         window.Left = screenPos.X - (window.Width * _relativeX);
                         window.Top = screenPos.Y - (window.Height * _relativeY);
                         _isMaximized = false;
                     }
 
-                    // Start dragging
                     _isDragging = true;
                     window.DragMove();
                 }
@@ -178,7 +174,6 @@ namespace ITEQ2.View.UserControls
 
         private void titleBar_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            // Reset drag state on mouse release
             _isDragging = false;
         }
 
@@ -191,6 +186,9 @@ namespace ITEQ2.View.UserControls
         [DllImport("user32.dll")]
         static extern bool GetMonitorInfo(IntPtr hMonitor, ref MONITORINFO lpmi);
         // gets the monitor information, like the size of the monitor and the working area
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr MonitorFromPoint(POINT pt, uint dwFlags);
 
         [StructLayout(LayoutKind.Sequential)]
         public struct MONITORINFO // fils out the monitor information
@@ -207,15 +205,26 @@ namespace ITEQ2.View.UserControls
             public int top;
             public int right;
             public int bottom;
+        }
+        [StructLayout(LayoutKind.Sequential)]
+        private struct POINT
+        {
+            public int X;
+            public int Y;
 
+            public POINT(int x, int y)
+            {
+                X = x;
+                Y = y;
+            }
         }
         private Rect GetCurrentMonitorWorkingArea(Window window)
         {
             var hwnd = new WindowInteropHelper(window).Handle;
-            IntPtr monitor = MonitorFromWindow(hwnd, 2); // finds the monitor the window is on or closest to
+            IntPtr monitor = MonitorFromWindow(hwnd, 2);
 
-            MONITORINFO monitorInfo = new MONITORINFO(); //
-            monitorInfo.cbSize = Marshal.SizeOf(typeof(MONITORINFO)); //Create the monitor info structure and set its size
+            MONITORINFO monitorInfo = new MONITORINFO(); 
+            monitorInfo.cbSize = Marshal.SizeOf(typeof(MONITORINFO));
            
             if (GetMonitorInfo(monitor, ref monitorInfo)) // if getting monitor size is succsesfull sets the rc
             {
