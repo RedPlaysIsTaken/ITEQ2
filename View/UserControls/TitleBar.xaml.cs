@@ -5,6 +5,7 @@ using System.Windows.Input;
 using System.Runtime.InteropServices;
 using System.Windows.Interop;
 using System.Drawing;
+using System.Windows.Media;
 
 namespace ITEQ2.View.UserControls
 {
@@ -221,18 +222,39 @@ namespace ITEQ2.View.UserControls
         private Rect GetCurrentMonitorWorkingArea(Window window)
         {
             var hwnd = new WindowInteropHelper(window).Handle;
-            IntPtr monitor = MonitorFromWindow(hwnd, 2);
+            IntPtr monitor = MonitorFromWindow(hwnd, 2); 
 
-            MONITORINFO monitorInfo = new MONITORINFO(); 
+            MONITORINFO monitorInfo = new MONITORINFO();
             monitorInfo.cbSize = Marshal.SizeOf(typeof(MONITORINFO));
-           
-            if (GetMonitorInfo(monitor, ref monitorInfo)) // if getting monitor size is succsesfull sets the rc
+
+            if (GetMonitorInfo(monitor, ref monitorInfo))
             {
                 var rc = monitorInfo.rcWork;
-                return new Rect(rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top);
-            }
-            return new Rect(SystemParameters.WorkArea.Left, SystemParameters.WorkArea.Top, SystemParameters.WorkArea.Width, SystemParameters.WorkArea.Height);// if we can't get the monitor size, use WPF syspam WorkingArea instead
 
+                var source = HwndSource.FromHwnd(hwnd);
+                double dpiX = 1.0, dpiY = 1.0;
+
+                if (source?.CompositionTarget != null)
+                {
+                    dpiX = source.CompositionTarget.TransformToDevice.M11;
+                    dpiY = source.CompositionTarget.TransformToDevice.M22;
+                }
+
+                return new Rect(
+                    rc.left / dpiX,
+                    rc.top / dpiY,
+                    (rc.right - rc.left) / dpiX,
+                    (rc.bottom - rc.top) / dpiY
+                );
+            }
+
+            var fallbackDpi = VisualTreeHelper.GetDpi(window);
+            return new Rect(
+                SystemParameters.WorkArea.Left / fallbackDpi.DpiScaleX,
+                SystemParameters.WorkArea.Top / fallbackDpi.DpiScaleY,
+                SystemParameters.WorkArea.Width / fallbackDpi.DpiScaleX,
+                SystemParameters.WorkArea.Height / fallbackDpi.DpiScaleY
+            );
         }
     }
 }
