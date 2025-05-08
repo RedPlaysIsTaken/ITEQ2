@@ -56,24 +56,4 @@ namespace ITEQ2.CsvHandling
         [Name("Short comment")]
         public string ShortComment { get; set; }
     }
-
-   
-    public class CustomDateConverter : DateTimeConverter // Converts date to correct format
-    {
-        private static readonly string[] DateFormats = { "yyyy-MM-dd", "MM/dd/yyyy", "dd/MM/yyyy", "yyyy/MM/dd" };
-
-        public override object ConvertFromString(string text, IReaderRow row, MemberMapData memberMapData)
-        {
-            if (string.IsNullOrWhiteSpace(text))
-                return null;
-
-            if (DateTime.TryParseExact(text, DateFormats, System.Globalization.CultureInfo.InvariantCulture,
-                                       System.Globalization.DateTimeStyles.None, out DateTime date))
-            {
-                return date;
-            }
-
-            return base.ConvertFromString(text, row, memberMapData);
-        }
-    }
 }
