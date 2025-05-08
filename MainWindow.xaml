@@ -17,7 +17,10 @@
     <Grid Background="white">
         <Grid.RowDefinitions>
             <!-- Title Bar -->
-            <RowDefinition Height="60"/>
+            <RowDefinition Height="40"/>
+            
+            <!--Menu bar-->
+            <RowDefinition Height="20"/>
 
             <!-- Search Bar -->
             <RowDefinition Height="40"/>
@@ -32,15 +35,16 @@
 
         <!-- Title Bar -->
         <UserControls:TitleBar x:Name="TitleBarControl" Grid.Row="0" Loaded="TitleBar_Loaded"/>
-
+        <!-- Menu Bar   -->
+        <UserControls:MenuBar x:Name="MenuBarControl" Grid.Row="1" Loaded="MenuBar_Loaded"/>
         <!-- Search Bar -->
-        <UserControls:SearchBar x:Name="SearchBarControl" Grid.Row="1" Loaded="SearchBar_Loaded"/>
+        <UserControls:SearchBar x:Name="SearchBarControl" Grid.Row="2" Loaded="SearchBar_Loaded"/>
 
         <!-- Footer -->
-        <UserControls:Footer_Control x:Name="FooterControl" Grid.Row="3"/>
+        <UserControls:Footer_Control x:Name="FooterControl" Grid.Row="4"/>
 
         <!-- Main Application -->
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="3">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto" MinWidth="110"/>
                 <ColumnDefinition Width="5"/>
@@ -314,6 +318,14 @@
                             <Style.Triggers>
                                 <Trigger Property="ItemsControl.AlternationIndex" Value="1">
                                     <Setter Property="Background" Value="#f2f6ff"/>
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#c3d3f9"/>
+
+                                </Trigger>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Background" Value="#a4bdf7"/>
+                               
                                 </Trigger>
                             </Style.Triggers>
 

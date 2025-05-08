@@ -99,7 +99,6 @@ namespace ITEQ2.View.UserControls
         {
             SaveRequested?.Invoke();
         }
-
         private void menuitemOpenCombined_Click(object sender, RoutedEventArgs e)
         {
             //OpenFileDialog openFile = new OpenFileDialog // Open file dialog for CSV files omly

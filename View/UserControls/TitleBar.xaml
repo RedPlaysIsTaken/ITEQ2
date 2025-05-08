@@ -5,14 +5,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ITEQ2.View.UserControls"
              mc:Ignorable="d" 
-             d:DesignHeight="60" d:DesignWidth="1080">
-    <Grid Name="titleBar" Height="60" Background="DarkGray" 
+             d:DesignHeight="40" d:DesignWidth="1080">
+    <Grid Name="titleBar" Height="40" Background="DarkGray" 
           MouseDown="titleBar_MouseDown"
           MouseMove="titleBar_MouseMove"
           MouseUp="titleBar_MouseUp">
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
-            <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Row="0" Text="IT" FontWeight="Bold" VerticalAlignment="Center" Foreground="#133b8f" FontSize="16" Margin="15,0,0,0" />
@@ -25,7 +24,5 @@
             <Button Name="btnClose" Content="❌" Width="34" Height="34" BorderBrush="Transparent" Background="Transparent" Margin="3"
             Click="btnClose_Click"/>
         </StackPanel>
-        <local:MenuBar x:Name="MenuBarControl" Grid.Row="1" Loaded="MenuBar_Loaded"/>
-
     </Grid>
 </UserControl>

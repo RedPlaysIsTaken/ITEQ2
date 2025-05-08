@@ -13,7 +13,7 @@ namespace ITEQ2.View.UserControls
     {
         private bool _isMaximized = false;
         private Rect _restoreBounds;
-        public MenuBar MenuBarControlInstance => MenuBarControl;
+  
 
         public TitleBar()
         {
@@ -103,10 +103,7 @@ namespace ITEQ2.View.UserControls
             return new Rect(SystemParameters.WorkArea.Left, SystemParameters.WorkArea.Top, SystemParameters.WorkArea.Width, SystemParameters.WorkArea.Height);
         }
 
-        private void MenuBar_Loaded(object sender, RoutedEventArgs e)
-        {
-            //
-        }
+    
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
             var window = Window.GetWindow(this);

@@ -53,8 +53,8 @@ namespace ITEQ2
 
             EquipmentListView.ItemsSource = EquipmentList;
 
-            SearchBarControl.SearchPerformed += OnSearchPerformed; // Check if the save event has been called from the SearchBar
-            TitleBarControl.MenuBarControlInstance.SaveRequested += OnSaveRequested; // Check if the save event has been called from the MenuBar
+           SearchBarControl.SearchPerformed += OnSearchPerformed; // Check if the save event has been called from the SearchBar
+           MenuBarControl.SaveRequested += OnSaveRequested; // Check if the save event has been called from the MenuBar
 
             SearchBar searchBar = SearchBarControl as SearchBar;
             searchBar.ZoomChanged += ApplyZoom;
@@ -476,6 +476,10 @@ namespace ITEQ2
                 }
             }
         }
+        private void MenuBar_Loaded(object sender, RoutedEventArgs e)
+        {
+            // Optional logic on load
+        }
         private void Sort(string sortBy, ListSortDirection direction)
         {
             ICollectionView dataView =
@@ -490,7 +494,7 @@ namespace ITEQ2
         {
             String[] filePaths = { _workingDocPath, _fucDocPath };
 
-            MenuBar menuBarInstance = TitleBarControl.MenuBarControlInstance;
+            MenuBar menuBarInstance = MenuBarControl;
 
             if (menuBarInstance != null)
             {
