@@ -132,10 +132,5 @@ namespace ITEQ2.View.UserControls
         {
             ZoomSlider.Value = 1.0;
         }
-
-        private void BtnAdvancedSearch_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
     }
 }
