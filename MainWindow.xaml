@@ -315,6 +315,14 @@
                                 <Trigger Property="ItemsControl.AlternationIndex" Value="1">
                                     <Setter Property="Background" Value="#f2f6ff"/>
                                 </Trigger>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#c3d3f9"/>
+
+                                </Trigger>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Background" Value="#a4bdf7"/>
+                               
+                                </Trigger>
                             </Style.Triggers>
 
                         </Style>
