@@ -369,7 +369,7 @@
 
 
                     <!-- EDit Part-->
-                    <Border DataContext="{Binding SelectedItem, ElementName=EquipmentListView}" Background="LightGray">
+                    <Border DataContext="{Binding SelectedItem, ElementName=EquipmentListView}" Background="white">
                         <Grid Margin="5" HorizontalAlignment="Left">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="150"/>
@@ -385,7 +385,7 @@
                                 <RowDefinition Height="Auto"/>
                                 <!-- 1 -->
                                 <RowDefinition Height="Auto"/>
-                                <!-- 2 -->
+                                <!-- 2 Titles -->
                                 <RowDefinition Height="Auto"/>
                                 <!-- 3 -->
                                 <RowDefinition Height="Auto"/>
@@ -408,7 +408,15 @@
                                 <!-- 12 -->
                                 <RowDefinition Height="Auto"/>
                                 <!-- 13 -->
-                            
+                                <RowDefinition Height="Auto"/>
+                                <!-- 14 -->
+                                <RowDefinition Height="Auto"/>
+                                <!-- 15 -->
+                                <RowDefinition Height="Auto"/>
+                                <!-- 16 -->
+                                <RowDefinition Height="Auto"/>
+                                <!-- 17 -->
+
                             </Grid.RowDefinitions>
 
                             <!-- Buttons -->
@@ -418,27 +426,29 @@
                             </StackPanel>
 
                             <!-- IT-Equipment -->
-                            <TextBlock Grid.Row="1" Grid.Column="0" Text="IT-Equipment" FontSize="16"/>
-                            <TextBlock Grid.Row="2" Grid.Column="0" Text="GG-LABEL:" VerticalAlignment="Center"/>
-                            <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding GgLabel, Mode=TwoWay}" Width="180" Height="18"/>
+                            <Rectangle  Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="5" Height="5" Fill="#a4bdf7" VerticalAlignment="Bottom" Margin="0,5"/>
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="IT-Equipment" FontSize="16"/>
+                            <Rectangle  Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="5" Height="5" Fill="#a4bdf7" VerticalAlignment="Bottom" Margin="0,5"/>
+                            <TextBlock Grid.Row="4" Grid.Column="0" Text="GG-LABEL:" VerticalAlignment="Center"/>
+                            <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding GgLabel, Mode=TwoWay}" Width="180" Height="22.5" VerticalContentAlignment=" Center" FontSize="12"/>
 
-                            <TextBlock Grid.Row="3" Grid.Column="0" Text="TYPE:" VerticalAlignment="Center"/>
-                            <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Type, Mode=TwoWay}" Width="180" Height="18"/>
+                            <TextBlock Grid.Row="5" Grid.Column="0" Text="TYPE:" VerticalAlignment="Center"/>
+                            <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding Type, Mode=TwoWay}" Width="180" Height="22.5" VerticalContentAlignment=" Center" FontSize="12"/>
 
-                            <TextBlock Grid.Row="4" Grid.Column="0" Text="MAKE:" VerticalAlignment="Center"/>
-                            <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Make, Mode=TwoWay}" Width="180" Height="18"/>
+                            <TextBlock Grid.Row="6" Grid.Column="0" Text="MAKE:" VerticalAlignment="Center"/>
+                            <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding Make, Mode=TwoWay}" Width="180" Height="22.5" VerticalContentAlignment=" Center" FontSize="12"/>
 
-                            <TextBlock Grid.Row="5" Grid.Column="0" Text="MODEL:" VerticalAlignment="Center"/>
-                            <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding Model, Mode=TwoWay}" Width="180" Height="18"/>
+                            <TextBlock Grid.Row="7" Grid.Column="0" Text="MODEL:" VerticalAlignment="Center"/>
+                            <TextBox Grid.Row="7" Grid.Column="1" Text="{Binding Model, Mode=TwoWay}" Width="180" Height="22.5" VerticalContentAlignment=" Center" FontSize="12"/>
 
-                            <TextBlock Grid.Row="6" Grid.Column="0" Text="USER:" VerticalAlignment="Center"/>
-                            <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding User, Mode=TwoWay}" Width="180" Height="18"/>
+                            <TextBlock Grid.Row="8" Grid.Column="0" Text="USER:" VerticalAlignment="Center"/>
+                            <TextBox Grid.Row="8" Grid.Column="1" Text="{Binding User, Mode=TwoWay}" Width="180" Height="22.5" VerticalContentAlignment=" Center" FontSize="12"/>
 
-                            <TextBlock Grid.Row="7" Grid.Column="0" Text="SITE:" VerticalAlignment="Center"/>
-                            <TextBox Grid.Row="7" Grid.Column="1" Text="{Binding Site, Mode=TwoWay}" Width="180" Height="18"/>
+                            <TextBlock Grid.Row="9" Grid.Column="0" Text="SITE:" VerticalAlignment="Center"/>
+                            <TextBox Grid.Row="9" Grid.Column="1" Text="{Binding Site, Mode=TwoWay}" Width="180" Height="22.5" VerticalContentAlignment=" Center" FontSize="12"/>
 
-                            <TextBlock Grid.Row="8" Grid.Column="0" Text="STATUS:" VerticalAlignment="Center"/>
-                            <ComboBox Grid.Row="8" Grid.Column="1" SelectedValue="{Binding Status, Mode=TwoWay}" Width="180" Height="20">
+                            <TextBlock Grid.Row="10" Grid.Column="0" Text="STATUS:" VerticalAlignment="Center"/>
+                            <ComboBox Grid.Row="10" Grid.Column="1" SelectedValue="{Binding Status, Mode=TwoWay}" Width="180" Height="22.5" VerticalContentAlignment=" Center" FontSize="12">
                                 <ComboBoxItem Tag="INSTOCK" Content="INSTOCK"/>
                                 <ComboBoxItem Tag="NETWORKED" Content="NETWORKED"/>
                                 <ComboBoxItem Tag="TERMINATED" Content="TERMINATED"/>
@@ -448,45 +458,47 @@
                                 <ComboBoxItem Tag="INTRANSIT" Content="INTRANSIT"/>
                             </ComboBox>
 
-                            <TextBlock Grid.Row="9" Grid.Column="0" Text="Purchase date:" VerticalAlignment="Center"/>
-                            <TextBox Grid.Row="9" Grid.Column="1" Text="{Binding PurchaseDate, Mode=TwoWay}" Width="180" Height="18"/>
+                            <TextBlock Grid.Row="11" Grid.Column="0" Text="Purchase date:" VerticalAlignment="Center"/>
+                            <TextBox Grid.Row="11" Grid.Column="1" Text="{Binding PurchaseDate, Mode=TwoWay}" Width="180" Height="22.5" VerticalContentAlignment="Center" FontSize="12"/>
 
-                            <TextBlock Grid.Row="10" Grid.Column="0" Text="Received date:" VerticalAlignment="Center"/>
-                            <TextBox Grid.Row="10" Grid.Column="1" Text="{Binding Received, Mode=TwoWay}" Width="180" Height="18"/>
+                            <TextBlock Grid.Row="12" Grid.Column="0" Text="Received date:" VerticalAlignment="Center"/>
+                            <TextBox Grid.Row="12" Grid.Column="1" Text="{Binding Received, Mode=TwoWay}" Width="180" Height="22.5" VerticalContentAlignment=" Center" FontSize="12"/>
 
-                            <TextBlock Grid.Row="11" Grid.Column="0" Text="Short comment:" VerticalAlignment="Center"/>
-                            <TextBox Grid.Row="11" Grid.Column="1" Text="{Binding ShortComment, Mode=TwoWay}" Width="180" Height="18"/>
+                            <TextBlock Grid.Row="13" Grid.Column="0" Text="Short comment:" VerticalAlignment="Center"/>
+                            <TextBox Grid.Row="13" Grid.Column="1" Text="{Binding ShortComment, Mode=TwoWay}" Width="180" Height="22.5" VerticalContentAlignment=" Center" FontSize="12"/>
 
-                            <TextBlock Grid.Row="12" Grid.Column="0" Text="SERIAL NO:" VerticalAlignment="Center"/>
-                            <TextBox Grid.Row="12" Grid.Column="1" Text="{Binding SerialNo, Mode=TwoWay}" Width="180" Height="18"/>
+                            <TextBlock Grid.Row="14" Grid.Column="0" Text="SERIAL NO:" VerticalAlignment="Center"/>
+                            <TextBox Grid.Row="14" Grid.Column="1" Text="{Binding SerialNo, Mode=TwoWay}" Width="180" Height="22.5" VerticalContentAlignment=" Center" FontSize="12"/>
 
-                            <TextBlock Grid.Row="13" Grid.Column="0" Text="SECURITY ID:" VerticalAlignment="Center"/>
-                            <TextBox Grid.Row="13" Grid.Column="1" Text="{Binding SecurityId, Mode=TwoWay}" Width="180" Height="18"/>
+                            <TextBlock Grid.Row="15" Grid.Column="0" Text="SECURITY ID:" VerticalAlignment="Center"/>
+                            <TextBox Grid.Row="15" Grid.Column="1" Text="{Binding SecurityId, Mode=TwoWay}" Width="180" Height="22.5" VerticalContentAlignment=" Center" FontSize="12"/>
 
                             <!-- Right Column (FUC-Report) -->
-                            <TextBlock Grid.Row="1" Grid.Column="3" Text="FUC-Report" FontSize="16"/>
+                            <TextBlock Grid.Row="2" Grid.Column="3" Text="FUC-Report" FontSize="16"/>
                         
 
-                            <TextBlock Grid.Row="2" Grid.Column="3" Text="PC:" VerticalAlignment="Center"/>
-                            <TextBox Grid.Row="2" Grid.Column="4" Text="{Binding PC, Mode=OneWay}" Width="180" Height="18"/>
+                            <TextBlock Grid.Row="4" Grid.Column="3" Text="PC:" VerticalAlignment="Center"/>
+                            <TextBox Grid.Row="4" Grid.Column="4" Text="{Binding PC, Mode=OneWay}" Width="180" Height="22.5" VerticalContentAlignment=" Center" FontSize="12"/>
 
-                            <TextBlock Grid.Row="3" Grid.Column="3" Text="USER (FUC):" VerticalAlignment="Center"/>
-                            <TextBox Grid.Row="3" Grid.Column="4" Text="{Binding FucUser, Mode=OneWay}" Width="180" Height="18"/>
+                            <TextBlock Grid.Row="5" Grid.Column="3" Text="USER (FUC):" VerticalAlignment="Center"/>
+                            <TextBox Grid.Row="5" Grid.Column="4" Text="{Binding FucUser, Mode=OneWay}" Width="180" Height="22.5" VerticalContentAlignment=" Center" FontSize="12"/>
 
-                            <TextBlock Grid.Row="4" Grid.Column="3" Text="Username:" VerticalAlignment="Center"/>
-                            <TextBox Grid.Row="4" Grid.Column="4" Text="{Binding Username, Mode=OneWay}" Width="180" Height="18"/>
+                            <TextBlock Grid.Row="6" Grid.Column="3" Text="Username:" VerticalAlignment="Center"/>
+                            <TextBox Grid.Row="6" Grid.Column="4" Text="{Binding Username, Mode=OneWay}" Width="180" Height="22.5" VerticalContentAlignment=" Center" FontSize="12"/>
 
-                            <TextBlock Grid.Row="5" Grid.Column="3" Text="DATE:" VerticalAlignment="Center"/>
-                            <TextBox Grid.Row="5" Grid.Column="4" Text="{Binding Date, Mode=OneWay}" Width="180" Height="18"/>
+                            <TextBlock Grid.Row="7" Grid.Column="3" Text="DATE:" VerticalAlignment="Center"/>
+                            <TextBox Grid.Row="7" Grid.Column="4" Text="{Binding Date, Mode=OneWay}" Width="180" Height="22.5" VerticalContentAlignment=" Center" FontSize="12"/>
 
-                            <TextBlock Grid.Row="6" Grid.Column="3" Text="ReportDATE:" VerticalAlignment="Center"/>
-                            <TextBox Grid.Row="6" Grid.Column="4" Text="{Binding ReportDate, Mode=OneWay}" Width="180" Height="18"/>
+                            <TextBlock Grid.Row="8" Grid.Column="3" Text="ReportDATE:" VerticalAlignment="Center"/>
+                            <TextBox Grid.Row="8" Grid.Column="4" Text="{Binding ReportDate, Mode=OneWay}" Width="180" Height="22.5" VerticalContentAlignment=" Center" FontSize="12"/>
 
-                            <TextBlock Grid.Row="7" Grid.Column="3" Text="PCLocation:" VerticalAlignment="Center"/>
-                            <TextBox Grid.Row="7" Grid.Column="4" Text="{Binding PCLocation, Mode=OneWay}" Width="180" Height="18"/>
+                            <TextBlock Grid.Row="9" Grid.Column="3" Text="PCLocation:" VerticalAlignment="Center"/>
+                            <TextBox Grid.Row="9" Grid.Column="4" Text="{Binding PCLocation, Mode=OneWay}" Width="180" Height="22.5" VerticalContentAlignment=" Center" FontSize="12"/>
 
-                            <TextBlock Grid.Row="8" Grid.Column="3" Text="EmplMailadresse:" VerticalAlignment="Center"/>
-                            <TextBox Grid.Row="8" Grid.Column="4" Text="{Binding EmplMailAdresse, Mode=OneWay}" Width="180" Height="18"/>
+                            <TextBlock Grid.Row="10" Grid.Column="3" Text="EmplMailadresse:" VerticalAlignment="Center"/>
+                            <TextBox Grid.Row="10" Grid.Column="4" Text="{Binding EmplMailAdresse, Mode=OneWay}" Width="180" Height="22.5" VerticalContentAlignment=" Center" FontSize="12"/>
+                            <Rectangle  Grid.Column="0" Grid.Row="17" Grid.ColumnSpan="5" Height="5" Fill="#a4bdf7" VerticalAlignment="Bottom" Margin="0,5"/>
+
                         </Grid>
                     </Border>
                 </Grid>

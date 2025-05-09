@@ -282,7 +282,7 @@ namespace ITEQ2
             if (EquipmentListView.SelectedItem != null)
             {
                 DetailsPanelGrid.Visibility = Visibility.Visible;
-                DetailsPanelGrid.Height = 300;
+                DetailsPanelGrid.Height = 400;
                 DetailsPanelGrid.Width = double.NaN;
 
                 EquipmentListView.Height = double.NaN;
