@@ -6,12 +6,14 @@ using System.Windows.Controls;
 using System.Windows;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 
 namespace ITEQ2.Presets
 {
     public class GridViewPreset
     {
         public string Name { get; set; }
+        public string Description { get; set; }
         public List<double> ColumnWidths { get; set; } = new();
         public List<string> ColumnOrder { get; set; } = new();
     }
@@ -22,11 +24,11 @@ namespace ITEQ2.Presets
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
             "ITEQ2/GridViewPresets");
 
-        public static void SavePreset(string name, GridView gridView)
+        public static void SavePreset(string name, GridView gridView, string description = "")
         {
             Directory.CreateDirectory(PresetFolder);
 
-            var preset = new GridViewPreset { Name = name };
+            var preset = new GridViewPreset { Name = name , Description = description };
 
             foreach (var column in gridView.Columns)
             {
@@ -69,28 +71,41 @@ namespace ITEQ2.Presets
             }
         }
 
-        public static List<string> GetAvailablePresets()
+        public static List<GridViewPreset> GetAvailablePresets()
         {
             Directory.CreateDirectory(PresetFolder);
             var files = Directory.GetFiles(PresetFolder, "*.json");
-            var names = new List<string>();
+            var presets = new List<GridViewPreset>();
+
             foreach (var file in files)
             {
-                names.Add(Path.GetFileNameWithoutExtension(file));
+                try
+                {
+                    string json = File.ReadAllText(file);
+                    var preset = JsonSerializer.Deserialize<GridViewPreset>(json);
+                    if (preset != null)
+                    {
+                        presets.Add(preset);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine($"Failed to load preset: {file}. Error: {ex.Message}");
+                }
             }
-            return names;
+            return presets;
         }
     }
     public class GridViewPresetsViewModel : INotifyPropertyChanged
     {
-        public ObservableCollection<string> GridViewPresets { get; set; } = new();
+        public ObservableCollection<GridViewPreset> GridViewPresets { get; set; } = new();
 
         public void LoadPresets()
         {
             GridViewPresets.Clear();
-            foreach (var name in GridViewPresetManager.GetAvailablePresets())
+            foreach (var preset in GridViewPresetManager.GetAvailablePresets())
             {
-                GridViewPresets.Add(name);
+                GridViewPresets.Add(preset);
             }
         }
 

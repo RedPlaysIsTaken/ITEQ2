@@ -37,7 +37,7 @@ namespace ITEQ2
         private Dictionary<EquipmentObject, Dictionary<string, object>> _modifiedRecords = new(); // Keeps track of what fields have been changed and what they have been changed to
         private string _workingDocPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "workingDoc.csv"); // local variable for the path of the working document
         private string _fucDocPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "fucReportExampleData.csv"); // local variable for the path of the fucreport
-        public ObservableCollection<string> GridViewPresets { get; set; } = new(); // list of the grid presets
+        public ObservableCollection<GridViewPreset> GridViewPresets { get; set; } = new();
 
         GridViewColumnHeader _lastHeaderClicked = null;
         ListSortDirection _lastDirection = ListSortDirection.Ascending;
@@ -50,6 +50,8 @@ namespace ITEQ2
         public MainWindow() // Main program window
         {
             InitializeComponent(); // Start/open the main window.
+
+            this.PreviewKeyDown += Window_PreviewKeyDown;
 
             this.DataContext = this;
 
@@ -72,6 +74,31 @@ namespace ITEQ2
             LoadGridPresets();
             CheckName();
         }
+        private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            var focusedElement = Keyboard.FocusedElement;
+
+            if (focusedElement is TextBox || focusedElement is PasswordBox || focusedElement is RichTextBox)
+                return;
+
+            if (e.Key == Key.LeftShift || e.Key == Key.RightShift ||
+                e.Key == Key.LeftCtrl || e.Key == Key.RightCtrl ||
+                e.Key == Key.LeftAlt || e.Key == Key.RightAlt ||
+                e.Key == Key.Escape || e.Key == Key.Tab ||
+                e.Key == Key.Up || e.Key == Key.Down ||
+                e.Key == Key.Left || e.Key == Key.Right ||
+                e.Key == Key.Enter || e.Key == Key.CapsLock)
+            {
+                return;
+            }
+
+            if (SearchBarControl is SearchBar searchBar && searchBar.txtBoxSearchBar != null)
+            {
+                searchBar.txtBoxSearchBar.Focus();
+                searchBar.txtBoxSearchBar.SelectAll();
+            }
+        }
+
         private void CheckName()
         {
             if (string.IsNullOrWhiteSpace(Properties.Settings.Default.User))
@@ -200,21 +227,32 @@ namespace ITEQ2
         {
             GridView gv = (GridView)EquipmentListView.View;
 
-            string presetName = Interaction.InputBox("Enter preset name:", "Save GridView Preset", "MyPreset");
-            if (string.IsNullOrWhiteSpace(presetName)) return;
+            string presetName = Interaction.InputBox("Enter preset name (max 24 characters):", "Save GridView Preset", "MyPreset");
 
-            GridViewPresetManager.SavePreset(presetName, gv);
+            if (string.IsNullOrWhiteSpace(presetName))
+                return;
 
-            foreach (string name in GridViewPresetManager.GetAvailablePresets())
+            if (presetName.Length > 20)
             {
-                Debug.WriteLine($"Saved preset: '{name}'");
+                MessageBox.Show("Preset name cannot exceed 24 characters.", "Invalid Name", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
             }
+
+            string description = Interaction.InputBox("Enter description (optional):", "Save GridView Preset Description", "");
+
+            GridViewPresetManager.SavePreset(presetName, gv, description); // <-- Adjust this method to accept description
+
+            foreach (GridViewPreset preset in GridViewPresetManager.GetAvailablePresets())
+            {
+                Debug.WriteLine($"Saved preset: '{preset.Name}'");
+            }
+
             LoadGridPresets();
         }
         private void LoadGridPresets()
         {
             GridViewPresets.Clear();
-            foreach (var preset in GridViewPresetManager.GetAvailablePresets())
+            foreach (GridViewPreset preset in GridViewPresetManager.GetAvailablePresets())
             {
                 GridViewPresets.Add(preset);
             }
