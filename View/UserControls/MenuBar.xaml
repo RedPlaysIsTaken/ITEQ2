@@ -8,11 +8,11 @@
              d:DesignHeight="15" d:DesignWidth="1080">
 
     <!-- Menu Bar -->
-    <Grid Background="DarkGray">
+    <Grid Background="#c7c7c7">
         <Grid.RowDefinitions>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Menu Background="DarkGray">
+        <Menu>
             <MenuItem Header="File" FontSize="12">
                 <MenuItem Name="menuitemOpen" Header="Open File" FontSize="12"
                           Click="menuitemOpen_Click"/>
