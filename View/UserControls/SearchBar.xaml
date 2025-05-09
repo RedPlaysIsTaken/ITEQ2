@@ -28,7 +28,6 @@
                 Content="Save Grid Preset" Click="BtnCreateGridPreset_Click"/>
             <Button x:Name="BtnSetValuesForSelectedRows" Margin="5" Height="30" Width="160" VerticalAlignment="Top"  
                 Content="Set values for selected rows" Click="BtnSetValuesForSelectedRows_Click"/>
-            <Button x:Name="BtnAdvancedSearch" Content="Advanced search" Click="BtnAdvancedSearch_Click" Height="30" Width="auto" Margin="5" VerticalAlignment="Top"/>
         </StackPanel>
         <TextBox Grid.Column="1" x:Name="txtBoxSearchBar" Height="30" Width="auto" Margin="5" VerticalAlignment="Top" HorizontalAlignment="Stretch"
                  FontSize="16" TextChanged="txtBoxSearchBar_TextChanged"/>
