@@ -408,12 +408,7 @@
                                 <!-- 12 -->
                                 <RowDefinition Height="Auto"/>
                                 <!-- 13 -->
-                                <RowDefinition Height="Auto"/>
-                                <!-- 14 -->
-                                <RowDefinition Height="Auto"/>
-                                <!-- 15 -->
-                                <RowDefinition Height="Auto"/>
-                                <!-- 16 -->
+                            
                             </Grid.RowDefinitions>
 
                             <!-- Buttons -->
@@ -462,34 +457,36 @@
                             <TextBlock Grid.Row="11" Grid.Column="0" Text="Short comment:" VerticalAlignment="Center"/>
                             <TextBox Grid.Row="11" Grid.Column="1" Text="{Binding ShortComment, Mode=TwoWay}" Width="180" Height="18"/>
 
+                            <TextBlock Grid.Row="12" Grid.Column="0" Text="SERIAL NO:" VerticalAlignment="Center"/>
+                            <TextBox Grid.Row="12" Grid.Column="1" Text="{Binding SerialNo, Mode=TwoWay}" Width="180" Height="18"/>
+
+                            <TextBlock Grid.Row="13" Grid.Column="0" Text="SECURITY ID:" VerticalAlignment="Center"/>
+                            <TextBox Grid.Row="13" Grid.Column="1" Text="{Binding SecurityId, Mode=TwoWay}" Width="180" Height="18"/>
+
                             <!-- Right Column (FUC-Report) -->
                             <TextBlock Grid.Row="1" Grid.Column="3" Text="FUC-Report" FontSize="16"/>
-                            <TextBlock Grid.Row="2" Grid.Column="3" Text="SERIAL NO:" VerticalAlignment="Center"/>
-                            <TextBox Grid.Row="2" Grid.Column="4" Text="{Binding SerialNo, Mode=TwoWay}" Width="180" Height="18"/>
+                        
 
-                            <TextBlock Grid.Row="3" Grid.Column="3" Text="SECURITY ID:" VerticalAlignment="Center"/>
-                            <TextBox Grid.Row="3" Grid.Column="4" Text="{Binding SecurityId, Mode=TwoWay}" Width="180" Height="18"/>
+                            <TextBlock Grid.Row="2" Grid.Column="3" Text="PC:" VerticalAlignment="Center"/>
+                            <TextBox Grid.Row="2" Grid.Column="4" Text="{Binding PC, Mode=OneWay}" Width="180" Height="18"/>
 
-                            <TextBlock Grid.Row="4" Grid.Column="3" Text="PC:" VerticalAlignment="Center"/>
-                            <TextBox Grid.Row="4" Grid.Column="4" Text="{Binding PC, Mode=OneWay}" Width="180" Height="18"/>
+                            <TextBlock Grid.Row="3" Grid.Column="3" Text="USER (FUC):" VerticalAlignment="Center"/>
+                            <TextBox Grid.Row="3" Grid.Column="4" Text="{Binding FucUser, Mode=OneWay}" Width="180" Height="18"/>
 
-                            <TextBlock Grid.Row="5" Grid.Column="3" Text="USER (FUC):" VerticalAlignment="Center"/>
-                            <TextBox Grid.Row="5" Grid.Column="4" Text="{Binding FucUser, Mode=OneWay}" Width="180" Height="18"/>
+                            <TextBlock Grid.Row="4" Grid.Column="3" Text="Username:" VerticalAlignment="Center"/>
+                            <TextBox Grid.Row="4" Grid.Column="4" Text="{Binding Username, Mode=OneWay}" Width="180" Height="18"/>
 
-                            <TextBlock Grid.Row="6" Grid.Column="3" Text="Username:" VerticalAlignment="Center"/>
-                            <TextBox Grid.Row="6" Grid.Column="4" Text="{Binding Username, Mode=OneWay}" Width="180" Height="18"/>
+                            <TextBlock Grid.Row="5" Grid.Column="3" Text="DATE:" VerticalAlignment="Center"/>
+                            <TextBox Grid.Row="5" Grid.Column="4" Text="{Binding Date, Mode=OneWay}" Width="180" Height="18"/>
 
-                            <TextBlock Grid.Row="7" Grid.Column="3" Text="DATE:" VerticalAlignment="Center"/>
-                            <TextBox Grid.Row="7" Grid.Column="4" Text="{Binding Date, Mode=OneWay}" Width="180" Height="18"/>
+                            <TextBlock Grid.Row="6" Grid.Column="3" Text="ReportDATE:" VerticalAlignment="Center"/>
+                            <TextBox Grid.Row="6" Grid.Column="4" Text="{Binding ReportDate, Mode=OneWay}" Width="180" Height="18"/>
 
-                            <TextBlock Grid.Row="8" Grid.Column="3" Text="ReportDATE:" VerticalAlignment="Center"/>
-                            <TextBox Grid.Row="8" Grid.Column="4" Text="{Binding ReportDate, Mode=OneWay}" Width="180" Height="18"/>
+                            <TextBlock Grid.Row="7" Grid.Column="3" Text="PCLocation:" VerticalAlignment="Center"/>
+                            <TextBox Grid.Row="7" Grid.Column="4" Text="{Binding PCLocation, Mode=OneWay}" Width="180" Height="18"/>
 
-                            <TextBlock Grid.Row="9" Grid.Column="3" Text="PCLocation:" VerticalAlignment="Center"/>
-                            <TextBox Grid.Row="9" Grid.Column="4" Text="{Binding PCLocation, Mode=OneWay}" Width="180" Height="18"/>
-
-                            <TextBlock Grid.Row="10" Grid.Column="3" Text="EmplMailadresse:" VerticalAlignment="Center"/>
-                            <TextBox Grid.Row="10" Grid.Column="4" Text="{Binding EmplMailAdresse, Mode=OneWay}" Width="180" Height="18"/>
+                            <TextBlock Grid.Row="8" Grid.Column="3" Text="EmplMailadresse:" VerticalAlignment="Center"/>
+                            <TextBox Grid.Row="8" Grid.Column="4" Text="{Binding EmplMailAdresse, Mode=OneWay}" Width="180" Height="18"/>
                         </Grid>
                     </Border>
                 </Grid>
