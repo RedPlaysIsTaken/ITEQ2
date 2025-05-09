@@ -473,7 +473,7 @@
                             <TextBox Grid.Row="9" Grid.Column="1" Text="{Binding Site, Mode=TwoWay}" Width="180" Height="22.5" VerticalContentAlignment=" Center" FontSize="12"/>
 
                             <TextBlock Grid.Row="10" Grid.Column="0" Text="STATUS:" VerticalAlignment="Center"/>
-                            <ComboBox Grid.Row="10" Grid.Column="1" SelectedValue="{Binding Status, Mode=TwoWay}" Width="180" Height="22.5" VerticalContentAlignment=" Center" FontSize="12">
+                            <ComboBox Grid.Row="10" Grid.Column="1" SelectedValue="{Binding Status, Mode=TwoWay}" Width="180" SelectedValuePath="Tag" Height="22.5" VerticalContentAlignment=" Center" FontSize="12">
                                 <ComboBoxItem Tag="INSTOCK" Content="INSTOCK"/>
                                 <ComboBoxItem Tag="NETWORKED" Content="NETWORKED"/>
                                 <ComboBoxItem Tag="TERMINATED" Content="TERMINATED"/>
