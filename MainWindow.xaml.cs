@@ -41,6 +41,8 @@ namespace ITEQ2
 
         GridViewColumnHeader _lastHeaderClicked = null;
         ListSortDirection _lastDirection = ListSortDirection.Ascending;
+        double _lastGridHeight = double.NaN;
+        double currentGridHeight = 0.0;
 
         //list of columns with 0 width
         public ObservableCollection<string> HiddenColumns { get; set; } = new ObservableCollection<string>();
@@ -281,17 +283,34 @@ namespace ITEQ2
         {
             if (EquipmentListView.SelectedItem != null)
             {
-                DetailsPanelGrid.Visibility = Visibility.Visible;
-                DetailsPanelGrid.Height = 300;
-                DetailsPanelGrid.Width = double.NaN;
+                if (DetailsPanelGrid.Visibility != Visibility.Collapsed)
+                {
+                    currentGridHeight = PropertiesRow.Height.Value;
+                    _lastGridHeight = PropertiesRow.Height.Value;
+                }
 
-                EquipmentListView.Height = double.NaN;
+                DetailsPanelGrid.Visibility = Visibility.Visible;
+
+                if (_lastGridHeight >= 50.0)
+                {
+                    PropertiesRow.Height = new GridLength(_lastGridHeight);
+                }
+                else
+                {
+                    PropertiesRow.Height = GridLength.Auto;
+                }
             }
         }
         private void CloseDetailsPanel_Click(object sender, RoutedEventArgs e)
         {
+            currentGridHeight = PropertiesRow.Height.Value;
+
+            if (currentGridHeight >= 50.0)
+            {
+                _lastGridHeight = currentGridHeight;
+            }
             DetailsPanelGrid.Visibility = Visibility.Collapsed;
-            EquipmentListView.Height = double.NaN;
+            PropertiesRow.Height = new GridLength(0);
         }
         private void TitleBar_Loaded(object sender, RoutedEventArgs e) // Executes when the titlebar loads (must be here for it to work apparantly)
         {
