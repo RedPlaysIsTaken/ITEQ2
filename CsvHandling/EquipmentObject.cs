@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ITEQ2.Logic;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -10,8 +11,7 @@ namespace ITEQ2.CsvHandling
     public class EquipmentObject : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-
-        private void OnPropertyChanged(string propertyName)
+        public void OnPropertyChanged(string propertyName)
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
         private string _column;

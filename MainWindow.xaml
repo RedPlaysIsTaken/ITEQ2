@@ -10,6 +10,7 @@
         Title="MainWindow" Height="720" Width="1280" Icon="/Styles/icons/Alt2.ico">
     <Window.Resources>
         <conv:ChangeTypeToTextConverter x:Key="ChangeTypeToTextConverter"/>
+        <conv:ReportDateConverter x:Key="ReportDateConverter"/>
     </Window.Resources>
     <WindowChrome.WindowChrome>
         <WindowChrome GlassFrameThickness="0" CornerRadius="0" CaptionHeight="0"/>
@@ -52,7 +53,7 @@
                 <ColumnDefinition Width="800*"/>
                 <ColumnDefinition Width="5"/>
                 <!-- GridSplitter -->
-                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="auto" MinWidth="20" MaxWidth="300"/>
             </Grid.ColumnDefinitions>
 
             <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" Background="White"/>
@@ -89,7 +90,7 @@
                           GridViewColumnHeader.Click="EquipmentListView_Click"  
                           ItemsSource="{Binding EquipmentList}" 
                           FontSize="12" Grid.ColumnSpan="2">
-                    <!-- SizeChanged="ListView_SizeChanged" -->
+                    
 
                     <ListView.LayoutTransform>
                         <ScaleTransform x:Name="GridZoomTransform" ScaleX="1.0" ScaleY="1.0"/>
@@ -273,15 +274,30 @@
                                 </GridViewColumnHeader>
                             </GridViewColumn>
 
-                            <GridViewColumn DisplayMemberBinding="{Binding ReportDate}" Width="100">
-                                <GridViewColumnHeader Content="ReportDATE" ContextMenuOpening="ColumnHeader_RightClick">
-                                    <GridViewColumnHeader.ContextMenu>
-                                        <ContextMenu>
-                                            <MenuItem Header="Hide" Click="HideColumn_Click"/>
-                                            <MenuItem Header="Reset Columns" Click="ResetColumns_Click"/>
-                                        </ContextMenu>
-                                    </GridViewColumnHeader.ContextMenu>
-                                </GridViewColumnHeader>
+                            <GridViewColumn Width="100">
+                                <GridViewColumn.Header>
+                                    <GridViewColumnHeader Content="ReportDATE" ContextMenuOpening="ColumnHeader_RightClick">
+                                        <GridViewColumnHeader.ContextMenu>
+                                            <ContextMenu>
+                                                <MenuItem Header="Hide" Click="HideColumn_Click"/>
+                                                <MenuItem Header="Reset Columns" Click="ResetColumns_Click"/>
+                                            </ContextMenu>
+                                        </GridViewColumnHeader.ContextMenu>
+                                    </GridViewColumnHeader>
+                                </GridViewColumn.Header>
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Border x:Name="CellBorder" Background="Transparent" Padding="2" HorizontalAlignment="Stretch">
+                                            <TextBlock Text="{Binding ReportDate, StringFormat=d}" VerticalAlignment="Center"/>
+                                        </Border>
+                                        <DataTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding ReportDate, Converter={StaticResource ReportDateConverter}}" Value="True">
+                                                <Setter TargetName="CellBorder" Property="Background" Value="#FFFFCCCC"/>
+                                                <Setter TargetName="CellBorder" Property="ToolTip" Value="Report date is older than 90 days"/>
+                                            </DataTrigger>
+                                        </DataTemplate.Triggers>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
                             </GridViewColumn>
 
                             <GridViewColumn DisplayMemberBinding="{Binding PCLocation}" Width="100">
@@ -564,8 +580,13 @@
             </Grid>
 
             <!-- Right Tab display -->
-            <Grid Grid.Row="0" Grid.Column="4" Width="1">
-
+            <Grid Grid.Row="0" Grid.Column="4">
+                <ListBox x:Name="ReportListBox"
+         ItemsSource="{Binding ReportDateAgeList}"
+         SelectionChanged="ReportListBox_SelectionChanged"
+         FontFamily="Consolas"
+         MaxWidth="300"
+         MinWidth="20"/>
             </Grid>
         </Grid>
     </Grid>

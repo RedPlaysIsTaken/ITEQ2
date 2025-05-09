@@ -26,6 +26,7 @@ using ITEQ2.View.Windows;
 using System.Windows.Media.Animation;
 using System.Windows.Media;
 using ITEQ2.Logging;
+using ITEQ2.Logic;
 
 
 namespace ITEQ2
@@ -74,6 +75,40 @@ namespace ITEQ2
             LoadGridPresets();
             CheckName();
         }
+
+        public List<(string PC, DateTime? ReportDate)> GetPcReportDatePairs()
+        {
+            return EquipmentList
+                .Select(e => (e.PC, e.ReportDate))
+                .ToList();
+        }
+        public ObservableCollection<string> ReportDateAgeList =>
+    new ObservableCollection<string>(
+        GetPcReportDatePairs()
+        .Where(pair =>
+            !string.IsNullOrWhiteSpace(pair.PC) &&
+            pair.ReportDate.HasValue &&
+            DateChecker.GetDaysSinceReport(pair.ReportDate.Value) >= 90)
+        .OrderBy(pair => pair.ReportDate)
+        .Select(pair => $"{pair.PC}, {DateChecker.GetDaysSinceReport(pair.ReportDate.Value)} days ago")
+    );
+
+
+        private void ReportListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (ReportListBox.SelectedItem is string line)
+            {
+                var pc = line.Split(',')[0].Trim();
+                var match = EquipmentList.FirstOrDefault(eq => eq.PC?.Trim() == pc);
+
+                if (match != null)
+                {
+                    EquipmentListView.SelectedItem = match;
+                    EquipmentListView.ScrollIntoView(match);
+                }
+            }
+        }
+
         private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             var focusedElement = Keyboard.FocusedElement;
