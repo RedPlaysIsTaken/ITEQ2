@@ -13,12 +13,12 @@
     </Window.Resources>
     <WindowChrome.WindowChrome>
         <WindowChrome GlassFrameThickness="0" CornerRadius="0" CaptionHeight="0"/>
-    </WindowChrome.WindowChrome> 
+    </WindowChrome.WindowChrome>
     <Grid Background="white">
         <Grid.RowDefinitions>
             <!-- Title Bar -->
             <RowDefinition Height="40"/>
-            
+
             <!--Menu bar-->
             <RowDefinition Height="20"/>
 
@@ -60,17 +60,24 @@
 
 
             <Grid Grid.Row="1" Grid.Column="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="241*"/>
+                    <ColumnDefinition Width="272*"/>
+                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition/> <!-- Equipment -->
-                    <RowDefinition Height="5"/> <!-- Gridsplitter -->
-                    <RowDefinition x:Name="PropertiesRow" Height="Auto"/> <!-- Details panel -->
+                    <RowDefinition/>
+                    <!-- Equipment -->
+                    <RowDefinition Height="5"/>
+                    <!-- Gridsplitter -->
+                    <RowDefinition x:Name="PropertiesRow" Height="Auto"/>
+                    <!-- Details panel -->
                 </Grid.RowDefinitions>
 
-                <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" Background="White"/>
+                <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" Background="White" Grid.ColumnSpan="2"/>
 
 
                 <!-- List of Equipent -->
-                <ListView Grid.Row="0" Grid.Column="1"
+                <ListView Grid.Row="0"
                           x:Name="EquipmentListView" 
                           SelectionMode="Extended"
                           MouseDoubleClick="EquipmentListView_MouseDoubleClick"
@@ -80,9 +87,8 @@
                           AlternationCount="2"
                   
                           GridViewColumnHeader.Click="EquipmentListView_Click"  
-                          ItemsSource="{Binding EquipmentList}"
-                          HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
-                          FontSize="12">
+                          ItemsSource="{Binding EquipmentList}" 
+                          FontSize="12" Grid.ColumnSpan="2">
                     <!-- SizeChanged="ListView_SizeChanged" -->
 
                     <ListView.LayoutTransform>
@@ -324,7 +330,7 @@
                                 </Trigger>
                                 <Trigger Property="IsSelected" Value="True">
                                     <Setter Property="Background" Value="#a4bdf7"/>
-                               
+
                                 </Trigger>
                             </Style.Triggers>
 
@@ -333,22 +339,24 @@
                 </ListView>
 
                 <!-- Equipment details -->
-                <Grid x:Name="DetailsPanelGrid" Grid.Row="2" Grid.Column="1" Width="auto" Visibility="Collapsed">
+                <Grid x:Name="DetailsPanelGrid" Grid.Row="2" Width="auto" Visibility="Collapsed" Grid.ColumnSpan="2">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto"/><!--0-->
-                        <ColumnDefinition Width="auto"/><!--1-->
-                     
+                        <ColumnDefinition Width="auto"/>
+                        <!--0-->
+                        <ColumnDefinition Width="auto"/>
+                        <!--1-->
+
                     </Grid.ColumnDefinitions>
-                    
-                    
+
+
                     <!--log-->
                     <ListBox x:Name="ChangeHistoryListBox" Margin="2,0,5,0"
                              Grid.Column="1" 
                              Width="auto">
-                        
+
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                
+
                                 <TextBlock>
                                  <Run Text="User &quot;"/>
                                  <Run Text="{Binding User}"/>
@@ -476,7 +484,7 @@
 
                             <!-- Right Column (FUC-Report) -->
                             <TextBlock Grid.Row="2" Grid.Column="3" Text="FUC-Report" FontSize="16"/>
-                        
+
 
                             <TextBlock Grid.Row="4" Grid.Column="3" Text="PC:" VerticalAlignment="Center"/>
                             <TextBox Grid.Row="4" Grid.Column="4" Text="{Binding PC, Mode=OneWay}" Width="180" Height="22.5" VerticalContentAlignment=" Center" FontSize="12"/>
@@ -529,21 +537,27 @@
 
 
                     <TabItem Header="Column Presets" Width="110">
-                        <Grid Background="White">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto" MaxWidth="200"/>
-                            </Grid.ColumnDefinitions>
-
-                            <StackPanel Margin="5">
+                        <Grid Background="White" MaxWidth="218" HorizontalAlignment="Left">
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
                                 <ItemsControl ItemsSource="{Binding GridViewPresets}">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding}" Foreground="Black" Cursor="Hand" FontSize="14" FontWeight="Bold"
-                                   Width="auto" Height="30" MouseLeftButtonDown="GridViewPreset_Click"/>
+                                            <Expander Foreground="Black" FontSize="12" FontWeight="Bold"
+                              HorizontalAlignment="Stretch">
+                                                <Expander.Header>
+                                                    <TextBlock Text="{Binding Name}"
+                                       TextWrapping="Wrap"
+                                       MouseLeftButtonDown="GridViewPreset_Click"/>
+                                                </Expander.Header>
+                                                <TextBlock TextWrapping="Wrap" Margin="5" FontSize="12" FontWeight="Medium">
+                            <Run Text="Description: " />
+                            <Run Text="{Binding Description}" />
+                                                </TextBlock>
+                                            </Expander>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
-                            </StackPanel>
+                            </ScrollViewer>
                         </Grid>
                     </TabItem>
                 </TabControl>
