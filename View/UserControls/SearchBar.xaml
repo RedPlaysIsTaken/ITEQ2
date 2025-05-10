@@ -45,10 +45,10 @@
                 <ComboBoxItem Tag="1.75">175%</ComboBoxItem>
                 <ComboBoxItem Tag="2.0">200%</ComboBoxItem>
             </ComboBox> -->
-            <Slider x:Name="ZoomSlider" Minimum="0.5" Maximum="2.0" Value="1.0" TickFrequency="0.1" Width="200" VerticalAlignment="Center"/>
-            <!--<Button x:Name="RedZoom" Content="+" Click="RedZoom_Click" Width="25" Height="30" Margin="2.5,5,0,2.5" VerticalAlignment="Top"/>
-            <Button x:Name="IncZoom" Content="-" Click="IncZoom_Click" Width="25" Height="30" Margin="2.5,5,0,2.5" VerticalAlignment="Top"/>-->
-            <Button Content="Reset Zoom" Click="ResetZoom_Click" Height="30" Width="auto" Margin="5" VerticalAlignment="Top"/>
+            <!--<Slider x:Name="ZoomSlider" Minimum="0.5" Maximum="2.0" Value="1.0" TickFrequency="0.1" Width="200" VerticalAlignment="Center"/>
+            <Button x:Name="RedZoom" Content="+" Click="RedZoom_Click" Width="25" Height="30" Margin="2.5,5,0,2.5" VerticalAlignment="Top"/>
+            <Button x:Name="IncZoom" Content="-" Click="IncZoom_Click" Width="25" Height="30" Margin="2.5,5,0,2.5" VerticalAlignment="Top"/>
+            <Button Content="Reset Zoom" Click="ResetZoom_Click" Height="30" Width="auto" Margin="5" VerticalAlignment="Top"/> -->
          </WrapPanel>
         
     </Grid>

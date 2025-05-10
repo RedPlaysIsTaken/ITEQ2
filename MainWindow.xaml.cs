@@ -61,8 +61,10 @@ namespace ITEQ2
            //SearchBarControl.SearchPerformed += OnSearchPerformed; // Check if the save event has been called from the SearchBar
            MenuBarControl.SaveRequested += OnSaveRequested; // Check if the save event has been called from the MenuBar
 
+            FooterControl footerControl = FooterControl as FooterControl;
+            footerControl.ZoomChanged += ApplyZoom;
             SearchBar searchBar = SearchBarControl as SearchBar;
-            searchBar.ZoomChanged += ApplyZoom;
+            //searchBar.ZoomChanged += ApplyZoom;
 
             PropertyDescriptor pd = DependencyPropertyDescriptor.FromProperty(
                 GridViewColumn.WidthProperty, typeof(GridViewColumn));
@@ -214,13 +216,13 @@ namespace ITEQ2
         }
         private void EquipmentListView_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
-            SearchBar searchBar = SearchBarControl as SearchBar;
+            FooterControl footerControl = FooterControl as FooterControl;
 
             if (Keyboard.Modifiers == ModifierKeys.Control)
             {
                 double delta = e.Delta > 0 ? 0.1 : -0.1;
-                double newZoom = Math.Clamp(searchBar.ZoomSlider.Value + delta, searchBar.ZoomSlider.Minimum, searchBar.ZoomSlider.Maximum);
-                searchBar.ZoomSlider.Value = newZoom;
+                double newZoom = Math.Clamp(footerControl.ZoomSlider.Value + delta, footerControl.ZoomSlider.Minimum, footerControl.ZoomSlider.Maximum);
+                footerControl.ZoomSlider.Value = newZoom;
                 e.Handled = true;
             }
         }
@@ -611,7 +613,7 @@ namespace ITEQ2
         }
         public void InitializeFooter()
         {
-            Footer_Control footerControlInstance = this.FindName("FooterControl") as Footer_Control;
+            FooterControl footerControlInstance = this.FindName("FooterControl") as FooterControl;
             if (footerControlInstance != null)
             {
                 footerControlInstance.WorkingDocPath = _workingDocPath;

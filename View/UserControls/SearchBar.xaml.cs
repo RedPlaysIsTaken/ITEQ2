@@ -29,20 +29,20 @@ namespace ITEQ2.View.UserControls
     {
 
         public event Action<string> SearchPerformed;
-        public event Action ZoomResetRequested;
-        public event Action<double> ZoomChangedByWheel;
         private CancellationTokenSource _searchCts;
 
-        private double LastZoomValue = 1.0;
         private int focusedElement;
 
-        public event Action<double> ZoomChanged;
+        //private double LastZoomValue = 1.0;
+        //public event Action ZoomResetRequested;
+        //public event Action<double> ZoomChangedByWheel;
+        //public event Action<double> ZoomChanged;
 
         public SearchBar()
         {
             InitializeComponent();
 
-            ZoomSlider.ValueChanged += (s, e) => ZoomChanged?.Invoke(e.NewValue);
+            //ZoomSlider.ValueChanged += (s, e) => ZoomChanged?.Invoke(e.NewValue);
         }
 
         private async void txtBoxSearchBar_TextChanged(object sender, TextChangedEventArgs e)
@@ -130,7 +130,7 @@ namespace ITEQ2.View.UserControls
         }
         private void ResetZoom_Click(object sender, RoutedEventArgs e)
         {
-            ZoomSlider.Value = 1.0;
+            //ZoomSlider.Value = 1.0;
         }
     }
 }
