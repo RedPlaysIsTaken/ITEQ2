@@ -49,7 +49,14 @@
             <Button x:Name="RedZoom" Content="+" Click="RedZoom_Click" Width="25" Height="30" Margin="2.5,5,0,2.5" VerticalAlignment="Top"/>
             <Button x:Name="IncZoom" Content="-" Click="IncZoom_Click" Width="25" Height="30" Margin="2.5,5,0,2.5" VerticalAlignment="Top"/>
             <Button Content="Reset Zoom" Click="ResetZoom_Click" Height="30" Width="auto" Margin="5" VerticalAlignment="Top"/> -->
-         </WrapPanel>
-        
+            
+            <TextBlock Grid.Column="2" MinWidth="250"
+            Text="{Binding SearchErrorFeedback, RelativeSource={RelativeSource AncestorType=UserControl}}" TextWrapping="Wrap" Foreground="DarkRed"
+            Margin="5" Padding="0,5,0,5" 
+            FontSize="14" FontWeight="Bold"
+            VerticalAlignment="Center" HorizontalAlignment="Left"/>
+        </WrapPanel>
+            
+
     </Grid>
 </UserControl>

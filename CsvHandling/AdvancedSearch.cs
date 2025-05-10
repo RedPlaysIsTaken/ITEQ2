@@ -10,19 +10,26 @@ using System.Windows;
 
 namespace ITEQ2.CsvHandling
 {
-    public static class AdvancedSearch
+    public class AdvancedSearch
     {
-        public static List<EquipmentObject> Search(IEnumerable<EquipmentObject> dataset, string query)
+        public string SearchErrorFeedback { get; private set; } = "";
+
+        public List<EquipmentObject> Search(IEnumerable<EquipmentObject> dataset, string query)
         {
+            SearchErrorFeedback = "";
+
+            if (string.IsNullOrWhiteSpace(query))
+            {
+                return dataset.ToList();
+            }
+
             var ast = SearchParser.Parse(query);
 
             if (ast == null)
             {
-                // Optionally: notify user via UI
-                System.Windows.MessageBox.Show("Invalid search query. Please check your syntax.", "Search Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                SearchErrorFeedback = "Invalid search query. Check syntax";
 
-                // Return the unfiltered dataset OR empty list (your choice)
-                return dataset.ToList();
+                return new List<EquipmentObject>();
             }
 
             return dataset.Where(obj => ast.Evaluate(obj)).ToList();

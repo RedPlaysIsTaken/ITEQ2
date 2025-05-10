@@ -18,42 +18,49 @@ using System.Windows.Shapes;
 using System.Globalization;
 using System.Collections.ObjectModel;
 using System.Collections;
-
+using System.ComponentModel;
 
 namespace ITEQ2.View.UserControls
 {
-    /// <summary>
-    /// Interaction logic for SearchBar.xaml
-    /// </summary>
-    public partial class SearchBar : UserControl
+    public partial class SearchBar : UserControl, INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged(string name) =>
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        private string _searchErrorFeedback;
+        public string SearchErrorFeedback
+        {
+            get => _searchErrorFeedback;
+            set
+            {
+                if (_searchErrorFeedback != value)
+                {
+                    _searchErrorFeedback = value;
+                    OnPropertyChanged(nameof(SearchErrorFeedback));
+                }
+            }
+        }
+
 
         public event Action<string> SearchPerformed;
         private CancellationTokenSource _searchCts;
 
         private int focusedElement;
 
-        //private double LastZoomValue = 1.0;
-        //public event Action ZoomResetRequested;
-        //public event Action<double> ZoomChangedByWheel;
-        //public event Action<double> ZoomChanged;
-
         public SearchBar()
         {
             InitializeComponent();
-
-            //ZoomSlider.ValueChanged += (s, e) => ZoomChanged?.Invoke(e.NewValue);
         }
 
         private async void txtBoxSearchBar_TextChanged(object sender, TextChangedEventArgs e)
         {
-            _searchCts?.Cancel(); // cancel previous search
+            _searchCts?.Cancel();
             _searchCts = new CancellationTokenSource();
             var token = _searchCts.Token;
 
             try
             {
-                await Task.Delay(500, token); // shorter delay
+                await Task.Delay(500, token);
 
                 if (token.IsCancellationRequested)
                     return;
@@ -64,7 +71,11 @@ namespace ITEQ2.View.UserControls
                 MainWindow mainWindow = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
                 if (mainWindow != null)
                 {
-                    var result = AdvancedSearch.Search(mainWindow.EquipmentList, searchText);
+                    var searcher = new AdvancedSearch();
+                    var result = searcher.Search(mainWindow.EquipmentList, searchText);
+
+                    SearchErrorFeedback = searcher.SearchErrorFeedback;
+
                     mainWindow.SearchedEquipmentList = new ObservableCollection<EquipmentObject>(result);
                     mainWindow.EquipmentListView.ItemsSource = null;
                     mainWindow.EquipmentListView.ItemsSource = mainWindow.SearchedEquipmentList;
@@ -72,8 +83,7 @@ namespace ITEQ2.View.UserControls
             }
             catch (TaskCanceledException)
             {
-                Debug.WriteLine("Search task was canceled, ignore: Exception thrown: System.Threading.Tasks.TaskCanceledException' in System.Private.CoreLib.dll");
-                // safe to ignore, user typed again quickly
+                Debug.WriteLine("Nothing was searched for");
             }
         }
 
@@ -132,5 +142,6 @@ namespace ITEQ2.View.UserControls
         {
             //ZoomSlider.Value = 1.0;
         }
+
     }
 }
