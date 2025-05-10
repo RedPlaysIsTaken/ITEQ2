@@ -58,7 +58,7 @@ namespace ITEQ2
 
             EquipmentListView.ItemsSource = EquipmentList;
 
-           SearchBarControl.SearchPerformed += OnSearchPerformed; // Check if the save event has been called from the SearchBar
+           //SearchBarControl.SearchPerformed += OnSearchPerformed; // Check if the save event has been called from the SearchBar
            MenuBarControl.SaveRequested += OnSaveRequested; // Check if the save event has been called from the MenuBar
 
             SearchBar searchBar = SearchBarControl as SearchBar;
@@ -92,8 +92,6 @@ namespace ITEQ2
         .OrderBy(pair => pair.ReportDate)
         .Select(pair => $"{pair.PC}, {DateChecker.GetDaysSinceReport(pair.ReportDate.Value)} days ago")
     );
-
-
         private void ReportListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (ReportListBox.SelectedItem is string line)
@@ -108,7 +106,6 @@ namespace ITEQ2
                 }
             }
         }
-
         private void Window_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             var focusedElement = Keyboard.FocusedElement;
@@ -133,7 +130,6 @@ namespace ITEQ2
                 searchBar.txtBoxSearchBar.SelectAll();
             }
         }
-
         private void CheckName()
         {
             if (string.IsNullOrWhiteSpace(Properties.Settings.Default.User))
@@ -188,10 +184,6 @@ namespace ITEQ2
                 Debug.WriteLine("This is where the error is");
             }
         }
-
-
-
-
         private void ApplyZoom(double zoom)
         {
             AnimateScale(GridZoomTransform, zoom);
@@ -407,7 +399,7 @@ namespace ITEQ2
                 Debug.WriteLine("Items in Equipment list when Loading: " + equipmentList.Count);
             }
         }
-        private void OnSearchPerformed(string query)
+        /*private void OnSearchPerformed(string query)
         {
             if (EquipmentList == null || !EquipmentList.Any())
             {
@@ -435,7 +427,7 @@ namespace ITEQ2
 
                 Debug.WriteLine($"Filtered list count: {SearchedEquipmentList.Count}");
             }
-        }
+        }*/
         private void OnSaveRequested()
         {
 

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace ITEQ2.CsvHandling
 {
@@ -13,8 +15,13 @@ namespace ITEQ2.CsvHandling
         public static List<EquipmentObject> Search(IEnumerable<EquipmentObject> dataset, string query)
         {
             var ast = SearchParser.Parse(query);
+
             if (ast == null)
             {
+                // Optionally: notify user via UI
+                System.Windows.MessageBox.Show("Invalid search query. Please check your syntax.", "Search Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+
+                // Return the unfiltered dataset OR empty list (your choice)
                 return dataset.ToList();
             }
 
@@ -75,14 +82,31 @@ namespace ITEQ2.CsvHandling
 
         public static INode Parse(string input)
         {
-            var tokens = Tokenize(input);
-            var ast = ParseExpression(tokens);
-            return ast;
+            try
+            {
+                var tokens = Tokenize(input);
+                var ast = ParseExpression(tokens);
+
+                // If there are leftover tokens, it's an invalid query
+                if (tokens.Count > 0)
+                    throw new InvalidOperationException("Unexpected tokens remaining after parsing.");
+
+                return ast;
+            }
+            catch (InvalidOperationException ex)
+            {
+                Debug.WriteLine($"Search query parse error: {ex.Message}");
+                return null; // NULL means invalid search (don't update last search)
+            }
         }
 
         private static Queue<string> Tokenize(string input)
         {
             var tokens = new Queue<string>();
+
+            if (string.IsNullOrWhiteSpace(input))
+                return tokens; // empty
+
             foreach (Match match in TokenRegex.Matches(input))
             {
                 if (match.Groups["field"].Success)
@@ -94,55 +118,85 @@ namespace ITEQ2.CsvHandling
                 else if (match.Groups["paren"].Success)
                     tokens.Enqueue(match.Groups["paren"].Value);
             }
+
             return tokens;
         }
 
         private static INode ParseExpression(Queue<string> tokens)
         {
-            var stack = new Stack<INode>();
-            var ops = new Stack<string>();
-
-            while (tokens.Count > 0)
+            if (tokens == null || tokens.Count == 0)
             {
-                string token = tokens.Dequeue();
+                Debug.WriteLine("Searchfield is empty");
+                return null;
+            }
+            else
+            {
+                return ParseOr(tokens);
+            }
+                        
+        }
 
-                if (token == "(")
-                {
-                    stack.Push(ParseExpression(tokens));
-                }
-                else if (token == ")")
-                {
-                    break;
-                }
-                else if (token == "&&" || token == "||")
-                {
-                    ops.Push(token);
-                }
-                else
-                {
-                    INode term;
-                    if (token.Contains(':'))
-                    {
-                        var parts = token.Split(':');
-                        term = new TermNode(parts[0], parts[1]);
-                    }
-                    else
-                    {
-                        term = new TermNode(null, token);
-                    }
-                    stack.Push(term);
+        private static INode ParseOr(Queue<string> tokens)
+        {
+            var left = ParseAnd(tokens);
 
-                    if (ops.Count > 0 && stack.Count >= 2)
-                    {
-                        var right = stack.Pop();
-                        var left = stack.Pop();
-                        var op = ops.Pop();
-                        stack.Push(op == "&&" ? new AndNode(left, right) : new OrNode(left, right));
-                    }
-                }
+            while (tokens.Count > 0 && tokens.Peek() == "||")
+            {
+                tokens.Dequeue(); // consume ||
+
+                if (tokens.Count == 0 || tokens.Peek() == ")")
+                    throw new InvalidOperationException("Expected expression after '||'");
+
+                var right = ParseAnd(tokens);
+                left = new OrNode(left, right);
             }
 
-            return stack.Count == 1 ? stack.Pop() : null;
+            return left;
+        }
+
+        private static INode ParseAnd(Queue<string> tokens)
+        {
+            var left = ParsePrimary(tokens);
+
+            while (tokens.Count > 0 && tokens.Peek() == "&&")
+            {
+                tokens.Dequeue(); // consume &&
+
+                if (tokens.Count == 0 || tokens.Peek() == ")")
+                    throw new InvalidOperationException("Expected expression after '&&'");
+
+                var right = ParsePrimary(tokens);
+                left = new AndNode(left, right);
+            }
+
+            return left;
+        }
+
+        private static INode ParsePrimary(Queue<string> tokens)
+        {
+            if (tokens.Count == 0)
+                throw new InvalidOperationException("Unexpected end of input");
+
+            string token = tokens.Dequeue();
+
+            if (token == "(")
+            {
+                var expr = ParseExpression(tokens);
+                if (tokens.Count == 0 || tokens.Dequeue() != ")")
+                    throw new InvalidOperationException("Missing closing parenthesis");
+                return expr;
+            }
+
+            // term or field:term
+            if (token.Contains(":"))
+            {
+                var parts = token.Split(':');
+                return new TermNode(parts[0], parts[1]);
+            }
+            else
+            {
+                return new TermNode(null, token);
+            }
         }
     }
 }
