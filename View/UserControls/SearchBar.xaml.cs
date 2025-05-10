@@ -142,6 +142,9 @@ namespace ITEQ2.View.UserControls
         {
             //ZoomSlider.Value = 1.0;
         }
-
+        private void btnSearchInfo_Click(object sender, RoutedEventArgs e)
+        {
+            HelpPopup.IsOpen = !HelpPopup.IsOpen;
+        }
     }
 }

@@ -34,29 +34,50 @@
 
 
 
-        <WrapPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
-            <!-- <ComboBox x:Name="ZoomComboBox" Width="150" Height="30" Margin="2.5,5,0,2.5" SelectionChanged="ZoomComboBox_SelectionChanged" VerticalAlignment="Top" >
-                <ComboBoxItem Tag="0.25">25%</ComboBoxItem>
-                <ComboBoxItem Tag="0.5">50%</ComboBoxItem>
-                <ComboBoxItem Tag="0.75">75%</ComboBoxItem>
-                <ComboBoxItem Tag="1.0" IsSelected="True">100% (Default)</ComboBoxItem>
-                <ComboBoxItem Tag="1.25">125%</ComboBoxItem>
-                <ComboBoxItem Tag="1.5">150%</ComboBoxItem>
-                <ComboBoxItem Tag="1.75">175%</ComboBoxItem>
-                <ComboBoxItem Tag="2.0">200%</ComboBoxItem>
-            </ComboBox> -->
-            <!--<Slider x:Name="ZoomSlider" Minimum="0.5" Maximum="2.0" Value="1.0" TickFrequency="0.1" Width="200" VerticalAlignment="Center"/>
-            <Button x:Name="RedZoom" Content="+" Click="RedZoom_Click" Width="25" Height="30" Margin="2.5,5,0,2.5" VerticalAlignment="Top"/>
-            <Button x:Name="IncZoom" Content="-" Click="IncZoom_Click" Width="25" Height="30" Margin="2.5,5,0,2.5" VerticalAlignment="Top"/>
-            <Button Content="Reset Zoom" Click="ResetZoom_Click" Height="30" Width="auto" Margin="5" VerticalAlignment="Top"/> -->
+        <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
             
-            <TextBlock Grid.Column="2" MinWidth="250"
-            Text="{Binding SearchErrorFeedback, RelativeSource={RelativeSource AncestorType=UserControl}}" TextWrapping="Wrap" Foreground="DarkRed"
-            Margin="5" Padding="0,5,0,5" 
-            FontSize="14" FontWeight="Bold"
-            VerticalAlignment="Center" HorizontalAlignment="Left"/>
-        </WrapPanel>
-            
+            <Button x:Name="HelpButton" Width="30" Height="30" Margin="5,0,5,0"
+            Padding="0" Background="Transparent" BorderBrush="Transparent"
+            ToolTip="Click for search help"
+            Click="btnSearchInfo_Click" Cursor="Hand">
+                <TextBlock Text="ℹ️" FontSize="20" VerticalAlignment="Center"/>
+            </Button>
 
+            <Popup x:Name="HelpPopup" PlacementTarget="{Binding ElementName=HelpButton}"
+           Placement="Bottom" StaysOpen="False">
+                <Border Background="#FFFDFDFD" BorderBrush="Gray" BorderThickness="1" CornerRadius="5"
+                Padding="10" MaxWidth="300" >
+                    <TextBlock TextWrapping="Wrap">
+                <Bold>
+                  Searches are not case sensitive!<LineBreak/>
+                  Simple search:</Bold><LineBreak/>
+                • Basic search: "<Bold>John</Bold>" returns all rows that include "<Bold>John</Bold>"<LineBreak/>
+                • Field search: "<Bold>User:John</Bold>" returns all rows that has "<Bold>John</Bold>" in the "<Bold>User</Bold>" field<LineBreak/>
+                <LineBreak/>
+                        
+                        
+                <Bold>
+                Advanced search:</Bold><LineBreak/>
+                • Combined search using <Bold>&amp;&amp;</Bold> (AND), <Bold>||</Bold> (OR)<LineBreak/>
+                <Bold>Example:</Bold> 
+                (User:John &amp;&amp; Make:HP) || Oslo<LineBreak/>
+                <Bold>Returns:</Bold>
+                All instances where the User column contains John AND the Make column contains HP, OR all instances of Oslo
+                    </TextBlock>
+                </Border>
+            </Popup>
+            
+            
+            <TextBlock MinWidth="250"
+               Text="{Binding SearchErrorFeedback, RelativeSource={RelativeSource AncestorType=UserControl}}"
+               TextWrapping="Wrap"
+               Foreground="DarkRed"
+               Margin="0"
+               Padding="0,5,0,5"
+               FontSize="14"
+               FontWeight="Bold"
+               VerticalAlignment="Center"
+               HorizontalAlignment="Left"/>
+        </StackPanel>
     </Grid>
 </UserControl>
