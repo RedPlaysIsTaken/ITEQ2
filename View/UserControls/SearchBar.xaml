@@ -49,26 +49,23 @@
                 Padding="10" MaxWidth="300" >
                     <TextBlock TextWrapping="Wrap">
                 <Bold>
-                  Searches are not case sensitive!<LineBreak/>
-                  Simple search:</Bold><LineBreak/>
+                Searches are not case sensitive!<LineBreak/></Bold>
                 • Basic search: "<Bold>John</Bold>" returns all rows that include "<Bold>John</Bold>"<LineBreak/>
+                        <LineBreak/>
                 • Field search: "<Bold>User:John</Bold>" returns all rows that has "<Bold>John</Bold>" in the "<Bold>User</Bold>" field<LineBreak/>
+                        <LineBreak/>
+                • Combined search: <Bold>(User:John &amp;&amp; Make:HP) || Oslo</Bold> returns all instances where the <Bold>User column contains John AND the Make column contains HP, OR all instances of Oslo</Bold><LineBreak/>
                 <LineBreak/>
-                        
-                        
-                <Bold>
-                Advanced search:</Bold><LineBreak/>
-                • Combined search using <Bold>&amp;&amp;</Bold> (AND), <Bold>||</Bold> (OR)<LineBreak/>
-                <Bold>Example:</Bold> 
-                (User:John &amp;&amp; Make:HP) || Oslo<LineBreak/>
-                <Bold>Returns:</Bold>
-                All instances where the User column contains John AND the Make column contains HP, OR all instances of Oslo
+                • Exclutionary search: <Bold>!John</Bold> returns all rows that does not include "<Bold>John</Bold>"<LineBreak/>
+                        <LineBreak/>
+                • Exclutionary combined search: <Bold>(!User:John &amp;&amp; Make:HP) || Oslo</Bold> returns all instances where the <Bold>User column does NOT contain John AND the Make column contains HP, OR all instances of Oslo</Bold>
                     </TextBlock>
                 </Border>
             </Popup>
             
             
-            <TextBlock MinWidth="250"
+            <TextBlock 
+               MinWidth="250"
                Text="{Binding SearchErrorFeedback, RelativeSource={RelativeSource AncestorType=UserControl}}"
                TextWrapping="Wrap"
                Foreground="DarkRed"

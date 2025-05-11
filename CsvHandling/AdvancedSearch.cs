@@ -85,7 +85,9 @@ namespace ITEQ2.CsvHandling
 
     public static class SearchParser
     {
-        private static readonly Regex TokenRegex = new(@"(?<field>\w+):(?<term>\w+)|(?<termOnly>\w+)|(?<op>\|\||&&)|(?<paren>[()])", RegexOptions.IgnoreCase);
+        private static readonly Regex TokenRegex = new(
+    @"(?<field>\w+):(?<term>\w+)|(?<termOnly>\w+)|(?<op>\|\||&&)|(?<not>!)|(?<paren>[()])",
+    RegexOptions.IgnoreCase);
 
         public static INode Parse(string input)
         {
@@ -94,7 +96,6 @@ namespace ITEQ2.CsvHandling
                 var tokens = Tokenize(input);
                 var ast = ParseExpression(tokens);
 
-                // If there are leftover tokens, it's an invalid query
                 if (tokens.Count > 0)
                     throw new InvalidOperationException("Unexpected tokens remaining after parsing.");
 
@@ -103,7 +104,7 @@ namespace ITEQ2.CsvHandling
             catch (InvalidOperationException ex)
             {
                 Debug.WriteLine($"Search query parse error: {ex.Message}");
-                return null; // NULL means invalid search (don't update last search)
+                return null;
             }
         }
 
@@ -112,7 +113,7 @@ namespace ITEQ2.CsvHandling
             var tokens = new Queue<string>();
 
             if (string.IsNullOrWhiteSpace(input))
-                return tokens; // empty
+                return tokens;
 
             foreach (Match match in TokenRegex.Matches(input))
             {
@@ -122,6 +123,8 @@ namespace ITEQ2.CsvHandling
                     tokens.Enqueue(match.Groups["termOnly"].Value);
                 else if (match.Groups["op"].Success)
                     tokens.Enqueue(match.Groups["op"].Value);
+                else if (match.Groups["not"].Success)
+                    tokens.Enqueue("!");
                 else if (match.Groups["paren"].Success)
                     tokens.Enqueue(match.Groups["paren"].Value);
             }
@@ -142,14 +145,27 @@ namespace ITEQ2.CsvHandling
             }
                         
         }
+        public class NotNode : INode
+        {
+            public INode Operand { get; }
 
+            public NotNode(INode operand)
+            {
+                Operand = operand;
+            }
+
+            public bool Evaluate(EquipmentObject obj)
+            {
+                return !Operand.Evaluate(obj);
+            }
+        }
         private static INode ParseOr(Queue<string> tokens)
         {
             var left = ParseAnd(tokens);
 
             while (tokens.Count > 0 && tokens.Peek() == "||")
             {
-                tokens.Dequeue(); // consume ||
+                tokens.Dequeue();
 
                 if (tokens.Count == 0 || tokens.Peek() == ")")
                     throw new InvalidOperationException("Expected expression after '||'");
@@ -167,7 +183,7 @@ namespace ITEQ2.CsvHandling
 
             while (tokens.Count > 0 && tokens.Peek() == "&&")
             {
-                tokens.Dequeue(); // consume &&
+                tokens.Dequeue();
 
                 if (tokens.Count == 0 || tokens.Peek() == ")")
                     throw new InvalidOperationException("Expected expression after '&&'");
@@ -186,6 +202,15 @@ namespace ITEQ2.CsvHandling
 
             string token = tokens.Dequeue();
 
+            if (token == "!")
+            {
+                if (tokens.Count == 0)
+                    throw new InvalidOperationException("Expected expression after '!'");
+
+                var operand = ParsePrimary(tokens);
+                return new NotNode(operand);
+            }
+
             if (token == "(")
             {
                 var expr = ParseExpression(tokens);
@@ -194,7 +219,6 @@ namespace ITEQ2.CsvHandling
                 return expr;
             }
 
-            // term or field:term
             if (token.Contains(":"))
             {
                 var parts = token.Split(':');

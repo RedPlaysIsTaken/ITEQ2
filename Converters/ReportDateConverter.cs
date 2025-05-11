@@ -18,7 +18,7 @@ namespace ITEQ2.Converters
                 var daysOld = DateChecker.GetDaysSinceReport(reportDate);
                 return daysOld >= 90;
             }
-            return false; // Treat null/non-DateTime as "not old"
+            return false;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

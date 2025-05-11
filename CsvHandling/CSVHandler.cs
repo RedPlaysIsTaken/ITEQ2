@@ -27,12 +27,12 @@ namespace ITEQ2.CsvHandling
             var config = new CsvConfiguration(CultureInfo.InvariantCulture)
             {
                 Delimiter = ",",
-                Quote = '"',               // Ensure proper handling of quoted fields
+                Quote = '"',
                 TrimOptions = TrimOptions.None,
                 IgnoreBlankLines = true,
-                BadDataFound = null,       // Ignore bad data
-                HeaderValidated = null,    // Ignore header validation errors
-                MissingFieldFound = null   // Ignore missing fields errors
+                BadDataFound = null,
+                HeaderValidated = null,
+                MissingFieldFound = null
             };
 
             try
@@ -40,7 +40,7 @@ namespace ITEQ2.CsvHandling
                 using var reader = new StreamReader(path.FilePath);
                 using var csv = new CsvReader(reader, config);
 
-                // detect the headers to detect the file type
+                // detect the headers to detect the file type*
                 csv.Read();
                 csv.ReadHeader();
                 var headers = csv.HeaderRecord;
