@@ -58,13 +58,11 @@ namespace ITEQ2
 
             EquipmentListView.ItemsSource = EquipmentList;
 
-           //SearchBarControl.SearchPerformed += OnSearchPerformed; // Check if the save event has been called from the SearchBar
-           MenuBarControl.SaveRequested += OnSaveRequested; // Check if the save event has been called from the MenuBar
+            MenuBarControl.SaveRequested += OnSaveRequested; // Check if the save event has been called from the MenuBar
 
             FooterControl footerControl = FooterControl as FooterControl;
             footerControl.ZoomChanged += ApplyZoom;
             SearchBar searchBar = SearchBarControl as SearchBar;
-            //searchBar.ZoomChanged += ApplyZoom;
 
             PropertyDescriptor pd = DependencyPropertyDescriptor.FromProperty(
                 GridViewColumn.WidthProperty, typeof(GridViewColumn));
@@ -77,7 +75,6 @@ namespace ITEQ2
             LoadGridPresets();
             CheckName();
         }
-
         public List<(string PC, DateTime? ReportDate)> GetPcReportDatePairs()
         {
             return EquipmentList
