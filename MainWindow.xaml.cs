@@ -36,8 +36,12 @@ namespace ITEQ2
         public ObservableCollection<EquipmentObject> EquipmentList { get; set; } = new();// The list of equipment
         public ObservableCollection<EquipmentObject> SearchedEquipmentList { get; set; }// = new();// Filtered dataset (after a search)
         private Dictionary<EquipmentObject, Dictionary<string, object>> _modifiedRecords = new(); // Keeps track of what fields have been changed and what they have been changed to
-        private string _workingDocPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "workingDoc.csv"); // local variable for the path of the working document
-        private string _fucDocPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "fucReportExampleData.csv"); // local variable for the path of the fucreport
+
+        private static readonly string DataFolder = System.IO.Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+            "ITEQ2/Data");
+        private readonly string _workingDocPath = System.IO.Path.Combine(DataFolder, "workingDoc.csv"); // local variable for the path of the working document
+        private readonly string _fucDocPath = System.IO.Path.Combine(DataFolder, "fucReportExampleData.csv"); // local variable for the path of the fucreport
         public ObservableCollection<GridViewPreset> GridViewPresets { get; set; } = new();
 
         GridViewColumnHeader _lastHeaderClicked = null;
@@ -71,6 +75,7 @@ namespace ITEQ2
             {
                 pd.AddValueChanged(col, ColumnWidthChanged);
             }
+            Directory.CreateDirectory(DataFolder);
             IntializeData();
             LoadGridPresets();
             CheckName();
