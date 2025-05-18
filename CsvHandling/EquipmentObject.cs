@@ -17,7 +17,7 @@ namespace ITEQ2.CsvHandling
         private string _column;
         public string Column
         {
-            get => _column;
+            get => _column; 
             set
             {
                 if (_column != value)
